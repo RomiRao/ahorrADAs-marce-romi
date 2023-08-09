@@ -1,1 +1,1 @@
-const $ = (selector = document.getElementById(selector));
+const $ = (selector) => document.getElementById(selector);
