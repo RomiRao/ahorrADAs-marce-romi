@@ -5,3 +5,7 @@
 .is-border-radius {
     border-radius: 3px;
 }
+
+figure {
+    width: 50%;
+}
