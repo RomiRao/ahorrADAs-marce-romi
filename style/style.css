@@ -5,3 +5,7 @@
 .is-border-radius {
     border-radius: 3px;
 }
+
+.image {
+    max-width: 350px;
+}
