@@ -6,6 +6,10 @@
     border-radius: 3px;
 }
 
+figure {
+    width: 50%;
+}
+
 .image {
     max-width: 350px;
 }
