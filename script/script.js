@@ -10,6 +10,14 @@ $("navbar-balance").addEventListener("click", () => {
     $("seccion-reportes").classList.add("is-hidden");
 });
 
+//Mostrar seccion categorias
+$("navbar-categorias").addEventListener("click", () => {
+    $("seccion-balance").classList.add("is-hidden");
+    $("nueva-operacion").classList.add("is-hidden");
+    $("seccion-categorias").classList.remove("is-hidden");
+    $("seccion-reportes").classList.add("is-hidden");
+});
+
 // -----------------------
 // SECCION BALANCE
 // ----------------------
