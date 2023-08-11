@@ -18,6 +18,14 @@ $("navbar-categorias").addEventListener("click", () => {
     $("seccion-reportes").classList.add("is-hidden");
 });
 
+//Mostrar seccion reportes
+$("navbar-reportes").addEventListener("click", () => {
+    $("seccion-balance").classList.add("is-hidden");
+    $("nueva-operacion").classList.add("is-hidden");
+    $("seccion-categorias").classList.add("is-hidden");
+    $("seccion-reportes").classList.remove("is-hidden");
+});
+
 // -----------------------
 // SECCION BALANCE
 // ----------------------
