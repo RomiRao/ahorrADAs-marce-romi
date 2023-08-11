@@ -1,5 +1,15 @@
 const $ = (selector) => document.getElementById(selector);
 
+//Cambio de seccion
+
+//Mostrar seccion balance
+$("navbar-balance").addEventListener("click", () => {
+    $("seccion-balance").classList.remove("is-hidden");
+    $("nueva-operacion").classList.add("is-hidden");
+    $("seccion-categorias").classList.add("is-hidden");
+    $("seccion-reportes").classList.add("is-hidden");
+});
+
 // -----------------------
 // SECCION BALANCE
 // ----------------------
