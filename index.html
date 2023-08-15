@@ -11,9 +11,9 @@
 </head>
 
 <body class="has-background-light">
-    <nav class="navbar is-primary p-4 px-5" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <!-- Logo -->
-        <div class="navbar-brand">
+        <div class="navbar-brand p-4 ml-4">
             <a class="navbar-item is-border-radius">
                 <h1 class="title has-text-white">
                     <i class="fa-solid mr-2 fa-wallet"></i>
@@ -23,7 +23,12 @@
         </div>
 
         <!-- Pestañas  -->
-        <div id="navbarBasicExample" class="navbar-menu">
+        <a role="button" class="navbar-burger is-active" data-target="navMenu" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        <div id="navbarBasicExample" class="navbar-menu is-active p-5">
             <div class="navbar-end">
                 <a class="navbar-item is-border-radius" id="navbar-balance">
                     <i class="fa-solid mr-2 fa-chart-line"></i>
@@ -38,11 +43,9 @@
                     Reportes
                 </a>
             </div>
-            <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </a>
+            </div>
+            
+            
     </nav>
 
     <!-- Contenido -->
