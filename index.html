@@ -11,19 +11,25 @@
 </head>
 
 <body class="has-background-light">
-    <nav class="navbar is-primary p-4 px-5" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
         <!-- Logo -->
-        <div class="navbar-brand">
+        <div class="navbar-brand p-4 ml-4">
             <a class="navbar-item is-border-radius">
                 <h1 class="title has-text-white">
                     <i class="fa-solid mr-2 fa-wallet"></i>
                     AhorrADAs
                 </h1>
             </a>
+            <a id="burger" role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
         </div>
 
         <!-- Pestañas  -->
-        <div id="navbarBasicExample" class="navbar-menu">
+        
+        <div id="navbarLinks" class="navbar-menu p-5">
             <div class="navbar-end">
                 <a class="navbar-item is-border-radius" id="navbar-balance">
                     <i class="fa-solid mr-2 fa-chart-line"></i>
@@ -38,6 +44,9 @@
                     Reportes
                 </a>
             </div>
+            </div>
+            
+            
     </nav>
 
     <!-- Contenido -->
@@ -208,9 +217,8 @@
             ****************************************** -->
 
             <section class="section is-hidden" id="seccion-categorias">
-                <div class="container">
-                    <div class="container is-max-desktop">
-                        <div class="box">
+                
+                        <div class="container box categorias">
                             <h2 class="title is-2 has-text-weight-bold">Categorías</h2>
                             <form>
                                 <div class="field my-6">
@@ -231,8 +239,7 @@
                                 </ul>
                             </form>
                         </div>
-                    </div>
-                </div>
+                 
                 </section>
 
             <!-- ********************************************************

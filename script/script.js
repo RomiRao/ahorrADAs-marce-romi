@@ -1,5 +1,8 @@
 const $ = (selector) => document.getElementById(selector);
 
+// *****************
+// NAVBAR
+// ***************
 //Cambio de seccion
 
 //Mostrar seccion balance
@@ -24,6 +27,13 @@ $("navbar-reportes").addEventListener("click", () => {
     $("nueva-operacion").classList.add("is-hidden");
     $("seccion-categorias").classList.add("is-hidden");
     $("seccion-reportes").classList.remove("is-hidden");
+});
+
+//Menu hamburguesa
+
+$("burger").addEventListener("click", () => {
+    $("burger").classList.toggle("is-active");
+    $("navbarLinks").classList.toggle("is-active");
 });
 
 // -----------------------
