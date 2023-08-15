@@ -1,5 +1,8 @@
 const $ = (selector) => document.getElementById(selector);
 
+// *****************
+// NAVBAR
+// ***************
 //Cambio de seccion
 
 //Mostrar seccion balance
@@ -25,6 +28,8 @@ $("navbar-reportes").addEventListener("click", () => {
     $("seccion-categorias").classList.add("is-hidden");
     $("seccion-reportes").classList.remove("is-hidden");
 });
+
+//Menu hamburguesa
 
 // -----------------------
 // SECCION BALANCE
