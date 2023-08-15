@@ -31,6 +31,11 @@ $("navbar-reportes").addEventListener("click", () => {
 
 //Menu hamburguesa
 
+$("burger").addEventListener("click", () => {
+    $("burger").classList.toggle("is-active");
+    $("navbarLinks").classList.toggle("is-active");
+});
+
 // -----------------------
 // SECCION BALANCE
 // ----------------------
