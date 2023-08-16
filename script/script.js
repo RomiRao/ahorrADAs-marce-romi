@@ -47,3 +47,24 @@ const abrirNuevaOperacion = () => {
 };
 
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
+
+
+// ------------Funcionabilidad Categorias------------------
+
+const categorias = ["Comida", "Servicios", "Salidas", "Educación", "Transporte", "Trabajo"];
+
+const crearLista = (listaDeCategorias) => {
+    $("lista-categorias").innerHTML = "";
+    for (let categoria of listaDeCategorias){
+        $("lista-categorias").innerHTML += `
+        <li class="is-flex is-justify-content-space-between">
+            <span class="tag is-primary is-light">${categoria}</span>
+            <div class="has-text-right">
+                <a href="#" class="is-size-7 mr-4 editarBtn" >Editar</a>
+                <a href="#" class="is-size-7 eliminarBtn">Eliminar</a>
+            </div>
+        </li>`
+    }
+}
+
+crearLista(categorias);
