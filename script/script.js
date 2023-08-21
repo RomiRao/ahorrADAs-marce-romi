@@ -54,8 +54,10 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
 const info = { operaciones: [], categorias: [] };
 
+//agregar operacion al array de operaciones
 const agregarOperacion = (objeto) => {
     info.operaciones.push(objeto);
+    mostrarOperaciones();
 };
 
 const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
@@ -79,3 +81,10 @@ $("agregar-btn").addEventListener("click", () =>
         $("fecha").value
     )
 );
+//----------------
+
+const mostrarOperaciones = () => {
+    info.operaciones.forEach((operacion) => {
+        console.log(operacion);
+    });
+};
