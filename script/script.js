@@ -53,3 +53,30 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // ----------------------
 
 const info = [(operaciones = []), (categorias = [])];
+
+const agregarOperacion = (objeto) => {
+    info.operaciones.push(objeto);
+    console.log("adfsadsf");
+    console.log(info);
+};
+
+const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
+    const operacion = {
+        descripcion: descripcion,
+        categoria: categoria,
+        monto: monto,
+        tipo: tipo,
+        fecha: fecha,
+    };
+    agregarOperacion(operacion);
+};
+
+$("agregar-btn").addEventListener("click", () =>
+    armarOperacion(
+        $("descripcion").value,
+        $("categoria").value,
+        $("monto").value,
+        $("tipo").value,
+        $("fecha").value
+    )
+);
