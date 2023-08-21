@@ -52,12 +52,10 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-const info = [(operaciones = []), (categorias = [])];
+const info = { operaciones: [], categorias: [] };
 
 const agregarOperacion = (objeto) => {
     info.operaciones.push(objeto);
-    console.log("adfsadsf");
-    console.log(info);
 };
 
 const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
@@ -68,6 +66,7 @@ const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
         tipo: tipo,
         fecha: fecha,
     };
+
     agregarOperacion(operacion);
 };
 
