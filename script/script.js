@@ -47,3 +47,9 @@ const abrirNuevaOperacion = () => {
 };
 
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
+
+// -------------------
+// DATOS OPERACIONES
+// ----------------------
+
+const info = [(operaciones = []), (categorias = [])];
