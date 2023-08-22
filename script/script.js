@@ -87,14 +87,23 @@ const mostrarOperaciones = () => {
     $("operaciones").classList.remove("is-hidden");
     $("sin-operaciones").classList.add("is-hidden");
     info.operaciones.forEach((operacion) => {
-        //creacion de divs para cada operacion
+        //cada lista de operacion
         let liOperacion = document.createElement("div");
         liOperacion.classList.add("columns");
+
+        //creacion de divs para cada item de operacion
         let descripcionContenedor = document.createElement("div");
         let categoriaContenedor = document.createElement("div");
         let fechaContenedor = document.createElement("div");
         let montoContenedor = document.createElement("div");
         let accionesContenedor = document.createElement("div");
+
+        //dandole clase a cada columna
+        descripcionContenedor.classList.add("column", "is-3");
+        categoriaContenedor.classList.add("column", "is-3");
+        fechaContenedor.classList.add("column");
+        montoContenedor.classList.add("column");
+        accionesContenedor.classList.add("column", "is-2");
 
         //definir contenido de los divs
         let descripcion = document.createElement("h3");
@@ -102,7 +111,7 @@ const mostrarOperaciones = () => {
         descripcion.classList.add("has-text-weight-bold");
 
         let categoria = document.createElement("span");
-        categoria.innerText = operacion.cataegoria;
+        categoria.innerText = operacion.categoria;
         categoria.classList.add("tag", "is-primary", "is-light");
 
         let fecha = document.createElement("span");
@@ -123,6 +132,7 @@ const mostrarOperaciones = () => {
 
         //asignar divs
         descripcionContenedor.appendChild(descripcion);
+        categoriaContenedor.appendChild(categoria);
         fechaContenedor.appendChild(fecha);
         montoContenedor.appendChild(monto);
         accionesContenedor.appendChild(acciones);
