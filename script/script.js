@@ -84,7 +84,28 @@ $("agregar-btn").addEventListener("click", () =>
 //----------------
 
 const mostrarOperaciones = () => {
+    $("operaciones").classList.remove("is-hidden");
     info.operaciones.forEach((operacion) => {
-        console.log(operacion);
+        //creacion de divs para cada operacion
+        let liOperacion = document.createElement("div");
+        let descripcionContenedor = document.createElement("div");
+        let categoriaContenedor = document.createElement("div");
+        let fechaContenedor = document.createElement("div");
+        let montoContenedor = document.createElement("div");
+        let accionesContenedor = document.createElement("div");
+
+        //definir contenido de los divs
+        let descripcion = document.createElement("h3");
+
+        //asignar divs
+        descripcionContenedor.appendChild(descripcion);
+        liOperacion.appendChild(
+            descripcionContenedor,
+            categoriaContenedor,
+            fechaContenedor,
+            montoContenedor,
+            accionesContenedor
+        );
+        $("operaciones").appendChild(liOperacion);
     });
 };
