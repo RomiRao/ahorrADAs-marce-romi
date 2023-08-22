@@ -101,8 +101,8 @@ const mostrarOperaciones = () => {
         //dandole clase a cada columna
         descripcionContenedor.classList.add("column", "is-3");
         categoriaContenedor.classList.add("column", "is-3");
-        fechaContenedor.classList.add("column");
-        montoContenedor.classList.add("column");
+        fechaContenedor.classList.add("column", "is-2");
+        montoContenedor.classList.add("column", "is-2");
         accionesContenedor.classList.add("column", "is-2");
 
         //definir contenido de los divs
@@ -121,12 +121,12 @@ const mostrarOperaciones = () => {
         monto.innerText = operacion.monto;
 
         let acciones = document.createElement("div");
-        let editar = document.createElement("span");
+        let editar = document.createElement("a");
         editar.innerText = "Editar";
-        editar.classList.add("tag");
-        let eliminar = document.createElement("span");
+        editar.setAttribute("href", "#");
+        let eliminar = document.createElement("a");
         eliminar.innerText = "Eliminar";
-        eliminar.classList.add("tag");
+        eliminar.setAttribute("href", "#");
         acciones.appendChild(editar);
         acciones.appendChild(eliminar);
 
