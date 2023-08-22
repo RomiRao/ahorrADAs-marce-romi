@@ -85,9 +85,11 @@ $("agregar-btn").addEventListener("click", () =>
 
 const mostrarOperaciones = () => {
     $("operaciones").classList.remove("is-hidden");
+    $("sin-operaciones").classList.add("is-hidden");
     info.operaciones.forEach((operacion) => {
         //creacion de divs para cada operacion
         let liOperacion = document.createElement("div");
+        liOperacion.classList.add("columns");
         let descripcionContenedor = document.createElement("div");
         let categoriaContenedor = document.createElement("div");
         let fechaContenedor = document.createElement("div");
@@ -96,16 +98,39 @@ const mostrarOperaciones = () => {
 
         //definir contenido de los divs
         let descripcion = document.createElement("h3");
+        descripcion.innerText = operacion.descripcion;
+        descripcion.classList.add("has-text-weight-bold");
+
+        let categoria = document.createElement("span");
+        categoria.innerText = operacion.cataegoria;
+        categoria.classList.add("tag", "is-primary", "is-light");
+
+        let fecha = document.createElement("span");
+        fecha.innerText = operacion.fecha;
+
+        let monto = document.createElement("span");
+        monto.innerText = operacion.monto;
+
+        let acciones = document.createElement("div");
+        let editar = document.createElement("span");
+        editar.innerText = "Editar";
+        editar.classList.add("tag");
+        let eliminar = document.createElement("span");
+        eliminar.innerText = "Eliminar";
+        eliminar.classList.add("tag");
+        acciones.appendChild(editar);
+        acciones.appendChild(eliminar);
 
         //asignar divs
         descripcionContenedor.appendChild(descripcion);
-        liOperacion.appendChild(
-            descripcionContenedor,
-            categoriaContenedor,
-            fechaContenedor,
-            montoContenedor,
-            accionesContenedor
-        );
+        fechaContenedor.appendChild(fecha);
+        montoContenedor.appendChild(monto);
+        accionesContenedor.appendChild(acciones);
+        liOperacion.appendChild(descripcionContenedor);
+        liOperacion.appendChild(categoriaContenedor);
+        liOperacion.appendChild(fechaContenedor);
+        liOperacion.appendChild(montoContenedor);
+        liOperacion.appendChild(accionesContenedor);
         $("operaciones").appendChild(liOperacion);
     });
 };
