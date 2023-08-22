@@ -88,6 +88,12 @@ const mostrarOperaciones = () => {
     $("operaciones").classList.remove("is-hidden");
     $("operaciones").innerHTML = "";
     $("sin-operaciones").classList.add("is-hidden");
+
+    iterarOperaciones();
+};
+
+//recorre el array de operaciones para crear los elementos de la lista
+const iterarOperaciones = () => {
     info.operaciones.forEach((operacion) => {
         //cada lista de operacion
         let liOperacion = document.createElement("div");
