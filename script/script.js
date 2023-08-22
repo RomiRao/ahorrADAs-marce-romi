@@ -84,7 +84,9 @@ $("agregar-btn").addEventListener("click", () =>
 //----------------
 
 const mostrarOperaciones = () => {
+    $("ver-operaciones").classList.remove("is-hidden");
     $("operaciones").classList.remove("is-hidden");
+    $("operaciones").innerHTML = "";
     $("sin-operaciones").classList.add("is-hidden");
     info.operaciones.forEach((operacion) => {
         //cada lista de operacion
