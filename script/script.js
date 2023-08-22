@@ -1,17 +1,15 @@
 const $ = (selector) => document.getElementById(selector);
-let hoy = new Date();
 
 //Definiendo fecha actual
 window.onload = () => {
-    let fecha = new Date();
-    let mes = fecha.getMonth() + 1;
-    let dia = fecha.getDate();
-    let anio = fecha.getFullYear();
+    let fechaHoy = new Date();
+    let mes = fechaHoy.getMonth() + 1;
+    let dia = fechaHoy.getDate();
+    let anio = fechaHoy.getFullYear();
     if (dia < 10) dia = "0" + dia;
     if (mes < 10) mes = "0" + mes;
-    document.getElementById("fecha").value = anio + "-" + mes + "-" + dia;
-    document.getElementById("fecha-filtro").value =
-        anio + "-" + mes + "-" + dia;
+    $("fecha").value = anio + "-" + mes + "-" + dia;
+    $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
 
 // *****************
@@ -74,6 +72,18 @@ const agregarOperacion = (objeto) => {
     mostrarOperaciones();
 };
 
+//definiendo el valor del input fecha
+const fechaElegida = () => {
+    operacionFecha = new Date($("fecha").value);
+    let mes = operacionFecha.getMonth() + 1;
+    let dia = operacionFecha.getDate();
+    let anio = operacionFecha.getFullYear();
+    if (dia < 10) dia = "0" + dia;
+    if (mes < 10) mes = "0" + mes;
+    return dia + "/" + mes + "/" + anio;
+};
+
+//Objeto operacion armado para luego pushearlo al array
 const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
     const operacion = {
         descripcion: descripcion,
@@ -86,17 +96,19 @@ const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
     agregarOperacion(operacion);
 };
 
+//agregar operacion
 $("agregar-btn").addEventListener("click", () =>
     armarOperacion(
         $("descripcion").value,
         $("categoria").value,
         $("monto").value,
         $("tipo").value,
-        $("fecha").value
+        fechaElegida()
     )
 );
 //----------------
 
+//Funcion para mostrar la lista de operaciones en la seccion balance
 const mostrarOperaciones = () => {
     $("ver-operaciones").classList.remove("is-hidden");
     $("operaciones").classList.remove("is-hidden");
@@ -123,8 +135,8 @@ const iterarOperaciones = () => {
         //dandole clase a cada columna
         descripcionContenedor.classList.add("column", "is-3");
         categoriaContenedor.classList.add("column", "is-3");
-        fechaContenedor.classList.add("column", "is-2");
-        montoContenedor.classList.add("column", "is-2");
+        fechaContenedor.classList.add("column", "is-2", "has-text-grey");
+        montoContenedor.classList.add("column", "is-2", "has-text-right");
         accionesContenedor.classList.add("column", "is-2");
 
         //definir contenido de los divs
