@@ -110,7 +110,7 @@ const mostrarOperaciones = () => {
         //definir contenido de los divs
         let descripcion = document.createElement("h3");
         descripcion.innerText = operacion.descripcion;
-        descripcion.classList.add("has-text-weight-bold");
+        descripcion.classList.add("has-text-weight-semibold");
 
         let categoria = document.createElement("span");
         categoria.innerText = operacion.categoria;
