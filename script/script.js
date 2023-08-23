@@ -120,7 +120,7 @@ const mostrarOperaciones = () => {
 
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = () => {
-    info.operaciones.forEach((operacion) => {
+    info.operaciones.forEach((operacion, indice) => {
         //cada lista de operacion
         let liOperacion = document.createElement("div");
         liOperacion.classList.add("columns");
@@ -178,6 +178,8 @@ const iterarOperaciones = () => {
         let eliminar = document.createElement("a");
         eliminar.innerText = "Eliminar";
         eliminar.setAttribute("href", "#");
+        eliminar.addEventListener("click", () => eliminarOperacion(indice));
+
         acciones.appendChild(editar);
         acciones.appendChild(eliminar);
 
@@ -194,4 +196,10 @@ const iterarOperaciones = () => {
         liOperacion.appendChild(accionesContenedor);
         $("operaciones").appendChild(liOperacion);
     });
+};
+
+//-------para eliminar una operacion
+const eliminarOperacion = (indice) => {
+    info.operaciones.splice(indice, 1);
+    mostrarOperaciones();
 };
