@@ -168,6 +168,7 @@ const iterarOperaciones = () => {
             monto.innerText = `$${operacion.monto}`;
         }
 
+        //acciones
         let acciones = document.createElement("div");
         let editar = document.createElement("a");
         editar.innerText = "Editar";
