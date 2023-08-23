@@ -170,9 +170,11 @@ const iterarOperaciones = () => {
 
         //acciones
         let acciones = document.createElement("div");
+        //editar
         let editar = document.createElement("a");
         editar.innerText = "Editar";
         editar.setAttribute("href", "#");
+        //eliminar
         let eliminar = document.createElement("a");
         eliminar.innerText = "Eliminar";
         eliminar.setAttribute("href", "#");
