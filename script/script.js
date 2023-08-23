@@ -120,7 +120,7 @@ const mostrarOperaciones = () => {
 
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = () => {
-    info.operaciones.forEach((operacion) => {
+    info.operaciones.forEach((operacion, indice) => {
         //cada lista de operacion
         let liOperacion = document.createElement("div");
         liOperacion.classList.add("columns");
@@ -136,7 +136,12 @@ const iterarOperaciones = () => {
         descripcionContenedor.classList.add("column", "is-3");
         categoriaContenedor.classList.add("column", "is-3");
         fechaContenedor.classList.add("column", "is-2", "has-text-grey");
-        montoContenedor.classList.add("column", "is-2", "has-text-right");
+        montoContenedor.classList.add(
+            "column",
+            "is-2",
+            "has-text-right",
+            "has-text-weight-bold"
+        );
         accionesContenedor.classList.add("column", "is-2");
 
         //definir contenido de los divs
@@ -144,23 +149,37 @@ const iterarOperaciones = () => {
         descripcion.innerText = operacion.descripcion;
         descripcion.classList.add("has-text-weight-semibold");
 
+        //categoria
         let categoria = document.createElement("span");
         categoria.innerText = operacion.categoria;
         categoria.classList.add("tag", "is-primary", "is-light");
 
+        //fecha
         let fecha = document.createElement("span");
         fecha.innerText = operacion.fecha;
 
+        //monto
         let monto = document.createElement("span");
-        monto.innerText = operacion.monto;
+        if (operacion.tipo === "Gasto") {
+            monto.style.color = "red";
+            monto.innerText = `-$${operacion.monto}`;
+        } else if (operacion.tipo === "Ganancia") {
+            monto.style.color = "green";
+            monto.innerText = `$${operacion.monto}`;
+        }
 
+        //acciones
         let acciones = document.createElement("div");
+        //editar
         let editar = document.createElement("a");
         editar.innerText = "Editar";
         editar.setAttribute("href", "#");
+        //eliminar
         let eliminar = document.createElement("a");
         eliminar.innerText = "Eliminar";
         eliminar.setAttribute("href", "#");
+        eliminar.addEventListener("click", () => eliminarOperacion(indice));
+
         acciones.appendChild(editar);
         acciones.appendChild(eliminar);
 
@@ -177,4 +196,10 @@ const iterarOperaciones = () => {
         liOperacion.appendChild(accionesContenedor);
         $("operaciones").appendChild(liOperacion);
     });
+};
+
+//-------para eliminar una operacion
+const eliminarOperacion = (indice) => {
+    info.operaciones.splice(indice, 1);
+    mostrarOperaciones();
 };
