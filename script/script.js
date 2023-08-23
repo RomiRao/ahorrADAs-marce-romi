@@ -136,7 +136,12 @@ const iterarOperaciones = () => {
         descripcionContenedor.classList.add("column", "is-3");
         categoriaContenedor.classList.add("column", "is-3");
         fechaContenedor.classList.add("column", "is-2", "has-text-grey");
-        montoContenedor.classList.add("column", "is-2", "has-text-right");
+        montoContenedor.classList.add(
+            "column",
+            "is-2",
+            "has-text-right",
+            "has-text-weight-bold"
+        );
         accionesContenedor.classList.add("column", "is-2");
 
         //definir contenido de los divs
@@ -144,15 +149,24 @@ const iterarOperaciones = () => {
         descripcion.innerText = operacion.descripcion;
         descripcion.classList.add("has-text-weight-semibold");
 
+        //categoria
         let categoria = document.createElement("span");
         categoria.innerText = operacion.categoria;
         categoria.classList.add("tag", "is-primary", "is-light");
 
+        //fecha
         let fecha = document.createElement("span");
         fecha.innerText = operacion.fecha;
 
+        //monto
         let monto = document.createElement("span");
-        monto.innerText = operacion.monto;
+        if (operacion.tipo === "Gasto") {
+            monto.style.color = "red";
+            monto.innerText = `-$${operacion.monto}`;
+        } else if (operacion.tipo === "Ganancia") {
+            monto.style.color = "green";
+            monto.innerText = `$${operacion.monto}`;
+        }
 
         let acciones = document.createElement("div");
         let editar = document.createElement("a");
