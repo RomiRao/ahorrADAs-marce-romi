@@ -1,4 +1,7 @@
+//Definiendo generales
+const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
 
 //Definiendo fecha actual
 window.onload = () => {
