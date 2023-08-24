@@ -120,6 +120,8 @@ const mostrarOperaciones = () => {
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = () => {
     info.operaciones.forEach((operacion, indice) => {
+        const monto = colorMonto(operacion.monto, operacion.tipo);
+
         $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
@@ -136,9 +138,9 @@ const iterarOperaciones = () => {
                 ${operacion.fecha}
             </span>
         </div>
-        <div class="column is-2 has-text-right has-text-weight-bold">
+        <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto}">
             <span>
-                ${operacion.monto}
+                ${monto}
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
@@ -155,12 +157,12 @@ const eliminarOperacion = (indice) => {
     mostrarOperaciones();
 };
 
-//  //monto
-//  let monto = document.createElement("span");
-//  if (operacion.tipo === "Gasto") {
-//      monto.style.color = "red";
-//      monto.innerText = `-$${operacion.monto}`;
-//  } else if (operacion.tipo === "Ganancia") {
-//      monto.style.color = "green";
-//      monto.innerText = `$${operacion.monto}`;
-//  }
+//para el color del monto
+const colorMonto = (monto, tipo) => {
+    if (tipo === "Gasto") {
+        monto = `-$${monto}`;
+    } else if (tipo === "Ganancia") {
+        monto = `+$${monto}`;
+    }
+    return monto;
+};
