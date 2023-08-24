@@ -112,89 +112,40 @@ $("agregar-btn").addEventListener("click", () =>
 const mostrarOperaciones = () => {
     $("ver-operaciones").classList.remove("is-hidden");
     $("operaciones").classList.remove("is-hidden");
-    $("operaciones").innerHTML = "";
     $("sin-operaciones").classList.add("is-hidden");
-
+    $("operaciones").innerHTML = "";
     iterarOperaciones();
 };
 
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = () => {
     info.operaciones.forEach((operacion, indice) => {
-        //cada lista de operacion
-        let liOperacion = document.createElement("div");
-        liOperacion.classList.add("columns");
-
-        //creacion de divs para cada item de operacion
-        let descripcionContenedor = document.createElement("div");
-        let categoriaContenedor = document.createElement("div");
-        let fechaContenedor = document.createElement("div");
-        let montoContenedor = document.createElement("div");
-        let accionesContenedor = document.createElement("div");
-
-        //dandole clase a cada columna
-        descripcionContenedor.classList.add("column", "is-3");
-        categoriaContenedor.classList.add("column", "is-3");
-        fechaContenedor.classList.add("column", "is-2", "has-text-grey");
-        montoContenedor.classList.add(
-            "column",
-            "is-2",
-            "has-text-right",
-            "has-text-weight-bold"
-        );
-        accionesContenedor.classList.add("column", "is-2");
-
-        //definir contenido de los divs
-        let descripcion = document.createElement("h3");
-        descripcion.innerText = operacion.descripcion;
-        descripcion.classList.add("has-text-weight-semibold");
-
-        //categoria
-        let categoria = document.createElement("span");
-        categoria.innerText = operacion.categoria;
-        categoria.classList.add("tag", "is-primary", "is-light");
-
-        //fecha
-        let fecha = document.createElement("span");
-        fecha.innerText = operacion.fecha;
-
-        //monto
-        let monto = document.createElement("span");
-        if (operacion.tipo === "Gasto") {
-            monto.style.color = "red";
-            monto.innerText = `-$${operacion.monto}`;
-        } else if (operacion.tipo === "Ganancia") {
-            monto.style.color = "green";
-            monto.innerText = `$${operacion.monto}`;
-        }
-
-        //acciones
-        let acciones = document.createElement("div");
-        //editar
-        let editar = document.createElement("a");
-        editar.innerText = "Editar";
-        editar.setAttribute("href", "#");
-        //eliminar
-        let eliminar = document.createElement("a");
-        eliminar.innerText = "Eliminar";
-        eliminar.setAttribute("href", "#");
-        eliminar.addEventListener("click", () => eliminarOperacion(indice));
-
-        acciones.appendChild(editar);
-        acciones.appendChild(eliminar);
-
-        //asignar divs
-        descripcionContenedor.appendChild(descripcion);
-        categoriaContenedor.appendChild(categoria);
-        fechaContenedor.appendChild(fecha);
-        montoContenedor.appendChild(monto);
-        accionesContenedor.appendChild(acciones);
-        liOperacion.appendChild(descripcionContenedor);
-        liOperacion.appendChild(categoriaContenedor);
-        liOperacion.appendChild(fechaContenedor);
-        liOperacion.appendChild(montoContenedor);
-        liOperacion.appendChild(accionesContenedor);
-        $("operaciones").appendChild(liOperacion);
+        $("operaciones").innerHTML += `<div class="columns">
+        <div class="column is-3">
+            <h3 class="has-text-weight-semibold">
+                ${operacion.descripcion}
+            </h3>
+        </div>
+        <div class="column is-3">
+            <span class="tag is-primary is-light">
+                ${operacion.categoria}
+            </span>
+        </div>
+        <div class="column is-2 has-text-right has-text-grey">
+            <span>
+                ${operacion.fecha}
+            </span>
+        </div>
+        <div class="column is-2 has-text-right has-text-weight-bold">
+            <span>
+                ${operacion.monto}
+            </span>
+        </div>
+        <div class="column is-2 is-size-7 has-text-right pt-4">
+            <a href="#">Editar</a>
+            <a href="#" class="ml-3">Eliminar</a>
+        </div>
+    </div>`;
     });
 };
 
@@ -203,3 +154,13 @@ const eliminarOperacion = (indice) => {
     info.operaciones.splice(indice, 1);
     mostrarOperaciones();
 };
+
+//  //monto
+//  let monto = document.createElement("span");
+//  if (operacion.tipo === "Gasto") {
+//      monto.style.color = "red";
+//      monto.innerText = `-$${operacion.monto}`;
+//  } else if (operacion.tipo === "Ganancia") {
+//      monto.style.color = "green";
+//      monto.innerText = `$${operacion.monto}`;
+//  }
