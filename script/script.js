@@ -151,9 +151,7 @@ const iterarOperaciones = () => {
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
             <a href="#">Editar</a>
-            <a href="#" class="ml-3" onclick='eliminarOperacion(
-                ${indice}
-            )'>Eliminar</a>
+            <a href="#" class="ml-3" onclick='eliminarOperacion(${indice})'>Eliminar</a>
         </div>
     </div>`;
     });
@@ -189,7 +187,3 @@ const eliminarOperacion = (indice) => {
     info.operaciones.splice(indice, 1);
     mostrarOperaciones();
 };
-
-// $$(".eliminar-link").forEach((boton) =>
-//     boton.addEventListener("click", () => eliminarOperacion(boton.id))
-// );
