@@ -89,6 +89,7 @@ const fechaElegida = () => {
 //Objeto operacion armado para luego pushearlo al array
 const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
     const operacion = {
+        id: randomId(),
         descripcion: descripcion,
         categoria: categoria,
         monto: monto,
@@ -150,17 +151,17 @@ const iterarOperaciones = () => {
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
             <a href="#">Editar</a>
-            <a href="#" class="ml-3">Eliminar</a>
+            <a href="#" class="ml-3" onclick='eliminarOperacion(
+                ${indice}
+            )'>Eliminar</a>
         </div>
     </div>`;
     });
 };
 
-//-------para eliminar una operacion
-const eliminarOperacion = (indice) => {
-    info.operaciones.splice(indice, 1);
-    mostrarOperaciones();
-};
+// ---------------
+// Funciones para cada operacion
+// ------------------
 
 //para el tipo del monto
 const tipoMonto = (monto, tipo) => {
@@ -182,3 +183,13 @@ const colorMonto = (tipo) => {
     }
     return color;
 };
+
+//-------para eliminar una operacion
+const eliminarOperacion = (indice) => {
+    info.operaciones.splice(indice, 1);
+    mostrarOperaciones();
+};
+
+// $$(".eliminar-link").forEach((boton) =>
+//     boton.addEventListener("click", () => eliminarOperacion(boton.id))
+// );
