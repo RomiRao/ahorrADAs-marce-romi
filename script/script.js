@@ -190,9 +190,6 @@ const eliminarOperacion = (indice) => {
 
 // ------------Funcionabilidad Categorias------------------
 
-// const categorias = ["Comida", "Servicios", "Salidas", "Educación", "Transporte", "Trabajo"];
-const randomId = () => self.crypto.randomUUID();
-
 let categorias = [
     {
         id: randomId(),
@@ -232,7 +229,7 @@ const crearLista = (listaDeCategorias) => {
                 <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
             </div>
         </li>`
-        const eliminarBtn = document.querySelectorAll(".eliminarBtn");
+        const eliminarBtn = $$(".eliminarBtn");
         eliminarBtn.forEach((btn) =>
             btn.addEventListener("click", () => {
                 let newArray = listaDeCategorias.filter((categoria) => categoria.id !== btn.id);
