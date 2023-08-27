@@ -237,6 +237,20 @@ const crearLista = (listaDeCategorias) => {
                 console.log(newArray);
             })
         );
+        $$(".editarBtn").forEach((btn) =>
+            btn.addEventListener("click", () => {
+                $("container-categorias").classList.add("is-hidden");
+                $("editar-categoria").classList.remove("is-hidden");
+                $("boton-editar").addEventListener("click", () => {
+                    //$("editar-categoria").classList.add("is-hidden");
+                    //$("container-categorias").classList.remove("is-hidden");
+                }); 
+                $("boton-cancelar").addEventListener("click", () => {
+                    $("editar-categoria").classList.add("is-hidden");
+                    $("container-categorias").classList.remove("is-hidden");
+                });
+            })
+            )
     }
 }
 
