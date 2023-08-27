@@ -243,6 +243,22 @@ const crearLista = (listaDeCategorias) => {
                 categorias = categorias.filter((categoria) => categoria.id !== btn.id);
                 crearLista(categorias)
             }))
+            $$(".editarBtn").forEach((btn) => btn.addEventListener("click", () => {
+                $("editar-categoria").classList.remove("is-hidden");
+                $("container-categorias").classList.add("is-hidden");
+                $("boton-editar").addEventListener("click", () => {
+                    let nuevoNombre = $("input-editar").value;
+                    categoria.nombre = nuevoNombre
+                    crearLista(categorias)
+                    console.log(categorias)
+                    $("editar-categoria").classList.add("is-hidden");
+                    $("container-categorias").classList.remove("is-hidden");
+                })
+            }))
+            $("boton-cancelar").addEventListener("click", () => {
+                $("editar-categoria").classList.add("is-hidden");
+                $("container-categorias").classList.remove("is-hidden");
+            })
     })
 }
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria)
