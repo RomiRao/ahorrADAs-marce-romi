@@ -217,27 +217,34 @@ let categorias = [
     }
 ]
 
+//-----Agregar nueva Categoria
+const agregarCategoria = () => {
+    let nuevoObj = {
+        id: randomId(),
+        nombre: $("input-nueva-categoria").value
+    }
+    categorias.push(nuevoObj)
+    crearLista(categorias)
+}
+
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
-    for (let categoria of listaDeCategorias){
+    listaDeCategorias.forEach((categoria) => {
         $("lista-categorias").innerHTML += `
         <li  class="is-flex is-justify-content-space-between">
             <span class="tag is-primary is-light mb-5">${categoria.nombre}</span>
             <div class="has-text-right">
-                <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
-                <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
+            <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
+            <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
             </div>
-        </li>`
-        const eliminarBtn = $$(".eliminarBtn");
-        eliminarBtn.forEach((btn) =>
-            btn.addEventListener("click", () => {
-                let newArray = listaDeCategorias.filter((categoria) => categoria.id !== btn.id);
-                crearLista(newArray);
-                console.log(newArray);
-            })
-        );
-    }
+            </li>`
+            $$(".eliminarBtn").forEach((btn) => btn.addEventListener("click", () => {
+                categorias = categorias.filter((categoria) => categoria.id !== btn.id);
+                crearLista(categorias)
+            }))
+    })
 }
+$("boton-agregar-categoria").addEventListener("click", agregarCategoria)
 
 crearLista(categorias);
