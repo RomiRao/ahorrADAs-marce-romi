@@ -217,6 +217,16 @@ let categorias = [
     }
 ]
 
+//-----Agregar nueva Categoria
+const agregarCategoria = () => {
+    let nuevoObj = {
+        id: randomId(),
+        nombre: $("input-nueva-categoria").value
+    }
+    categorias.push(nuevoObj)
+    crearLista(categorias)
+}
+$("boton-agregar-categoria").addEventListener("click", () => agregarCategoria())
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
@@ -241,3 +251,14 @@ const crearLista = (listaDeCategorias) => {
 }
 
 crearLista(categorias);
+
+
+
+
+
+
+
+
+
+
+
