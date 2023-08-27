@@ -241,7 +241,7 @@
             ****************************************** -->
 
 <section class="section is-hidden" id="seccion-categorias">
-    <div class="container box categorias is-max-desktop">
+    <div class="container box categorias is-max-desktop" id="container-categorias">
         <h2 class="title is-2 has-text-weight-bold">Categorías</h2>
         <form>
             <div class="field my-6">
@@ -254,7 +254,7 @@
             <ul id="lista-categorias"></ul>
         </form>
     </div>
-    <section class="section">
+    <section class="section is-hidden" id="editar-categoria">
         <div class="container">
             <div class="container is-max-desktop">
                 <div class="box">
@@ -262,10 +262,10 @@
                     <form>
                         <div class="field mt-6">
                             <label class="label">Nombre</label>
-                            <input class="input mb-6" type="text">
+                            <input class="input mb-6" type="text" id="input-editar">
                             <div class="is-flex is-justify-content-flex-end">
-                                <button class="button mr-2 is-light">Cancelar</button>
-                                <button class="button is-success">Editar</button>
+                                <button class="button mr-2 is-light" id="boton-cancelar">Cancelar</button>
+                                <button class="button is-success" id="boton-editar">Editar</button>
                             </div>
                         </div>
                     </form>
