@@ -223,7 +223,7 @@ const crearLista = (listaDeCategorias) => {
     for (let categoria of listaDeCategorias){
         $("lista-categorias").innerHTML += `
         <li  class="is-flex is-justify-content-space-between">
-            <span class="tag is-primary is-light">${categoria.nombre}</span>
+            <span class="tag is-primary is-light mb-5">${categoria.nombre}</span>
             <div class="has-text-right">
                 <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
                 <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
