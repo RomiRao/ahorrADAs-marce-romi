@@ -150,8 +150,8 @@ const iterarOperaciones = () => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a href="#">Editar</a>
-            <a href="#" class="ml-3" onclick='eliminarOperacion(${indice})'>Eliminar</a>
+            <a id='${operacion.id}' href="#">Editar</a>
+            <a id='${operacion.id}' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
     });
@@ -193,40 +193,39 @@ const eliminarOperacion = (indice) => {
 let categorias = [
     {
         id: randomId(),
-        nombre: "Comida"
+        nombre: "Comida",
     },
     {
         id: randomId(),
-        nombre: "Servicios"
+        nombre: "Servicios",
     },
     {
         id: randomId(),
-        nombre: "Salidas"
+        nombre: "Salidas",
     },
     {
         id: randomId(),
-        nombre: "Educación"
+        nombre: "Educación",
     },
     {
         id: randomId(),
-        nombre: "Transporte"
+        nombre: "Transporte",
     },
     {
         id: randomId(),
-        nombre: "Trabajo"
-    }
-]
+        nombre: "Trabajo",
+    },
+];
 
 //-----Agregar nueva Categoria
 const agregarCategoria = () => {
     let nuevoObj = {
         id: randomId(),
-        nombre: $("input-nueva-categoria").value
-    }
-    categorias.push(nuevoObj)
-    crearLista(categorias)
-}
-
+        nombre: $("input-nueva-categoria").value,
+    };
+    categorias.push(nuevoObj);
+    crearLista(categorias);
+};
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
@@ -238,13 +237,17 @@ const crearLista = (listaDeCategorias) => {
             <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
             <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
             </div>
-            </li>`
-            $$(".eliminarBtn").forEach((btn) => btn.addEventListener("click", () => {
-                categorias = categorias.filter((categoria) => categoria.id !== btn.id);
-                crearLista(categorias)
-            }))
-    })
-}
-$("boton-agregar-categoria").addEventListener("click", agregarCategoria)
+            </li>`;
+        $$(".eliminarBtn").forEach((btn) =>
+            btn.addEventListener("click", () => {
+                categorias = categorias.filter(
+                    (categoria) => categoria.id !== btn.id
+                );
+                crearLista(categorias);
+            })
+        );
+    });
+};
+$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
 crearLista(categorias);
