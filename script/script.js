@@ -3,7 +3,7 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-const operaciones = [];
+let operaciones = [];
 
 //Definiendo fecha actual
 window.onload = () => {
@@ -156,6 +156,14 @@ const iterarOperaciones = (listaOperaciones) => {
             }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
+        $$(".eliminar-link").forEach((boton) =>
+            boton.addEventListener("click", () => {
+                operaciones = operaciones.filter(
+                    (operacion) => operacion.id !== boton.id
+                );
+                mostrarOperaciones(operaciones);
+            })
+        );
     });
 };
 
@@ -185,12 +193,6 @@ const colorMonto = (tipo) => {
 };
 
 //-------para eliminar una operacion
-const eliminarOperacion = (btn) => {
-    operaciones.filter((operacion) => operacion.id !== btn.id);
-    mostrarOperaciones();
-};
-
-$$(".eliminar-link").addEventListener("click", (btn) => eliminarOperacion(btn));
 
 // ------------Funcionabilidad Categorias------------------
 
