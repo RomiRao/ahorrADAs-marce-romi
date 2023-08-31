@@ -3,6 +3,7 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+//Para definir datos a nivel local
 const actualizarInfo = (clave, datos) => {
     localStorage.setItem(clave, JSON.stringify(datos));
 };
@@ -73,7 +74,6 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-//agregar operacion al array de operaciones
 const agregarOperacion = (objeto) => {
     operaciones.push(objeto);
     mostrarOperaciones(operaciones);
@@ -104,7 +104,6 @@ const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
     agregarOperacion(operacion);
 };
 
-//agregar operacion
 $("agregar-btn").addEventListener("click", () =>
     armarOperacion(
         $("descripcion").value,
@@ -122,6 +121,7 @@ const mostrarOperaciones = (operaciones) => {
     $("operaciones").classList.remove("is-hidden");
     $("sin-operaciones").classList.add("is-hidden");
     $("operaciones").innerHTML = "";
+    noHayOperaciones();
     iterarOperaciones(operaciones);
 };
 
@@ -175,11 +175,6 @@ const iterarOperaciones = (listaOperaciones) => {
     actualizarInfo("operaciones", operaciones);
 };
 
-// ---------------
-// Funciones para cada operacion
-// ------------------
-
-//para el tipo del monto
 const tipoMonto = (monto, tipo) => {
     if (tipo === "Gasto") {
         monto = `-$${monto}`;
@@ -189,7 +184,6 @@ const tipoMonto = (monto, tipo) => {
     return monto;
 };
 
-//para el color del monto
 const colorMonto = (tipo) => {
     let color;
     if (tipo === "Gasto") {
@@ -203,6 +197,15 @@ const colorMonto = (tipo) => {
 //-------para editar una operacion
 
 const editarOperacion = (idBtn) => {};
+
+//para cuando no hay operaciones mostrar ilustracion
+const noHayOperaciones = () => {
+    if (($("operaciones").innerHTML = "")) {
+        $("ver-operaciones").classList.add("is-hidden");
+        $("operaciones").classList.add("is-hidden");
+        $("sin-operaciones").classList.remove("is-hidden");
+    }
+};
 
 // ------------Funcionabilidad Categorias------------------
 
