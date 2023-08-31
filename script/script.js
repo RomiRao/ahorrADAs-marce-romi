@@ -3,6 +3,8 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+const operaciones = [];
+
 //Definiendo fecha actual
 window.onload = () => {
     let fechaHoy = new Date();
@@ -67,11 +69,9 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-const info = { operaciones: [], categorias: [] };
-
 //agregar operacion al array de operaciones
 const agregarOperacion = (objeto) => {
-    info.operaciones.push(objeto);
+    operaciones.push(objeto);
     mostrarOperaciones();
 };
 
@@ -123,7 +123,7 @@ const mostrarOperaciones = () => {
 
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = () => {
-    info.operaciones.forEach((operacion, indice) => {
+    operaciones.forEach((operacion, indice) => {
         const monto = tipoMonto(operacion.monto, operacion.tipo);
 
         $("operaciones").innerHTML += `<div class="columns">
@@ -150,8 +150,10 @@ const iterarOperaciones = () => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id='${operacion.id}' href="#">Editar</a>
-            <a id='${operacion.id}' href="#" class="ml-3">Eliminar</a>
+            <a id='${operacion.id}' class='editar-link' href="#">Editar</a>
+            <a id='${
+                operacion.id
+            }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
     });
@@ -183,10 +185,12 @@ const colorMonto = (tipo) => {
 };
 
 //-------para eliminar una operacion
-const eliminarOperacion = (indice) => {
-    info.operaciones.splice(indice, 1);
+const eliminarOperacion = (btn) => {
+    info.operaciones.filter((operacion) => operacion.id !== btn.id);
     mostrarOperaciones();
 };
+
+$$(".eliminar-link").addEventListener("click", (btn) => eliminarOperacion(btn));
 
 // ------------Funcionabilidad Categorias------------------
 
