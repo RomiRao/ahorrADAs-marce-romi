@@ -217,6 +217,17 @@ let categorias = [
     }
 ]
 
+//Mostrar options de los select (categorias)
+
+const mostrarOpciones = (categorias) => {
+    $$(".select-categorias").forEach((select) => {
+        for (let {id , nombre} of categorias) {
+            select.innerHTML += `<option value="${id}">${nombre}</option>`
+        }
+    })
+}
+mostrarOpciones(categorias)
+
 //-----Agregar nueva Categoria
 const agregarCategoria = () => {
     let nuevoObj = {
