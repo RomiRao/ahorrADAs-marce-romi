@@ -3,7 +3,11 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-let operaciones = [];
+const actualizarInfo = (clave, datos) => {
+    localStorage.setItem(clave, JSON.stringify(datos));
+};
+
+let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
 
 //Definiendo fecha actual
 window.onload = () => {
@@ -164,7 +168,11 @@ const iterarOperaciones = (listaOperaciones) => {
                 mostrarOperaciones(operaciones);
             })
         );
+        $$(".editar-link").forEach((boton) =>
+            boton.addEventListener("click", () => editarOperacion(boton.id))
+        );
     });
+    actualizarInfo("operaciones", operaciones);
 };
 
 // ---------------
@@ -192,7 +200,9 @@ const colorMonto = (tipo) => {
     return color;
 };
 
-//-------para eliminar una operacion
+//-------para editar una operacion
+
+const editarOperacion = (idBtn) => {};
 
 // ------------Funcionabilidad Categorias------------------
 
@@ -257,3 +267,4 @@ const crearLista = (listaDeCategorias) => {
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
 crearLista(categorias);
+mostrarOperaciones(operaciones);
