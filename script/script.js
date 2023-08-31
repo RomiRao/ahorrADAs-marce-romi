@@ -72,7 +72,7 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 //agregar operacion al array de operaciones
 const agregarOperacion = (objeto) => {
     operaciones.push(objeto);
-    mostrarOperaciones();
+    mostrarOperaciones(operaciones);
 };
 
 //definiendo el valor del input fecha
@@ -113,17 +113,17 @@ $("agregar-btn").addEventListener("click", () =>
 //----------------
 
 //Funcion para mostrar la lista de operaciones en la seccion balance
-const mostrarOperaciones = () => {
+const mostrarOperaciones = (operaciones) => {
     $("ver-operaciones").classList.remove("is-hidden");
     $("operaciones").classList.remove("is-hidden");
     $("sin-operaciones").classList.add("is-hidden");
     $("operaciones").innerHTML = "";
-    iterarOperaciones();
+    iterarOperaciones(operaciones);
 };
 
 //recorre el array de operaciones para crear los elementos de la lista
-const iterarOperaciones = () => {
-    operaciones.forEach((operacion, indice) => {
+const iterarOperaciones = (listaOperaciones) => {
+    listaOperaciones.forEach((operacion, indice) => {
         const monto = tipoMonto(operacion.monto, operacion.tipo);
 
         $("operaciones").innerHTML += `<div class="columns">
@@ -186,7 +186,7 @@ const colorMonto = (tipo) => {
 
 //-------para eliminar una operacion
 const eliminarOperacion = (btn) => {
-    info.operaciones.filter((operacion) => operacion.id !== btn.id);
+    operaciones.filter((operacion) => operacion.id !== btn.id);
     mostrarOperaciones();
 };
 
