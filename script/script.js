@@ -3,6 +3,13 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+//Para definir datos a nivel local
+const actualizarInfo = (clave, datos) => {
+    localStorage.setItem(clave, JSON.stringify(datos));
+};
+
+let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
+
 //Definiendo fecha actual
 window.onload = () => {
     let fechaHoy = new Date();
@@ -67,12 +74,9 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-const info = { operaciones: [], categorias: [] };
-
-//agregar operacion al array de operaciones
 const agregarOperacion = (objeto) => {
-    info.operaciones.push(objeto);
-    mostrarOperaciones();
+    operaciones.push(objeto);
+    mostrarOperaciones(operaciones);
 };
 
 //definiendo el valor del input fecha
@@ -100,7 +104,6 @@ const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
     agregarOperacion(operacion);
 };
 
-//agregar operacion
 $("agregar-btn").addEventListener("click", () =>
     armarOperacion(
         $("descripcion").value,
@@ -113,17 +116,14 @@ $("agregar-btn").addEventListener("click", () =>
 //----------------
 
 //Funcion para mostrar la lista de operaciones en la seccion balance
-const mostrarOperaciones = () => {
-    $("ver-operaciones").classList.remove("is-hidden");
-    $("operaciones").classList.remove("is-hidden");
-    $("sin-operaciones").classList.add("is-hidden");
+const mostrarOperaciones = (operaciones) => {
     $("operaciones").innerHTML = "";
-    iterarOperaciones();
+    iterarOperaciones(operaciones);
 };
 
 //recorre el array de operaciones para crear los elementos de la lista
-const iterarOperaciones = () => {
-    info.operaciones.forEach((operacion, indice) => {
+const iterarOperaciones = (listaOperaciones) => {
+    listaOperaciones.forEach((operacion) => {
         const monto = tipoMonto(operacion.monto, operacion.tipo);
 
         $("operaciones").innerHTML += `<div class="columns">
@@ -150,18 +150,28 @@ const iterarOperaciones = () => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a href="#">Editar</a>
-            <a href="#" class="ml-3" onclick='eliminarOperacion(${indice})'>Eliminar</a>
+            <a id='${operacion.id}' class='editar-link' href="#">Editar</a>
+            <a id='${
+                operacion.id
+            }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
+        $$(".eliminar-link").forEach((boton) =>
+            boton.addEventListener("click", () => {
+                operaciones = operaciones.filter(
+                    (operacion) => operacion.id !== boton.id
+                );
+                mostrarOperaciones(operaciones);
+            })
+        );
+        $$(".editar-link").forEach((boton) =>
+            boton.addEventListener("click", () => editarOperacion(boton.id))
+        );
     });
+    actualizarInfo("operaciones", operaciones);
+    noHayOperaciones();
 };
 
-// ---------------
-// Funciones para cada operacion
-// ------------------
-
-//para el tipo del monto
 const tipoMonto = (monto, tipo) => {
     if (tipo === "Gasto") {
         monto = `-$${monto}`;
@@ -171,7 +181,6 @@ const tipoMonto = (monto, tipo) => {
     return monto;
 };
 
-//para el color del monto
 const colorMonto = (tipo) => {
     let color;
     if (tipo === "Gasto") {
@@ -182,10 +191,21 @@ const colorMonto = (tipo) => {
     return color;
 };
 
-//-------para eliminar una operacion
-const eliminarOperacion = (indice) => {
-    info.operaciones.splice(indice, 1);
-    mostrarOperaciones();
+//-------para editar una operacion
+
+const editarOperacion = (idBtn) => {};
+
+//para cuando no hay operaciones mostrar ilustracion
+const noHayOperaciones = () => {
+    if ($("operaciones").innerHTML === "") {
+        $("ver-operaciones").classList.add("is-hidden");
+        $("operaciones").classList.add("is-hidden");
+        $("sin-operaciones").classList.remove("is-hidden");
+    } else {
+        $("ver-operaciones").classList.remove("is-hidden");
+        $("operaciones").classList.remove("is-hidden");
+        $("sin-operaciones").classList.add("is-hidden");
+    }
 };
 
 // ------------Funcionabilidad Categorias------------------
@@ -193,40 +213,39 @@ const eliminarOperacion = (indice) => {
 let categorias = [
     {
         id: randomId(),
-        nombre: "Comida"
+        nombre: "Comida",
     },
     {
         id: randomId(),
-        nombre: "Servicios"
+        nombre: "Servicios",
     },
     {
         id: randomId(),
-        nombre: "Salidas"
+        nombre: "Salidas",
     },
     {
         id: randomId(),
-        nombre: "Educación"
+        nombre: "Educación",
     },
     {
         id: randomId(),
-        nombre: "Transporte"
+        nombre: "Transporte",
     },
     {
         id: randomId(),
-        nombre: "Trabajo"
-    }
-]
+        nombre: "Trabajo",
+    },
+];
 
 //-----Agregar nueva Categoria
 const agregarCategoria = () => {
     let nuevoObj = {
         id: randomId(),
-        nombre: $("input-nueva-categoria").value
-    }
-    categorias.push(nuevoObj)
-    crearLista(categorias)
-}
-
+        nombre: $("input-nueva-categoria").value,
+    };
+    categorias.push(nuevoObj);
+    crearLista(categorias);
+};
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
@@ -238,13 +257,18 @@ const crearLista = (listaDeCategorias) => {
             <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
             <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
             </div>
-            </li>`
-            $$(".eliminarBtn").forEach((btn) => btn.addEventListener("click", () => {
-                categorias = categorias.filter((categoria) => categoria.id !== btn.id);
-                crearLista(categorias)
-            }))
-    })
-}
-$("boton-agregar-categoria").addEventListener("click", agregarCategoria)
+            </li>`;
+        $$(".eliminarBtn").forEach((btn) =>
+            btn.addEventListener("click", () => {
+                categorias = categorias.filter(
+                    (categoria) => categoria.id !== btn.id
+                );
+                crearLista(categorias);
+            })
+        );
+    });
+};
+$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
 crearLista(categorias);
+mostrarOperaciones(operaciones);
