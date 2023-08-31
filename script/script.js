@@ -117,17 +117,13 @@ $("agregar-btn").addEventListener("click", () =>
 
 //Funcion para mostrar la lista de operaciones en la seccion balance
 const mostrarOperaciones = (operaciones) => {
-    $("ver-operaciones").classList.remove("is-hidden");
-    $("operaciones").classList.remove("is-hidden");
-    $("sin-operaciones").classList.add("is-hidden");
     $("operaciones").innerHTML = "";
-    noHayOperaciones();
     iterarOperaciones(operaciones);
 };
 
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = (listaOperaciones) => {
-    listaOperaciones.forEach((operacion, indice) => {
+    listaOperaciones.forEach((operacion) => {
         const monto = tipoMonto(operacion.monto, operacion.tipo);
 
         $("operaciones").innerHTML += `<div class="columns">
@@ -173,6 +169,7 @@ const iterarOperaciones = (listaOperaciones) => {
         );
     });
     actualizarInfo("operaciones", operaciones);
+    noHayOperaciones();
 };
 
 const tipoMonto = (monto, tipo) => {
@@ -200,10 +197,14 @@ const editarOperacion = (idBtn) => {};
 
 //para cuando no hay operaciones mostrar ilustracion
 const noHayOperaciones = () => {
-    if (($("operaciones").innerHTML = "")) {
+    if ($("operaciones").innerHTML === "") {
         $("ver-operaciones").classList.add("is-hidden");
         $("operaciones").classList.add("is-hidden");
         $("sin-operaciones").classList.remove("is-hidden");
+    } else {
+        $("ver-operaciones").classList.remove("is-hidden");
+        $("operaciones").classList.remove("is-hidden");
+        $("sin-operaciones").classList.add("is-hidden");
     }
 };
 
