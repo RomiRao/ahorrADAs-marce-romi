@@ -62,6 +62,11 @@ $("burger").addEventListener("click", () => {
 // SECCION BALANCE
 // ----------------------
 
+//Ocultar filtros
+$("ocultar-filtros").addEventListener("click", () => {
+    $("filtros").classList.toggle("is-hidden")
+})
+
 //Abre card de nueva operacion
 const abrirNuevaOperacion = () => {
     $("seccion-balance").classList.add("is-hidden");
