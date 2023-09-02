@@ -248,7 +248,7 @@ const agregarCategoria = () => {
     let listaActualizada = [...categorias, nuevoObj];
     crearLista(listaActualizada);
 };
-$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
+$("boton-agregar-categoria").addEventListener("click", () => agregarCategoria);
 
 //------Crear lista Categorias
 
@@ -259,7 +259,7 @@ const crearLista = (listaDeCategorias) => {
         <li class="is-flex is-justify-content-space-between">
             <span class="tag is-primary is-light mb-5">${nombre}</span>
         <div class="has-text-right">
-            <button id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
+            <button onclick="mostrarEditarCategoria('${id}')" id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
             <button id="${id}" class="button is-ghost is-size-7 eliminarBtn">Eliminar</button>
         </div>
         </li>`;
@@ -271,7 +271,12 @@ const obtenerCategoria = (idCategoria, categorias) => {
     return categorias.find((categoria) => categoria.id === idCategoria);
 };
 
-
+//----Mostrar vista editar categoria
+const mostrarEditarCategoria = (id) => {
+    $("container-categorias").classList.remove("is-hidden");
+    let categoriaAEditar = obtenerCategoria(id, categorias);
+    categoriaAEditar.nombre = $("input-editar").value;
+}
 
 crearLista(categorias);
 mostrarOperaciones(operaciones);
