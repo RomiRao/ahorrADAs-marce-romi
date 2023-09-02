@@ -254,7 +254,7 @@ const crearLista = (listaDeCategorias) => {
             <span class="tag is-primary is-light mb-5">${nombre}</span>
         <div class="has-text-right">
             <button onclick="mostrarEditarCategoria('${id}')" id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
-            <button id="${id}" class="button is-ghost is-size-7 eliminarBtn">Eliminar</button>
+            <button onclick="eliminarCategoria('${id}')" id="${id}" class="button is-ghost is-size-7 eliminarBtn">Eliminar</button>
         </div>
         </li>`;
     }
@@ -321,6 +321,12 @@ const editarCategoria = (id) => {
     );
     crearLista(categoriasActualizadas);
     mostrarOpciones(categoriasActualizadas);
+}
+
+const eliminarCategoria = (id) => {
+    categorias = categorias.filter((categoria) => categoria.id !== id);
+    crearLista(categorias)
+    mostrarOpciones(categorias)
 }
 
 crearLista(categorias);
