@@ -81,7 +81,7 @@ const agregarOperacion = (objeto) => {
 
 //definiendo el valor del input fecha
 const fechaElegida = () => {
-    operacionFecha = new Date($("fecha").value);
+    let operacionFecha = new Date($("fecha").value);
     let mes = operacionFecha.getMonth() + 1;
     let dia = operacionFecha.getDate();
     let anio = operacionFecha.getFullYear();
@@ -164,9 +164,9 @@ const iterarOperaciones = (listaOperaciones) => {
                 mostrarOperaciones(operaciones);
             })
         );
-        $$(".editar-link").forEach((boton) =>
-            boton.addEventListener("click", () => editarOperacion(boton.id))
-        );
+        // $$(".editar-link").forEach((boton) =>
+        //     boton.addEventListener("click", () => editarOperacion(boton.id))
+        // );
     });
     actualizarInfo("operaciones", operaciones);
     noHayOperaciones();
@@ -238,17 +238,7 @@ let categorias = [
 ];
 
 
-//-----Agregar nueva Categoria
 
-const agregarCategoria = () => {
-    let nuevoObj = {
-        id: randomId(),
-        nombre: $("input-nueva-categoria").value,
-    };
-    let listaActualizada = [...categorias, nuevoObj];
-    crearLista(listaActualizada);
-};
-$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
 //------Crear lista Categorias
 
@@ -259,19 +249,59 @@ const crearLista = (listaDeCategorias) => {
         <li class="is-flex is-justify-content-space-between">
             <span class="tag is-primary is-light mb-5">${nombre}</span>
         <div class="has-text-right">
-            <button id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
+            <button onclick="mostrarEditarCategoria('${id}')" id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
             <button id="${id}" class="button is-ghost is-size-7 eliminarBtn">Eliminar</button>
         </div>
         </li>`;
     }
 };
 
+mostrarOperaciones(operaciones);
+
+//-----Agregar nueva Categoria
+
+const agregarCategoria = () => {
+    let nuevoObj = {
+        id: randomId(),
+        nombre: $("input-nueva-categoria").value,
+    };
+    let listaActualizada = [...categorias, nuevoObj];
+    crearLista(listaActualizada);
+};
+
+$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
+
 //----Obtener categoria
 const obtenerCategoria = (idCategoria, categorias) => {
     return categorias.find((categoria) => categoria.id === idCategoria);
 };
 
+//----Mostrar vista editar categoria
+const mostrarEditarCategoria = (id) => {
+    $("container-categorias").classList.add("is-hidden");
+    $("editar-categoria").classList.remove("is-hidden");
+    let categoriaAEditar = obtenerCategoria(id, categorias);
+    $("input-editar").value = categoriaAEditar.nombre;
+    $("boton-editar").addEventListener("click", () => editarCategoria(categoriaAEditar.id))
+    ocultarEditarCategoria()
+}
 
+const ocultarEditarCategoria = () => {
+    $("boton-cancelar").addEventListener("click", () => {
+        $("container-categorias").classList.remove("is-hidden");
+        $("editar-categoria").classList.add("is-hidden");
+    })
+}
+
+const editarCategoria = (id) => {
+    let nuevaCategoria = {
+        id: id,
+        nombre: $("input-editar").value
+    }
+    let categoriasActualizadas = categorias.map((categoria) =>
+    categoria.id === id ? { ...nuevaCategoria } : categoria
+    );
+    crearLista(categoriasActualizadas);
+}
 
 crearLista(categorias);
-mostrarOperaciones(operaciones);
