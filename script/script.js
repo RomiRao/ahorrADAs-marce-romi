@@ -193,7 +193,7 @@ const colorMonto = (tipo) => {
 
 //-------para editar una operacion
 
-const editarOperacion = (idBtn) => {};
+//const editarOperacion = (idBtn) => {};
 
 //para cuando no hay operaciones mostrar ilustracion
 const noHayOperaciones = () => {
@@ -237,38 +237,36 @@ let categorias = [
     },
 ];
 
+
 //-----Agregar nueva Categoria
+
 const agregarCategoria = () => {
     let nuevoObj = {
         id: randomId(),
         nombre: $("input-nueva-categoria").value,
     };
-    categorias.push(nuevoObj);
-    crearLista(categorias);
+    let listaActualizada = [...categorias, nuevoObj];
+    crearLista(listaActualizada);
 };
+$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
+
+//------Crear lista Categorias
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
-    listaDeCategorias.forEach((categoria) => {
+    for (let { nombre, id } of listaDeCategorias) {
         $("lista-categorias").innerHTML += `
-        <li  class="is-flex is-justify-content-space-between">
-            <span class="tag is-primary is-light mb-5">${categoria.nombre}</span>
-            <div class="has-text-right">
-            <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
-            <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
-            </div>
-            </li>`;
-        $$(".eliminarBtn").forEach((btn) =>
-            btn.addEventListener("click", () => {
-                categorias = categorias.filter(
-                    (categoria) => categoria.id !== btn.id
-                );
-                crearLista(categorias);
-            })
-        );
-    });
+        <li class="is-flex is-justify-content-space-between">
+            <span class="tag is-primary is-light mb-5">${nombre}</span>
+        <div class="has-text-right">
+            <button id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
+            <button id="${id}" class="button is-ghost is-size-7 eliminarBtn">Eliminar</button>
+        </div>
+        </li>`;
+    }
 };
-$("boton-agregar-categoria").addEventListener("click", agregarCategoria);
+
+
 
 crearLista(categorias);
 mostrarOperaciones(operaciones);
