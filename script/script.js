@@ -27,29 +27,25 @@ window.onload = () => {
 // ***************
 //Cambio de seccion
 
-//Mostrar seccion balance
-$("navbar-balance").addEventListener("click", () => {
-    $("seccion-balance").classList.remove("is-hidden");
-    $("nueva-operacion").classList.add("is-hidden");
-    $("seccion-categorias").classList.add("is-hidden");
-    $("seccion-reportes").classList.add("is-hidden");
-});
+const mostrarVista = (vistaAMostrar) => {
+    $$(".vista").forEach((vista) => {
+        vista.classList.add("is-hidden");
+        $(`${vistaAMostrar}`).classList.remove("is-hidden");
+    })
+}
 
-//Mostrar seccion categorias
-$("navbar-categorias").addEventListener("click", () => {
-    $("seccion-balance").classList.add("is-hidden");
-    $("nueva-operacion").classList.add("is-hidden");
-    $("seccion-categorias").classList.remove("is-hidden");
-    $("seccion-reportes").classList.add("is-hidden");
-});
-
-//Mostrar seccion reportes
-$("navbar-reportes").addEventListener("click", () => {
-    $("seccion-balance").classList.add("is-hidden");
-    $("nueva-operacion").classList.add("is-hidden");
-    $("seccion-categorias").classList.add("is-hidden");
-    $("seccion-reportes").classList.remove("is-hidden");
-});
+$("navbar-balance").addEventListener("click", () =>
+    mostrarVista("seccion-balance")
+);
+$("navbar-categorias").addEventListener("click", () =>
+    mostrarVista("seccion-categorias")
+);
+$("nueva-operacion-btn").addEventListener("click", () =>
+mostrarVista("nueva-operacion")
+);
+$("navbar-reportes").addEventListener("click", () =>
+    mostrarVista("seccion-reportes")
+);
 
 //Menu hamburguesa
 
@@ -156,8 +152,7 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
             <a id='${operacion.id}' class='editar-link' href="#">Editar</a>
-            <a id='${
-                operacion.id
+            <a id='${operacion.id
             }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
@@ -271,7 +266,7 @@ mostrarOperaciones(operaciones);
 const mostrarOpciones = (categorias) => {
     $$(".select-categorias").forEach((select) => {
         select.innerHTML = `<option value="Todas">Todas</option>`;
-        for (let {id , nombre} of categorias) {
+        for (let { id, nombre } of categorias) {
             select.innerHTML += `<option value="${id}">${nombre}</option>`
         }
     })
@@ -322,7 +317,7 @@ const editarCategoria = (id) => {
         nombre: $("input-editar").value
     }
     let categoriasActualizadas = categorias.map((categoria) =>
-    categoria.id === id ? { ...nuevaCategoria } : categoria
+        categoria.id === id ? { ...nuevaCategoria } : categoria
     );
     crearLista(categoriasActualizadas);
     mostrarOpciones(categoriasActualizadas);
