@@ -242,6 +242,10 @@ let categorias = [
 
 //------Crear lista Categorias
 
+//Mostrar options de los select (categorias)
+
+
+
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
     for (let { nombre, id } of listaDeCategorias) {
@@ -258,6 +262,17 @@ const crearLista = (listaDeCategorias) => {
 
 mostrarOperaciones(operaciones);
 
+//----Mostrar opciones del select
+const mostrarOpciones = (categorias) => {
+    $$(".select-categorias").forEach((select) => {
+        select.innerHTML = `<option value="Todas">Todas</option>`;
+        for (let {id , nombre} of categorias) {
+            select.innerHTML += `<option value="${id}">${nombre}</option>`
+        }
+    })
+}
+mostrarOpciones(categorias)
+
 //-----Agregar nueva Categoria
 
 const agregarCategoria = () => {
@@ -267,9 +282,12 @@ const agregarCategoria = () => {
     };
     let listaActualizada = [...categorias, nuevoObj];
     crearLista(listaActualizada);
+    mostrarOpciones(listaActualizada);
 };
 
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
+
+
 
 //----Obtener categoria
 const obtenerCategoria = (idCategoria, categorias) => {
@@ -302,6 +320,7 @@ const editarCategoria = (id) => {
     categoria.id === id ? { ...nuevaCategoria } : categoria
     );
     crearLista(categoriasActualizadas);
+    mostrarOpciones(categoriasActualizadas);
 }
 
 crearLista(categorias);
