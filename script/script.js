@@ -156,21 +156,24 @@ const iterarOperaciones = (listaOperaciones) => {
             }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
-        $$(".eliminar-link").forEach((boton) =>
-            boton.addEventListener("click", () => {
-                operaciones = operaciones.filter(
-                    (operacion) => operacion.id !== boton.id
-                );
-                mostrarOperaciones(operaciones);
-            })
-        );
+
         $$(".editar-link").forEach((boton) =>
             boton.addEventListener("click", () => editarOperacion(boton.id))
         );
     });
-    actualizarInfo("operaciones", operaciones);
+    actualizarInfo("operaciones", listaOperaciones);
     noHayOperaciones();
 };
+
+$$(".eliminar-link").forEach((btn) =>
+    btn.addEventListener("click", () => {
+        console.log("asdasd");
+        let nuevaListaOperaciones = operaciones.filter(
+            (operacion) => operacion.id !== btn.id
+        );
+        mostrarOperaciones(nuevaListaOperaciones);
+    })
+);
 
 const tipoMonto = (monto, tipo) => {
     if (tipo === "Gasto") {
@@ -190,10 +193,6 @@ const colorMonto = (tipo) => {
     }
     return color;
 };
-
-//-------para editar una operacion
-
-const editarOperacion = (idBtn) => {};
 
 //para cuando no hay operaciones mostrar ilustracion
 const noHayOperaciones = () => {
