@@ -266,6 +266,11 @@ const crearLista = (listaDeCategorias) => {
     }
 };
 
+//----Obtener categoria
+const obtenerCategoria = (idCategoria, categorias) => {
+    return categorias.find((categoria) => categoria.id === idCategoria);
+};
+
 
 
 crearLista(categorias);
