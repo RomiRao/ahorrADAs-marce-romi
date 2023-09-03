@@ -57,7 +57,7 @@
             ---------------------BALANCE---------------------
             ****************************************** -->
 
-    <section class="section columns" id="seccion-balance">
+    <section class="section columns vista" id="seccion-balance">
 
             <div class="container is-max-widescreen">
                 <div class="container columns">
@@ -87,55 +87,51 @@
                                     <h3 class="title is-4 has-text-weight-bold">Filtros</h3>
                                 </div>
                                 <div class="column has-text-right">
-                                    <a href="#">Ocultar filtros</a>
+                                    <button class="button is-ghost" id="ocultar-filtros">Ocultar filtros</button>
                                 </div>
                             </div>
-                            <div class="field">
-                                <label class="label">Tipo</label>
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select>
-                                            <option value="Todos">Todos</option>
-                                            <option value="Gasto">Gasto</option>
-                                            <option value="Ganancia">Ganancia</option>
-                                        </select>
+                            <div id="filtros">
+                                <div class="field">
+                                    <label class="label">Tipo</label>
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select>
+                                                <option value="Todos">Todos</option>
+                                                <option value="Gasto">Gasto</option>
+                                                <option value="Ganancia">Ganancia</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Categoría</label>
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select>
-                                            <option value="Todas">Todas</option>
-                                            <option value="Comida">Comida</option>
-                                            <option value="Servicios">Servicios</option>
-                                            <option value="Salidas">Salidas</option>
-                                            <option value="Educación">Educación</option>
-                                            <option value="Transporte">Transporte</option>
-                                            <option value="Trabajo">Trabajo</option>
-                                        </select>
+                                <div class="field">
+                                    <label class="label">Categoría</label>
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select class="select-categorias">
+                                                <option value="Todas">Todas</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Desde</label>
-                                <div class="control">
-                                    <input id="fecha-filtro" class="input" type="date">
+                                <div class="field">
+                                    <label class="label">Desde</label>
+                                    <div class="control">
+                                        <input id="fecha-filtro" class="input" type="date">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field">
-                                <label class="label">Ordenar por</label>
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select>
-                                            <option value="Mas reciente">Más reciente</option>
-                                            <option value="Menos reciente">Menos reciente</option>
-                                            <option value="Mayor monto">Mayor monto</option>
-                                            <option value="Menor monto">Menor monto</option>
-                                            <option value="A/Z">A/Z</option>
-                                            <option value="Z/A">Z/A</option>
-                                        </select>
+                                <div class="field">
+                                    <label class="label">Ordenar por</label>
+                                    <div class="control">
+                                        <div class="select is-fullwidth">
+                                            <select>
+                                                <option value="Mas reciente">Más reciente</option>
+                                                <option value="Menos reciente">Menos reciente</option>
+                                                <option value="Mayor monto">Mayor monto</option>
+                                                <option value="Menor monto">Menor monto</option>
+                                                <option value="A/Z">A/Z</option>
+                                                <option value="Z/A">Z/A</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +178,7 @@
     </section>
 
     <!-- Nueva operacion -->
-    <section class="section" id="nueva-operacion">
+    <section class="section is-hidden vista" id="nueva-operacion">
         <div class="container">
             <div class="container is-max-desktop">
                 <div class="box">
@@ -212,11 +208,7 @@
                         <div class="field">
                             <label class="label">Categoría</label>
                             <div class="select is-fullwidth">
-                                <select id="categoria">
-                                    <option>Comida</option>
-                                    <option>Servicios</option>
-                                    <option>Trabajo</option>
-                                    <option>Salidas</option>
+                                <select id="categoria" class="select-categorias">
                                 </select>
                             </div>
                         </div>
@@ -240,8 +232,8 @@
             ---------------------CATEGORIAS--------------------
             ****************************************** -->
 
-<section class="section is-hidden" id="seccion-categorias">
-    <div class="container box categorias is-max-desktop">
+<section class="section is-hidden vista" id="seccion-categorias">
+    <div class="container box categorias is-max-desktop" id="container-categorias">
         <h2 class="title is-2 has-text-weight-bold">Categorías</h2>
         <form>
             <div class="field my-6">
@@ -254,7 +246,7 @@
             <ul id="lista-categorias"></ul>
         </form>
     </div>
-    <section class="section">
+    <section class="section is-hidden vista" id="editar-categoria">
         <div class="container">
             <div class="container is-max-desktop">
                 <div class="box">
@@ -262,10 +254,10 @@
                     <form>
                         <div class="field mt-6">
                             <label class="label">Nombre</label>
-                            <input class="input mb-6" type="text">
+                            <input class="input mb-6" type="text" id="input-editar">
                             <div class="is-flex is-justify-content-flex-end">
-                                <button class="button mr-2 is-light">Cancelar</button>
-                                <button class="button is-success">Editar</button>
+                                <button class="button mr-2 is-light" id="boton-cancelar">Cancelar</button>
+                                <button class="button is-success" id="boton-editar">Editar</button>
                             </div>
                         </div>
                     </form>
@@ -280,7 +272,7 @@
             ****************************************** -->
 
 
-    <section class="section" id="seccion-reportes">
+    <section class="section is-hidden vista" id="seccion-reportes">
         <div class="container">
             <div class="container is-max-desktop">
                 <div class="box">

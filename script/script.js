@@ -27,29 +27,25 @@ window.onload = () => {
 // ***************
 //Cambio de seccion
 
-//Mostrar seccion balance
-$("navbar-balance").addEventListener("click", () => {
-    $("seccion-balance").classList.remove("is-hidden");
-    $("nueva-operacion").classList.add("is-hidden");
-    $("seccion-categorias").classList.add("is-hidden");
-    $("seccion-reportes").classList.add("is-hidden");
-});
+const mostrarVista = (vistaAMostrar) => {
+    $$(".vista").forEach((vista) => {
+        vista.classList.add("is-hidden");
+        $(`${vistaAMostrar}`).classList.remove("is-hidden");
+    });
+};
 
-//Mostrar seccion categorias
-$("navbar-categorias").addEventListener("click", () => {
-    $("seccion-balance").classList.add("is-hidden");
-    $("nueva-operacion").classList.add("is-hidden");
-    $("seccion-categorias").classList.remove("is-hidden");
-    $("seccion-reportes").classList.add("is-hidden");
-});
-
-//Mostrar seccion reportes
-$("navbar-reportes").addEventListener("click", () => {
-    $("seccion-balance").classList.add("is-hidden");
-    $("nueva-operacion").classList.add("is-hidden");
-    $("seccion-categorias").classList.add("is-hidden");
-    $("seccion-reportes").classList.remove("is-hidden");
-});
+$("navbar-balance").addEventListener("click", () =>
+    mostrarVista("seccion-balance")
+);
+$("navbar-categorias").addEventListener("click", () =>
+    mostrarVista("seccion-categorias")
+);
+$("nueva-operacion-btn").addEventListener("click", () =>
+    mostrarVista("nueva-operacion")
+);
+$("navbar-reportes").addEventListener("click", () =>
+    mostrarVista("seccion-reportes")
+);
 
 //Menu hamburguesa
 
@@ -61,6 +57,11 @@ $("burger").addEventListener("click", () => {
 // -----------------------
 // SECCION BALANCE
 // ----------------------
+
+//Ocultar filtros
+$("ocultar-filtros").addEventListener("click", () => {
+    $("filtros").classList.toggle("is-hidden");
+});
 
 //Abre card de nueva operacion
 const abrirNuevaOperacion = () => {
@@ -81,7 +82,7 @@ const agregarOperacion = (objeto) => {
 
 //definiendo el valor del input fecha
 const fechaElegida = () => {
-    operacionFecha = new Date($("fecha").value);
+    let operacionFecha = new Date($("fecha").value);
     let mes = operacionFecha.getMonth() + 1;
     let dia = operacionFecha.getDate();
     let anio = operacionFecha.getFullYear();
@@ -157,9 +158,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
     </div>`;
 
-        $$(".editar-link").forEach((boton) =>
-            boton.addEventListener("click", () => editarOperacion(boton.id))
-        );
+        // $$(".editar-link").forEach((boton) =>
+        //     boton.addEventListener("click", () => editarOperacion(boton.id))
+        // );
     });
     actualizarInfo("operaciones", listaOperaciones);
     noHayOperaciones();
@@ -193,6 +194,10 @@ const colorMonto = (tipo) => {
     }
     return color;
 };
+
+//-------para editar una operacion
+
+//const editarOperacion = (idBtn) => {};
 
 //para cuando no hay operaciones mostrar ilustracion
 const noHayOperaciones = () => {
@@ -236,38 +241,91 @@ let categorias = [
     },
 ];
 
+//------Crear lista Categorias
+
+//Mostrar options de los select (categorias)
+
+const crearLista = (listaDeCategorias) => {
+    $("lista-categorias").innerHTML = "";
+    for (let { nombre, id } of listaDeCategorias) {
+        $("lista-categorias").innerHTML += `
+        <li class="is-flex is-justify-content-space-between">
+            <span class="tag is-primary is-light mb-5">${nombre}</span>
+        <div class="has-text-right">
+            <button onclick="mostrarEditarCategoria('${id}')" id="${id}" class="button is-ghost is-size-7 mr-4 editarBtn">Editar</button>
+            <button onclick="eliminarCategoria('${id}')" id="${id}" class="button is-ghost is-size-7 eliminarBtn">Eliminar</button>
+        </div>
+        </li>`;
+    }
+};
+
+mostrarOperaciones(operaciones);
+
+//----Mostrar opciones del select
+const mostrarOpciones = (categorias) => {
+    $$(".select-categorias").forEach((select) => {
+        select.innerHTML = `<option value="Todas">Todas</option>`;
+        for (let { id, nombre } of categorias) {
+            select.innerHTML += `<option value="${id}">${nombre}</option>`;
+        }
+    });
+};
+mostrarOpciones(categorias);
+
 //-----Agregar nueva Categoria
+
 const agregarCategoria = () => {
     let nuevoObj = {
         id: randomId(),
         nombre: $("input-nueva-categoria").value,
     };
-    categorias.push(nuevoObj);
-    crearLista(categorias);
+    let listaActualizada = [...categorias, nuevoObj];
+    crearLista(listaActualizada);
+    mostrarOpciones(listaActualizada);
 };
 
-const crearLista = (listaDeCategorias) => {
-    $("lista-categorias").innerHTML = "";
-    listaDeCategorias.forEach((categoria) => {
-        $("lista-categorias").innerHTML += `
-        <li  class="is-flex is-justify-content-space-between">
-            <span class="tag is-primary is-light mb-5">${categoria.nombre}</span>
-            <div class="has-text-right">
-            <a href="#" id="${categoria.id}" class="is-size-7 mr-4 editarBtn" >Editar</a>
-            <a href="#" id="${categoria.id}" class="is-size-7 eliminarBtn">Eliminar</a>
-            </div>
-            </li>`;
-        $$(".eliminarBtn").forEach((btn) =>
-            btn.addEventListener("click", () => {
-                categorias = categorias.filter(
-                    (categoria) => categoria.id !== btn.id
-                );
-                crearLista(categorias);
-            })
-        );
-    });
-};
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
+//----Obtener categoria
+const obtenerCategoria = (idCategoria, categorias) => {
+    return categorias.find((categoria) => categoria.id === idCategoria);
+};
+
+//----Mostrar vista editar categoria
+const mostrarEditarCategoria = (id) => {
+    $("container-categorias").classList.add("is-hidden");
+    $("editar-categoria").classList.remove("is-hidden");
+    let categoriaAEditar = obtenerCategoria(id, categorias);
+    $("input-editar").value = categoriaAEditar.nombre;
+    $("boton-editar").addEventListener("click", () =>
+        editarCategoria(categoriaAEditar.id)
+    );
+    ocultarEditarCategoria();
+};
+
+const ocultarEditarCategoria = () => {
+    $("boton-cancelar").addEventListener("click", () => {
+        $("container-categorias").classList.remove("is-hidden");
+        $("editar-categoria").classList.add("is-hidden");
+    });
+};
+
+const editarCategoria = (id) => {
+    let nuevaCategoria = {
+        id: id,
+        nombre: $("input-editar").value,
+    };
+    let categoriasActualizadas = categorias.map((categoria) =>
+        categoria.id === id ? { ...nuevaCategoria } : categoria
+    );
+    crearLista(categoriasActualizadas);
+    mostrarOpciones(categoriasActualizadas);
+};
+
+const eliminarCategoria = (id) => {
+    categorias = categorias.filter((categoria) => categoria.id !== id);
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+};
+
 crearLista(categorias);
-mostrarOperaciones(operaciones);
