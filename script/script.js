@@ -24,7 +24,7 @@ window.onload = () => {
     let anio = fechaHoy.getFullYear();
     if (dia < 10) dia = "0" + dia;
     if (mes < 10) mes = "0" + mes;
-    $("fecha").value = anio + "-" + mes + "-" + dia;
+    $("fecha-nueva-op").value = anio + "-" + mes + "-" + dia;
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
 
@@ -88,32 +88,23 @@ const funcionProbar = (listaActualizada) => {
 };
 
 //Objeto operacion armado para luego pushearlo al array
-const agregarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
+const agregarOperacion = () => {
     const operacion = {
         id: randomId(),
-        descripcion: descripcion,
-        categoria: categoria,
-        monto: monto,
-        tipo: tipo,
-        fecha: fecha,
+        descripcion: $("descripcion-nueva-op").value,
+        categoria: $("categoria-nueva-op").value,
+        monto: $("monto-nueva-op").value,
+        tipo: $("tipo-nueva-op").value,
+        fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
     operaciones = [...operaciones, operacion];
-    console.log(operaciones);
     funcionProbar(operaciones);
     mostrarVista("seccion-balance");
 };
 
-$("agregar-btn").addEventListener("click", () =>
-    agregarOperacion(
-        $("descripcion").value,
-        $("categoria").value,
-        $("monto").value,
-        $("tipo").value,
-        $("fecha").value.replace(/-/g, "/")
-    )
-);
+$("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
 
-$("cancelar-btn").addEventListener("click", () => {
+$("cancelar-btn-nueva-op").addEventListener("click", () => {
     mostrarVista("seccion-balance");
 });
 

@@ -187,13 +187,64 @@
                         <div class="field">
                             <label class="label">Descripción</label>
                             <div class="control">
-                                <input id="descripcion" class="input" type="text">
+                                <input id="descripcion-nueva-op" class="input" type="text">
                             </div>
                         </div>
                         <div class="field">
                             <label class="label">Monto</label>
                             <div class="control">
-                                <input id="monto" class="input" type="number" value="0">
+                                <input id="monto-nueva-op" class="input" type="number" value="0">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Tipo</label>
+                            <div class="select is-fullwidth">
+                                <select id="tipo-nueva-op">
+                                    <option>Gasto</option>
+                                    <option>Ganancia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Categoría</label>
+                            <div class="select is-fullwidth">
+                                <select id="categoria-nueva-op" class="select-categorias">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Fecha</label>
+                            <div class="control">
+                                <input id="fecha-nueva-op" class="input" type="date">
+                            </div>
+                        </div>
+                        <div class="is-flex is-justify-content-flex-end mt-6">
+                            <button type="button" id="cancelar-btn-nueva-op" class="button is-light">Cancelar</button>
+                            <button type="button" id="agregar-btn-nueva-op" class="button is-success">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editar operacion -->
+    <section class="section is-hidden vista" id="editar-operacion">
+        <div class="container">
+            <div class="container is-max-desktop">
+                <div class="box">
+                    <h2 class="title is-2 has-text-weight-bold">Editar operación</h2>
+                    <form>
+                        <div class="field">
+                            <label class="label">Descripción</label>
+                            <div class="control">
+                                <input id="descripcion-op-editada" class="input" type="text">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Monto</label>
+                            <div class="control">
+                                <input id="monto-op-editada" class="input" type="number" value="0">
                             </div>
                         </div>
                         <div class="field">
@@ -208,25 +259,26 @@
                         <div class="field">
                             <label class="label">Categoría</label>
                             <div class="select is-fullwidth">
-                                <select id="categoria" class="select-categorias">
+                                <select id="categoria-op-editada" class="select-categorias">
                                 </select>
                             </div>
                         </div>
                         <div class="field">
                             <label class="label">Fecha</label>
                             <div class="control">
-                                <input id="fecha" class="input" type="date">
+                                <input id="fecha-op-editada" class="input" type="date">
                             </div>
                         </div>
                         <div class="is-flex is-justify-content-flex-end mt-6">
-                            <button type="button" id="cancelar-btn" class="button is-light">Cancelar</button>
-                            <button type="button" id="agregar-btn" class="button is-success">Agregar</button>
+                            <button type="button" id="cancelar-op-btn" class="button is-light">Cancelar</button>
+                            <button type="button" id="editar-op-btn" class="button is-success">Agregar</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- ********************************************************
             ---------------------CATEGORIAS--------------------
