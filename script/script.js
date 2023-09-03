@@ -136,7 +136,7 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-3">
             <span class="tag is-primary is-light">
-                ${nombreCategoria(categoria)}
+                ${obtenerCategoria(categoria, categorias).nombre}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-grey">
@@ -179,12 +179,6 @@ const colorMonto = (tipo) => {
         color = "has-text-success";
     }
     return color;
-};
-
-//Para mostrar el nombre de la categoria
-const nombreCategoria = (idCategoria) => {
-    let nombreCategoria = obtenerCategoria(idCategoria, categorias);
-    return nombreCategoria.nombre;
 };
 
 //para cuando no hay operaciones mostrar ilustracion
