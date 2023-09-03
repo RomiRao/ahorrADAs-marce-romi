@@ -163,22 +163,11 @@ const iterarOperaciones = (listaOperaciones) => {
 
 //Definiendo como se muestra el mondo
 const tipoMonto = (monto, tipo) => {
-    if (tipo === "Gasto") {
-        monto = `-$${monto}`;
-    } else if (tipo === "Ganancia") {
-        monto = `+$${monto}`;
-    }
-    return monto;
+    return tipo === "Gasto" ? `-$${monto}` : `+$${monto}`;
 };
 
 const colorMonto = (tipo) => {
-    let color;
-    if (tipo === "Gasto") {
-        color = "has-text-danger";
-    } else if (tipo === "Ganancia") {
-        color = "has-text-success";
-    }
-    return color;
+    return tipo === "Gasto" ? "has-text-danger" : "has-text-success";
 };
 
 //para cuando no hay operaciones mostrar ilustracion
