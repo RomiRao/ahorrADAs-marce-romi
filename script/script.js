@@ -81,17 +81,7 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-//definiendo el valor del input fecha
-const fechaElegida = () => {
-    let operacionFecha = new Date($("fecha").value);
-    let mes = operacionFecha.getMonth() + 1;
-    let dia = operacionFecha.getDate();
-    let anio = operacionFecha.getFullYear();
-    if (dia < 10) dia = "0" + dia;
-    if (mes < 10) mes = "0" + mes;
-    return dia + "/" + mes + "/" + anio;
-};
-
+// ---------------------Nueva Operacion---------------------
 const funcionProbar = (listaActualizada) => {
     mostrarOperaciones(listaActualizada);
     actualizarInfo("operaciones", listaActualizada);
@@ -107,8 +97,10 @@ const agregarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
         tipo: tipo,
         fecha: fecha,
     };
-    let listaActualizada = [...operaciones, operacion];
-    funcionProbar(listaActualizada);
+    operaciones = [...operaciones, operacion];
+    console.log(operaciones);
+    funcionProbar(operaciones);
+    mostrarVista("seccion-balance");
 };
 
 $("agregar-btn").addEventListener("click", () =>
@@ -117,12 +109,15 @@ $("agregar-btn").addEventListener("click", () =>
         $("categoria").value,
         $("monto").value,
         $("tipo").value,
-        fechaElegida()
+        $("fecha").value.replace(/-/g, "/")
     )
 );
-//----------------
 
-//Funcion para mostrar la lista de operaciones en la seccion balance
+$("cancelar-btn").addEventListener("click", () => {
+    mostrarVista("seccion-balance");
+});
+
+//Iterar y mostrar
 const mostrarOperaciones = (operaciones) => {
     $("operaciones").innerHTML = "";
     iterarOperaciones(operaciones);
@@ -134,7 +129,6 @@ const eliminarOperacion = (id) => {
     actualizarInfo("operaciones", operaciones);
 };
 
-//recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
@@ -199,10 +193,6 @@ const nombreCategoria = (idCategoria) => {
     }
     return nombreCategoria;
 };
-
-//-------para editar una operacion
-
-//const editarOperacion = (idBtn) => {};
 
 //para cuando no hay operaciones mostrar ilustracion
 const noHayOperaciones = () => {
@@ -281,10 +271,10 @@ const agregarCategoria = () => {
         id: randomId(),
         nombre: $("input-nueva-categoria").value,
     };
-    let listaActualizada = [...categorias, nuevoObj];
-    crearLista(listaActualizada);
-    mostrarOpciones(listaActualizada);
-    actualizarInfo("categorias", listaActualizada);
+    categorias = [...categorias, nuevoObj];
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    actualizarInfo("categorias", categorias);
 };
 
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
@@ -323,6 +313,8 @@ const editarCategoria = (id) => {
     );
     crearLista(categoriasActualizadas);
     mostrarOpciones(categoriasActualizadas);
+    $("container-categorias").classList.remove("is-hidden");
+    $("editar-categoria").classList.add("is-hidden");
     actualizarInfo("categorias", categoriasActualizadas);
 };
 
@@ -330,6 +322,7 @@ const eliminarCategoria = (id) => {
     categorias = categorias.filter((categoria) => categoria.id !== id);
     crearLista(categorias);
     mostrarOpciones(categorias);
+    actualizarInfo("categorias", categorias);
 };
 
 inicializar();
