@@ -120,6 +120,11 @@ const eliminarOperacion = (id) => {
     actualizarInfo("operaciones", operaciones);
 };
 
+const editarOperacion = (id) => {
+    mostrarOperaciones(operaciones);
+    actualizarInfo("operaciones", operaciones);
+};
+
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
@@ -147,7 +152,7 @@ const iterarOperaciones = (listaOperaciones) => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id="${id}" href="#">Editar</a>
+            <a id="${id}" onclick="editarOperacion('${id}')" href="#">Editar</a>
             <a id="${id}" onclick="eliminarOperacion('${id}')" href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
@@ -156,6 +161,7 @@ const iterarOperaciones = (listaOperaciones) => {
     noHayOperaciones();
 };
 
+//Definiendo como se muestra el mondo
 const tipoMonto = (monto, tipo) => {
     if (tipo === "Gasto") {
         monto = `-$${monto}`;
@@ -175,14 +181,10 @@ const colorMonto = (tipo) => {
     return color;
 };
 
+//Para mostrar el nombre de la categoria
 const nombreCategoria = (idCategoria) => {
-    let nombreCategoria;
-    for (let { nombre, id } of categorias) {
-        if (id === idCategoria) {
-            nombreCategoria = nombre;
-        }
-    }
-    return nombreCategoria;
+    let nombreCategoria = obtenerCategoria(idCategoria, categorias);
+    return nombreCategoria.nombre;
 };
 
 //para cuando no hay operaciones mostrar ilustracion
