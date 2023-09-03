@@ -122,6 +122,11 @@ const mostrarOperaciones = (operaciones) => {
     iterarOperaciones(operaciones);
 };
 
+const eliminarOperacion = (id) => {
+    operaciones = operaciones.filter((operacion) => operacion.id !== id);
+    mostrarOperaciones(operaciones);
+};
+
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
@@ -134,7 +139,7 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-3">
             <span class="tag is-primary is-light">
-                ${categoria}
+                ${nombreCategoria(categoria)}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-grey">
@@ -160,14 +165,6 @@ const iterarOperaciones = (listaOperaciones) => {
     noHayOperaciones();
 };
 
-const eliminarOperacion = (id) => {
-    let nuevaListaOperaciones = operaciones.filter(
-        (operacion) => operacion.id !== id
-    );
-    console.log(nuevaListaOperaciones);
-    mostrarOperaciones(nuevaListaOperaciones);
-};
-
 const tipoMonto = (monto, tipo) => {
     if (tipo === "Gasto") {
         monto = `-$${monto}`;
@@ -185,6 +182,16 @@ const colorMonto = (tipo) => {
         color = "has-text-success";
     }
     return color;
+};
+
+const nombreCategoria = (idCategoria) => {
+    let nombreCategoria;
+    for (let { nombre, id } of categorias) {
+        if (id === idCategoria) {
+            nombreCategoria = nombre;
+        }
+    }
+    return nombreCategoria;
 };
 
 //-------para editar una operacion
