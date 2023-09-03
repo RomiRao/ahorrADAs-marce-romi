@@ -124,57 +124,49 @@ const mostrarOperaciones = (operaciones) => {
 
 //recorre el array de operaciones para crear los elementos de la lista
 const iterarOperaciones = (listaOperaciones) => {
-    listaOperaciones.forEach((operacion) => {
-        const monto = tipoMonto(operacion.monto, operacion.tipo);
-
-        $("operaciones").innerHTML += `<div class="columns">
+    listaOperaciones.forEach(
+        ({ monto, id, descripcion, tipo, fecha, categoria }) => {
+            $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
-                ${operacion.descripcion}
+                ${descripcion}
             </h3>
         </div>
         <div class="column is-3">
             <span class="tag is-primary is-light">
-                ${operacion.categoria}
+                ${categoria}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${operacion.fecha}
+                ${fecha}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
-            operacion.tipo
+            tipo
         )}">
             <span>
-                ${monto}
+                ${tipoMonto(monto, tipo)}
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id='${operacion.id}' class='editar-link' href="#">Editar</a>
-            <a id='${
-                operacion.id
-            }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
+            <a id="${id}" href="#">Editar</a>
+            <a id="${id}" onclick="eliminarOperacion('${id}')" href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
-
-        // $$(".editar-link").forEach((boton) =>
-        //     boton.addEventListener("click", () => editarOperacion(boton.id))
-        // );
-    });
+        }
+    );
     actualizarInfo("operaciones", listaOperaciones);
     noHayOperaciones();
 };
 
-$$(".eliminar-link").forEach((btn) =>
-    btn.addEventListener("click", () => {
-        console.log("asdasd");
-        let nuevaListaOperaciones = operaciones.filter(
-            (operacion) => operacion.id !== btn.id
-        );
-        mostrarOperaciones(nuevaListaOperaciones);
-    })
-);
+const eliminarOperacion = (id) => {
+    let nuevaListaOperaciones = operaciones.filter(
+        (operacion) => operacion.id !== id
+    );
+    console.log(nuevaListaOperaciones);
+    mostrarOperaciones(nuevaListaOperaciones);
+};
 
 const tipoMonto = (monto, tipo) => {
     if (tipo === "Gasto") {
@@ -264,7 +256,6 @@ mostrarOperaciones(operaciones);
 //----Mostrar opciones del select
 const mostrarOpciones = (categorias) => {
     $$(".select-categorias").forEach((select) => {
-        select.innerHTML = `<option value="Todas">Todas</option>`;
         for (let { id, nombre } of categorias) {
             select.innerHTML += `<option value="${id}">${nombre}</option>`;
         }
