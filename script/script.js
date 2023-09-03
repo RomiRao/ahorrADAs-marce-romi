@@ -3,6 +3,12 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+const inicializar = () => {
+    mostrarOperaciones(operaciones);
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+};
+
 //Para definir datos a nivel local
 const actualizarInfo = (clave, datos) => {
     localStorage.setItem(clave, JSON.stringify(datos));
@@ -75,11 +81,6 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-const agregarOperacion = (objeto) => {
-    operaciones.push(objeto);
-    mostrarOperaciones(operaciones);
-};
-
 //definiendo el valor del input fecha
 const fechaElegida = () => {
     let operacionFecha = new Date($("fecha").value);
@@ -91,8 +92,13 @@ const fechaElegida = () => {
     return dia + "/" + mes + "/" + anio;
 };
 
+const funcionProbar = (listaActualizada) => {
+    mostrarOperaciones(listaActualizada);
+    actualizarInfo("operaciones", listaActualizada);
+};
+
 //Objeto operacion armado para luego pushearlo al array
-const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
+const agregarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
     const operacion = {
         id: randomId(),
         descripcion: descripcion,
@@ -101,12 +107,12 @@ const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
         tipo: tipo,
         fecha: fecha,
     };
-
-    agregarOperacion(operacion);
+    let listaActualizada = [...operaciones, operacion];
+    funcionProbar(listaActualizada);
 };
 
 $("agregar-btn").addEventListener("click", () =>
-    armarOperacion(
+    agregarOperacion(
         $("descripcion").value,
         $("categoria").value,
         $("monto").value,
@@ -125,6 +131,7 @@ const mostrarOperaciones = (operaciones) => {
 const eliminarOperacion = (id) => {
     operaciones = operaciones.filter((operacion) => operacion.id !== id);
     mostrarOperaciones(operaciones);
+    actualizarInfo("operaciones", operaciones);
 };
 
 //recorre el array de operaciones para crear los elementos de la lista
@@ -161,7 +168,6 @@ const iterarOperaciones = (listaOperaciones) => {
     </div>`;
         }
     );
-    actualizarInfo("operaciones", listaOperaciones);
     noHayOperaciones();
 };
 
@@ -213,7 +219,7 @@ const noHayOperaciones = () => {
 
 // ------------Funcionabilidad Categorias------------------
 
-let categorias = [
+let categorias = JSON.parse(localStorage.getItem("categorias")) || [
     {
         id: randomId(),
         nombre: "Comida",
@@ -258,17 +264,15 @@ const crearLista = (listaDeCategorias) => {
     }
 };
 
-mostrarOperaciones(operaciones);
-
 //----Mostrar opciones del select
 const mostrarOpciones = (categorias) => {
     $$(".select-categorias").forEach((select) => {
+        select.innerHTML = "";
         for (let { id, nombre } of categorias) {
             select.innerHTML += `<option value="${id}">${nombre}</option>`;
         }
     });
 };
-mostrarOpciones(categorias);
 
 //-----Agregar nueva Categoria
 
@@ -280,6 +284,7 @@ const agregarCategoria = () => {
     let listaActualizada = [...categorias, nuevoObj];
     crearLista(listaActualizada);
     mostrarOpciones(listaActualizada);
+    actualizarInfo("categorias", listaActualizada);
 };
 
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
@@ -318,6 +323,7 @@ const editarCategoria = (id) => {
     );
     crearLista(categoriasActualizadas);
     mostrarOpciones(categoriasActualizadas);
+    actualizarInfo("categorias", categoriasActualizadas);
 };
 
 const eliminarCategoria = (id) => {
@@ -326,4 +332,4 @@ const eliminarCategoria = (id) => {
     mostrarOpciones(categorias);
 };
 
-crearLista(categorias);
+inicializar();
