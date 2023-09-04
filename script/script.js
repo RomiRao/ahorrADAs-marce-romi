@@ -120,9 +120,41 @@ const eliminarOperacion = (id) => {
     actualizarInfo("operaciones", operaciones);
 };
 
+const obtenerOperacion = (idOperacion) => {
+    return operaciones.find((operacion) => operacion.id === idOperacion);
+};
+
+const vistaEditarOperacion = (id) => {
+    mostrarVista("editar-operacion");
+    let operacionObtenida = obtenerOperacion(id);
+    $("descripcion-op-editada").value = operacionObtenida.descripcion;
+    $("monto-op-editada").value = operacionObtenida.monto;
+    $("tipo-op-editada").value = operacionObtenida.tipo;
+    $("categoria-op-editada").value = operacionObtenida.cagoria;
+    $("fecha-op-editada").value = operacionObtenida.fecha;
+    $("editar-op-btn").addEventListener("click", () =>
+        editarOperacion(operacionObtenida.id)
+    );
+    $("cancelar-op-btn").addEventListener("click", () =>
+        mostrarVista("seccion-balance")
+    );
+};
+
 const editarOperacion = (id) => {
-    mostrarOperaciones(operaciones);
-    actualizarInfo("operaciones", operaciones);
+    let nuevaOperacion = {
+        id: id,
+        descripcion: $("descripcion-op-editada").value,
+        categoria: $("categoria-op-editada").value,
+        monto: $("monto-op-editada").value,
+        tipo: $("tipo-op-editada").value,
+        fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
+    };
+    let nuevaListaOperaciones = operaciones.map((operacion) =>
+        operacion.id === id ? { ...nuevaOperacion } : operacion
+    );
+    mostrarVista("seccion-balance");
+    mostrarOperaciones(nuevaListaOperaciones);
+    actualizarInfo("operaciones", nuevaListaOperaciones);
 };
 
 const iterarOperaciones = (listaOperaciones) => {
@@ -152,7 +184,7 @@ const iterarOperaciones = (listaOperaciones) => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id="${id}" onclick="editarOperacion('${id}')" href="#">Editar</a>
+            <a id="${id}" onclick="vistaEditarOperacion('${id}')" href="#">Editar</a>
             <a id="${id}" onclick="eliminarOperacion('${id}')" href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
