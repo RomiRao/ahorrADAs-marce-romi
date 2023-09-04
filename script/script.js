@@ -94,8 +94,8 @@ const agregarOperacion = () => {
         fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
     operaciones = [...operaciones, operacion];
-    mostrarOperaciones(listaActualizada);
-    actualizarInfo("operaciones", listaActualizada);
+    mostrarOperaciones(operaciones);
+    actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
 };
 
@@ -123,15 +123,13 @@ const obtenerOperacion = (idOperacion) => {
 
 const vistaEditarOperacion = (id) => {
     mostrarVista("editar-operacion");
-    let operacionObtenida = obtenerOperacion(id);
-    $("descripcion-op-editada").value = operacionObtenida.descripcion;
-    $("monto-op-editada").value = operacionObtenida.monto;
-    $("tipo-op-editada").value = operacionObtenida.tipo;
-    $("categoria-op-editada").value = operacionObtenida.categoria;
-    $("fecha-op-editada").value = operacionObtenida.fecha;
-    $("editar-op-btn").addEventListener("click", () =>
-        editarOperacion(operacionObtenida.id)
-    );
+    let { descripcion, monto, tipo, categoria, fecha } = obtenerOperacion(id);
+    $("descripcion-op-editada").value = descripcion;
+    $("monto-op-editada").value = monto;
+    $("tipo-op-editada").value = tipo;
+    $("categoria-op-editada").value = categoria;
+    $("fecha-op-editada").valueAsDate = new Date(fecha);
+    $("editar-op-btn").addEventListener("click", () => editarOperacion(id));
     $("cancelar-op-btn").addEventListener("click", () =>
         mostrarVista("seccion-balance")
     );
