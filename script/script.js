@@ -83,6 +83,17 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
 // ---------------------Nueva Operacion---------------------
 
+//definiendo el valor del input fecha
+const fechaElegida = () => {
+    let operacionFecha = new Date($("fecha").value);
+    let mes = operacionFecha.getMonth() + 1;
+    let dia = operacionFecha.getDate();
+    let anio = operacionFecha.getFullYear();
+    if (dia < 10) dia = "0" + dia;
+    if (mes < 10) mes = "0" + mes;
+    return dia + "/" + mes + "/" + anio;
+};
+
 //Objeto operacion armado para luego pushearlo al array
 const agregarOperacion = () => {
     const operacion = {
