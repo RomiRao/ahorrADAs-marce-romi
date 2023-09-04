@@ -82,10 +82,6 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // ----------------------
 
 // ---------------------Nueva Operacion---------------------
-const funcionProbar = (listaActualizada) => {
-    mostrarOperaciones(listaActualizada);
-    actualizarInfo("operaciones", listaActualizada);
-};
 
 //Objeto operacion armado para luego pushearlo al array
 const agregarOperacion = () => {
@@ -98,7 +94,8 @@ const agregarOperacion = () => {
         fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
     operaciones = [...operaciones, operacion];
-    funcionProbar(operaciones);
+    mostrarOperaciones(listaActualizada);
+    actualizarInfo("operaciones", listaActualizada);
     mostrarVista("seccion-balance");
 };
 
