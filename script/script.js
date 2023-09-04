@@ -3,6 +3,12 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+const inicializar = () => {
+    mostrarOperaciones(operaciones);
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+};
+
 //Para definir datos a nivel local
 const actualizarInfo = (clave, datos) => {
     localStorage.setItem(clave, JSON.stringify(datos));
@@ -18,7 +24,7 @@ window.onload = () => {
     let anio = fechaHoy.getFullYear();
     if (dia < 10) dia = "0" + dia;
     if (mes < 10) mes = "0" + mes;
-    $("fecha").value = anio + "-" + mes + "-" + dia;
+    $("fecha-nueva-op").value = anio + "-" + mes + "-" + dia;
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
 
@@ -31,8 +37,8 @@ const mostrarVista = (vistaAMostrar) => {
     $$(".vista").forEach((vista) => {
         vista.classList.add("is-hidden");
         $(`${vistaAMostrar}`).classList.remove("is-hidden");
-    })
-}
+    });
+};
 
 $("navbar-balance").addEventListener("click", () =>
     mostrarVista("seccion-balance")
@@ -41,7 +47,7 @@ $("navbar-categorias").addEventListener("click", () =>
     mostrarVista("seccion-categorias")
 );
 $("nueva-operacion-btn").addEventListener("click", () =>
-mostrarVista("nueva-operacion")
+    mostrarVista("nueva-operacion")
 );
 $("navbar-reportes").addEventListener("click", () =>
     mostrarVista("seccion-reportes")
@@ -60,8 +66,8 @@ $("burger").addEventListener("click", () => {
 
 //Ocultar filtros
 $("ocultar-filtros").addEventListener("click", () => {
-    $("filtros").classList.toggle("is-hidden")
-})
+    $("filtros").classList.toggle("is-hidden");
+});
 
 //Abre card de nueva operacion
 const abrirNuevaOperacion = () => {
@@ -75,10 +81,7 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 // DATOS OPERACIONES
 // ----------------------
 
-const agregarOperacion = (objeto) => {
-    operaciones.push(objeto);
-    mostrarOperaciones(operaciones);
-};
+// ---------------------Nueva Operacion---------------------
 
 //definiendo el valor del input fecha
 const fechaElegida = () => {
@@ -92,108 +95,118 @@ const fechaElegida = () => {
 };
 
 //Objeto operacion armado para luego pushearlo al array
-const armarOperacion = (descripcion, categoria, monto, tipo, fecha) => {
+const agregarOperacion = () => {
     const operacion = {
         id: randomId(),
-        descripcion: descripcion,
-        categoria: categoria,
-        monto: monto,
-        tipo: tipo,
-        fecha: fecha,
+        descripcion: $("descripcion-nueva-op").value,
+        categoria: $("categoria-nueva-op").value,
+        monto: $("monto-nueva-op").value,
+        tipo: $("tipo-nueva-op").value,
+        fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
-
-    agregarOperacion(operacion);
+    operaciones = [...operaciones, operacion];
+    mostrarOperaciones(operaciones);
+    actualizarInfo("operaciones", operaciones);
+    mostrarVista("seccion-balance");
 };
 
-$("agregar-btn").addEventListener("click", () =>
-    armarOperacion(
-        $("descripcion").value,
-        $("categoria").value,
-        $("monto").value,
-        $("tipo").value,
-        fechaElegida()
-    )
-);
-//----------------
+$("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
 
-//Funcion para mostrar la lista de operaciones en la seccion balance
+$("cancelar-btn-nueva-op").addEventListener("click", () => {
+    mostrarVista("seccion-balance");
+});
+
+//Iterar y mostrar
 const mostrarOperaciones = (operaciones) => {
     $("operaciones").innerHTML = "";
     iterarOperaciones(operaciones);
 };
 
-//recorre el array de operaciones para crear los elementos de la lista
-const iterarOperaciones = (listaOperaciones) => {
-    listaOperaciones.forEach((operacion) => {
-        const monto = tipoMonto(operacion.monto, operacion.tipo);
+const eliminarOperacion = (id) => {
+    operaciones = operaciones.filter((operacion) => operacion.id !== id);
+    mostrarOperaciones(operaciones);
+    actualizarInfo("operaciones", operaciones);
+};
 
-        $("operaciones").innerHTML += `<div class="columns">
+const obtenerOperacion = (idOperacion) => {
+    return operaciones.find((operacion) => operacion.id === idOperacion);
+};
+
+const vistaEditarOperacion = (id) => {
+    mostrarVista("editar-operacion");
+    let { descripcion, monto, tipo, categoria, fecha } = obtenerOperacion(id);
+    $("descripcion-op-editada").value = descripcion;
+    $("monto-op-editada").value = monto;
+    $("tipo-op-editada").value = tipo;
+    $("categoria-op-editada").value = categoria;
+    $("fecha-op-editada").valueAsDate = new Date(fecha);
+    $("editar-op-btn").addEventListener("click", () => editarOperacion(id));
+    $("cancelar-op-btn").addEventListener("click", () =>
+        mostrarVista("seccion-balance")
+    );
+};
+
+const editarOperacion = (id) => {
+    let nuevaOperacion = {
+        id: id,
+        descripcion: $("descripcion-op-editada").value,
+        categoria: $("categoria-op-editada").value,
+        monto: $("monto-op-editada").value,
+        tipo: $("tipo-op-editada").value,
+        fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
+    };
+    let nuevaListaOperaciones = operaciones.map((operacion) =>
+        operacion.id === id ? { ...nuevaOperacion } : operacion
+    );
+    mostrarVista("seccion-balance");
+    mostrarOperaciones(nuevaListaOperaciones);
+    actualizarInfo("operaciones", nuevaListaOperaciones);
+};
+
+const iterarOperaciones = (listaOperaciones) => {
+    listaOperaciones.forEach(
+        ({ monto, id, descripcion, tipo, fecha, categoria }) => {
+            $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
-                ${operacion.descripcion}
+                ${descripcion}
             </h3>
         </div>
         <div class="column is-3">
             <span class="tag is-primary is-light">
-                ${operacion.categoria}
+                ${obtenerCategoria(categoria, categorias).nombre}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${operacion.fecha}
+                ${fecha}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
-            operacion.tipo
+            tipo
         )}">
             <span>
-                ${monto}
+                ${tipoMonto(monto, tipo)}
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id='${operacion.id}' class='editar-link' href="#">Editar</a>
-            <a id='${operacion.id
-            }' class='eliminar-link' href="#" class="ml-3">Eliminar</a>
+            <a id="${id}" onclick="vistaEditarOperacion('${id}')" href="#">Editar</a>
+            <a id="${id}" onclick="eliminarOperacion('${id}')" href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
-        $$(".eliminar-link").forEach((boton) =>
-            boton.addEventListener("click", () => {
-                operaciones = operaciones.filter(
-                    (operacion) => operacion.id !== boton.id
-                );
-                mostrarOperaciones(operaciones);
-            })
-        );
-        // $$(".editar-link").forEach((boton) =>
-        //     boton.addEventListener("click", () => editarOperacion(boton.id))
-        // );
-    });
-    actualizarInfo("operaciones", operaciones);
+        }
+    );
     noHayOperaciones();
 };
 
+//Definiendo como se muestra el mondo
 const tipoMonto = (monto, tipo) => {
-    if (tipo === "Gasto") {
-        monto = `-$${monto}`;
-    } else if (tipo === "Ganancia") {
-        monto = `+$${monto}`;
-    }
-    return monto;
+    return tipo === "Gasto" ? `-$${monto}` : `+$${monto}`;
 };
 
 const colorMonto = (tipo) => {
-    let color;
-    if (tipo === "Gasto") {
-        color = "has-text-danger";
-    } else if (tipo === "Ganancia") {
-        color = "has-text-success";
-    }
-    return color;
+    return tipo === "Gasto" ? "has-text-danger" : "has-text-success";
 };
-
-//-------para editar una operacion
-
-//const editarOperacion = (idBtn) => {};
 
 //para cuando no hay operaciones mostrar ilustracion
 const noHayOperaciones = () => {
@@ -210,7 +223,7 @@ const noHayOperaciones = () => {
 
 // ------------Funcionabilidad Categorias------------------
 
-let categorias = [
+let categorias = JSON.parse(localStorage.getItem("categorias")) || [
     {
         id: randomId(),
         nombre: "Comida",
@@ -237,14 +250,9 @@ let categorias = [
     },
 ];
 
-
-
-
 //------Crear lista Categorias
 
 //Mostrar options de los select (categorias)
-
-
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
@@ -260,18 +268,15 @@ const crearLista = (listaDeCategorias) => {
     }
 };
 
-mostrarOperaciones(operaciones);
-
 //----Mostrar opciones del select
 const mostrarOpciones = (categorias) => {
     $$(".select-categorias").forEach((select) => {
-        select.innerHTML = `<option value="Todas">Todas</option>`;
+        select.innerHTML = "";
         for (let { id, nombre } of categorias) {
-            select.innerHTML += `<option value="${id}">${nombre}</option>`
+            select.innerHTML += `<option value="${id}">${nombre}</option>`;
         }
-    })
-}
-mostrarOpciones(categorias)
+    });
+};
 
 //-----Agregar nueva Categoria
 
@@ -280,14 +285,13 @@ const agregarCategoria = () => {
         id: randomId(),
         nombre: $("input-nueva-categoria").value,
     };
-    let listaActualizada = [...categorias, nuevoObj];
-    crearLista(listaActualizada);
-    mostrarOpciones(listaActualizada);
+    categorias = [...categorias, nuevoObj];
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    actualizarInfo("categorias", categorias);
 };
 
 $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
-
-
 
 //----Obtener categoria
 const obtenerCategoria = (idCategoria, categorias) => {
@@ -300,33 +304,39 @@ const mostrarEditarCategoria = (id) => {
     $("editar-categoria").classList.remove("is-hidden");
     let categoriaAEditar = obtenerCategoria(id, categorias);
     $("input-editar").value = categoriaAEditar.nombre;
-    $("boton-editar").addEventListener("click", () => editarCategoria(categoriaAEditar.id))
-    ocultarEditarCategoria()
-}
+    $("boton-editar").addEventListener("click", () =>
+        editarCategoria(categoriaAEditar.id)
+    );
+    ocultarEditarCategoria();
+};
 
 const ocultarEditarCategoria = () => {
     $("boton-cancelar").addEventListener("click", () => {
         $("container-categorias").classList.remove("is-hidden");
         $("editar-categoria").classList.add("is-hidden");
-    })
-}
+    });
+};
 
 const editarCategoria = (id) => {
     let nuevaCategoria = {
         id: id,
-        nombre: $("input-editar").value
-    }
+        nombre: $("input-editar").value,
+    };
     let categoriasActualizadas = categorias.map((categoria) =>
         categoria.id === id ? { ...nuevaCategoria } : categoria
     );
     crearLista(categoriasActualizadas);
     mostrarOpciones(categoriasActualizadas);
-}
+    $("container-categorias").classList.remove("is-hidden");
+    $("editar-categoria").classList.add("is-hidden");
+    actualizarInfo("categorias", categoriasActualizadas);
+};
 
 const eliminarCategoria = (id) => {
     categorias = categorias.filter((categoria) => categoria.id !== id);
-    crearLista(categorias)
-    mostrarOpciones(categorias)
-}
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    actualizarInfo("categorias", categorias);
+};
 
-crearLista(categorias);
+inicializar();
