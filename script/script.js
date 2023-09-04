@@ -130,7 +130,7 @@ const vistaEditarOperacion = (id) => {
     $("descripcion-op-editada").value = operacionObtenida.descripcion;
     $("monto-op-editada").value = operacionObtenida.monto;
     $("tipo-op-editada").value = operacionObtenida.tipo;
-    $("categoria-op-editada").value = operacionObtenida.cagoria;
+    $("categoria-op-editada").value = operacionObtenida.categoria;
     $("fecha-op-editada").value = operacionObtenida.fecha;
     $("editar-op-btn").addEventListener("click", () =>
         editarOperacion(operacionObtenida.id)
