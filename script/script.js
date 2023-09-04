@@ -108,6 +108,7 @@ const agregarOperacion = () => {
     mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
+    limpiarVistaNuevaOP();
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -115,6 +116,15 @@ $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
 $("cancelar-btn-nueva-op").addEventListener("click", () => {
     mostrarVista("seccion-balance");
 });
+
+//limpiar vista nueva-op
+const limpiarVistaNuevaOP = () => {
+    $("descripcion-nueva-op").value = "";
+    $("monto-nueva-op").value = 0;
+    $("tipo-nueva-op").value = "Gasto";
+    $("categoria-nueva-op").value = categorias[0].id;
+    $("fecha-nueva-op").valueAsDate = new Date();
+};
 
 //Iterar y mostrar
 const mostrarOperaciones = (operaciones) => {
@@ -160,7 +170,6 @@ const editarOperacion = (id) => {
     );
     mostrarVista("seccion-balance");
     mostrarOperaciones(nuevaListaOperaciones);
-    actualizarInfo("operaciones", nuevaListaOperaciones);
 };
 
 const iterarOperaciones = (listaOperaciones) => {
