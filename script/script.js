@@ -336,7 +336,14 @@ const eliminarCategoria = (id) => {
     categorias = categorias.filter((categoria) => categoria.id !== id);
     crearLista(categorias);
     mostrarOpciones(categorias);
+    operacionesCategoriaEliminada(id);
     actualizarInfo("categorias", categorias);
+};
+
+const operacionesCategoriaEliminada = (id) => {
+    operaciones = operaciones.filter((operacion) => operacion.categoria !== id);
+    mostrarOperaciones(operaciones);
+    actualizarInfo("operaciones", operaciones);
 };
 
 inicializar();
