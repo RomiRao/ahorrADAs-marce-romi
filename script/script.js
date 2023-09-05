@@ -347,6 +347,7 @@ const operacionesCategoriaEliminada = (id) => {
     actualizarInfo("operaciones", operaciones);
 };
 
+//------------------------FILTROS ----------------------
 const filtroGastoGanancia = () => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
