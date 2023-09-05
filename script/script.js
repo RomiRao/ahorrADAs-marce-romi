@@ -77,7 +77,7 @@ const abrirNuevaOperacion = () => {
 
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
-//-----Funcionabilidad 
+//-----Funcionabilidad
 const calcularBalance = (operaciones) => {
     let ganancias = 0;
     let gastos = 0;
@@ -88,15 +88,14 @@ const calcularBalance = (operaciones) => {
         } else if (operacion.tipo === "Gasto") {
             gastos += Number(operacion.monto);
         }
-    })
+    });
 
-    const balance = ganancias - gastos
-    
-    $("balance-ganancias").innerHTML = `+ ${ganancias}`
-    $("balance-gastos").innerHTML = `- ${gastos}`
-    $("balance-total").innerHTML = `${balance}`
-}
+    const balance = ganancias - gastos;
 
+    $("balance-ganancias").innerHTML = `+ ${ganancias}`;
+    $("balance-gastos").innerHTML = `- ${gastos}`;
+    $("balance-total").innerHTML = `${balance}`;
+};
 
 // -------------------
 // DATOS OPERACIONES
@@ -384,8 +383,8 @@ const filtroGastoGanancia = () => {
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
 const filtroOrdenar = () => {
-    switch (operaciones) {
-        case "A/Z":
+    switch ($("filtro-ordenar").value) {
+        case ($("filtro-ordenar").value = "A/Z"):
             operaciones = operaciones.sort((a, b) => {
                 return a.descripcion.localeCompare(b.descripcion, {
                     ignorePunctuation: true,
@@ -393,7 +392,7 @@ const filtroOrdenar = () => {
             });
             mostrarOperaciones(operaciones);
             break;
-        case "Z/A":
+        case ($("filtro-ordenar").value = "Z/A"):
             operaciones = operaciones
                 .sort((a, b) => {
                     return a.descripcion.localeCompare(b.descripcion, {
