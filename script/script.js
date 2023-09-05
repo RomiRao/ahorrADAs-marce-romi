@@ -116,6 +116,7 @@ const agregarOperacion = () => {
     };
     operaciones = [...operaciones, operacion];
     mostrarOperaciones(operaciones);
+    ordenarMasReciente(operaciones);
     actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
@@ -421,23 +422,23 @@ const filtroOrdenar = () => {
             console.log("menos reciente");
             operaciones = operaciones.sort((a, b) => {
                 return (
-                    new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+                    new Date(a.fecha).getTime() < new Date(b.fecha).getTime()
                 );
             });
             break;
         case ($("filtro-ordenar").value = "Mas reciente"):
-            console.log("mas reciente");
-            operaciones = operaciones
-                .sort((a, b) => {
-                    return (
-                        new Date(a.fecha).getTime() -
-                        new Date(b.fecha).getTime()
-                    );
-                })
-                .reverse();
+            ordenarMasReciente(operaciones);
             mostrarOperaciones(operaciones);
             break;
     }
+};
+
+const ordenarMasReciente = (operaciones) => {
+    operaciones = operaciones
+        .sort((a, b) => {
+            return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+        })
+        .reverse();
 };
 
 $("filtro-ordenar").addEventListener("change", () => filtroOrdenar());
