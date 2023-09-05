@@ -116,7 +116,7 @@ const agregarOperacion = () => {
     };
     operaciones = [...operaciones, operacion];
     mostrarOperaciones(operaciones);
-    ordenarMasReciente(operaciones);
+    //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
@@ -384,7 +384,7 @@ const filtroGastoGanancia = () => {
 
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
-const filtroOrdenar = () => {
+const filtroOrdenar = (operaciones) => {
     switch ($("filtro-ordenar").value) {
         case ($("filtro-ordenar").value = "A/Z"):
             operaciones = operaciones.sort((a, b) => {
@@ -427,20 +427,21 @@ const filtroOrdenar = () => {
             });
             break;
         case ($("filtro-ordenar").value = "Mas reciente"):
-            ordenarMasReciente(operaciones);
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return (
+                        new Date(a.fecha).getTime() -
+                        new Date(b.fecha).getTime()
+                    );
+                })
+                .reverse();
             mostrarOperaciones(operaciones);
             break;
     }
 };
 
-const ordenarMasReciente = (operaciones) => {
-    operaciones = operaciones
-        .sort((a, b) => {
-            return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
-        })
-        .reverse();
-};
-
-$("filtro-ordenar").addEventListener("change", () => filtroOrdenar());
+$("filtro-ordenar").addEventListener("change", () =>
+    filtroOrdenar(operaciones)
+);
 
 inicializar();
