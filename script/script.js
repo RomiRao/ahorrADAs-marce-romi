@@ -77,6 +77,27 @@ const abrirNuevaOperacion = () => {
 
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
+//-----Funcionabilidad 
+const calcularBalance = (operaciones) => {
+    let ganancias = 0;
+    let gastos = 0;
+
+    operaciones.forEach((operacion) => {
+        if (operacion.tipo !== "Gasto") {
+            ganancias += Number(operacion.monto);
+        } else if (operacion.tipo === "Gasto") {
+            gastos += Number(operacion.monto);
+        }
+    })
+
+    const balance = ganancias - gastos
+    
+    $("balance-ganancias").innerHTML = `+ ${ganancias}`
+    $("balance-gastos").innerHTML = `- ${gastos}`
+    $("balance-total").innerHTML = `${balance}`
+}
+
+
 // -------------------
 // DATOS OPERACIONES
 // ----------------------
@@ -98,6 +119,7 @@ const agregarOperacion = () => {
     actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
+    calcularBalance(operaciones);
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
