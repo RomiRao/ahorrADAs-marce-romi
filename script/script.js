@@ -159,6 +159,7 @@ const editarOperacion = (id) => {
     );
     mostrarVista("seccion-balance");
     mostrarOperaciones(nuevaListaOperaciones);
+    actualizarInfo("operaciones", nuevaListaOperaciones);
 };
 
 const iterarOperaciones = (listaOperaciones) => {
@@ -345,5 +346,18 @@ const operacionesCategoriaEliminada = (id) => {
     mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
 };
+
+const filtroGastoGanancia = () => {
+    if ($("filtro-tipo").value !== "Todos") {
+        let operacionesAMostrar = operaciones.filter(
+            (operacion) => operacion.tipo === $("filtro-tipo").value
+        );
+        mostrarOperaciones(operacionesAMostrar);
+    } else {
+        mostrarOperaciones(operaciones);
+    }
+};
+
+$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
 inicializar();
