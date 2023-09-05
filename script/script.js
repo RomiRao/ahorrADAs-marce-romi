@@ -373,6 +373,7 @@ const operacionesCategoriaEliminada = (id) => {
 };
 
 //------------------------FILTROS ----------------------
+//Segun TIPO
 const filtroGastoGanancia = () => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
@@ -384,8 +385,7 @@ const filtroGastoGanancia = () => {
     }
 };
 
-$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
-
+//Ordenar por...
 const filtroOrdenar = (operaciones) => {
     switch ($("filtro-ordenar").value) {
         case ($("filtro-ordenar").value = "A/Z"):
@@ -442,6 +442,22 @@ const filtroOrdenar = (operaciones) => {
             break;
     }
 };
+
+//Segun CATEGORIA
+const filtroCategoria = () => {
+    if ($("filtro-categoria").value !== "Todos") {
+        let operacionesAMostrar = operaciones.filter(
+            (operacion) => operacion.categoria === $("filtro-categoria").value
+        );
+        mostrarOperaciones(operacionesAMostrar);
+    } else {
+        mostrarOperaciones(operaciones);
+    }
+};
+
+$("filtro-categoria").addEventListener("change", () => filtroCategoria());
+
+$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
 $("filtro-ordenar").addEventListener("change", () =>
     filtroOrdenar(operaciones)
