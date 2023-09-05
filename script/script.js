@@ -91,7 +91,6 @@ const calcularBalance = (operaciones) => {
     })
 
     const balance = ganancias - gastos
-    console.log(balance, ganancias, gastos)
     
     $("balance-ganancias").innerHTML = `+ ${ganancias}`
     $("balance-gastos").innerHTML = `- ${gastos}`
