@@ -5,6 +5,7 @@ const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
     mostrarOperaciones(operaciones);
+    calcularBalance(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
 };
@@ -401,6 +402,27 @@ const filtroOrdenar = () => {
                 })
                 .reverse();
             mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Mayor monto"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return a.monto - b.monto;
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Menor monto"):
+            operaciones = operaciones.sort((a, b) => {
+                return a.monto - b.monto;
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Menos reciente"):
+            console.log("menos reciente");
+            break;
+        case ($("filtro-ordenar").value = "Mas reciente"):
+            console.log("mas reciente");
+            break;
     }
 };
 
