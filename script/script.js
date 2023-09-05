@@ -419,9 +419,23 @@ const filtroOrdenar = () => {
             break;
         case ($("filtro-ordenar").value = "Menos reciente"):
             console.log("menos reciente");
+            operaciones = operaciones.sort((a, b) => {
+                return (
+                    new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+                );
+            });
             break;
         case ($("filtro-ordenar").value = "Mas reciente"):
             console.log("mas reciente");
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return (
+                        new Date(a.fecha).getTime() -
+                        new Date(b.fecha).getTime()
+                    );
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
             break;
     }
 };
