@@ -5,6 +5,7 @@ const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
     mostrarOperaciones(operaciones);
+    calcularBalance(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
 };
@@ -77,7 +78,7 @@ const abrirNuevaOperacion = () => {
 
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
-//-----Funcionabilidad 
+//-----Funcionabilidad
 const calcularBalance = (operaciones) => {
     let ganancias = 0;
     let gastos = 0;
@@ -88,15 +89,14 @@ const calcularBalance = (operaciones) => {
         } else if (operacion.tipo === "Gasto") {
             gastos += Number(operacion.monto);
         }
-    })
+    });
 
-    const balance = ganancias - gastos
-    
-    $("balance-ganancias").innerHTML = `+ ${ganancias}`
-    $("balance-gastos").innerHTML = `- ${gastos}`
-    $("balance-total").innerHTML = `${balance}`
-}
+    const balance = ganancias - gastos;
 
+    $("balance-ganancias").innerHTML = `+ ${ganancias}`;
+    $("balance-gastos").innerHTML = `- ${gastos}`;
+    $("balance-total").innerHTML = `${balance}`;
+};
 
 // -------------------
 // DATOS OPERACIONES
@@ -116,6 +116,7 @@ const agregarOperacion = () => {
     };
     operaciones = [...operaciones, operacion];
     mostrarOperaciones(operaciones);
+    //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
@@ -369,6 +370,7 @@ const operacionesCategoriaEliminada = (id) => {
     actualizarInfo("operaciones", operaciones);
 };
 
+//------------------------FILTROS ----------------------
 const filtroGastoGanancia = () => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
@@ -381,5 +383,66 @@ const filtroGastoGanancia = () => {
 };
 
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
+
+const filtroOrdenar = (operaciones) => {
+    switch ($("filtro-ordenar").value) {
+        case ($("filtro-ordenar").value = "A/Z"):
+            operaciones = operaciones.sort((a, b) => {
+                return a.descripcion.localeCompare(b.descripcion, {
+                    ignorePunctuation: true,
+                });
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Z/A"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return a.descripcion.localeCompare(b.descripcion, {
+                        ignorePunctuation: true,
+                    });
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Mayor monto"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return a.monto - b.monto;
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Menor monto"):
+            operaciones = operaciones.sort((a, b) => {
+                return a.monto - b.monto;
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Menos reciente"):
+            console.log("menos reciente");
+            operaciones = operaciones.sort((a, b) => {
+                return (
+                    new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+                );
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Mas reciente"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return (
+                        new Date(a.fecha).getTime() -
+                        new Date(b.fecha).getTime()
+                    );
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+    }
+};
+
+$("filtro-ordenar").addEventListener("change", () =>
+    filtroOrdenar(operaciones)
+);
 
 inicializar();
