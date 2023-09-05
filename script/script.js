@@ -383,4 +383,6 @@ const filtroOrdenar = () => {
     }
 };
 
+$("filtro-ordenar").addEventListener("change", () => filtroOrdenar());
+
 inicializar();
