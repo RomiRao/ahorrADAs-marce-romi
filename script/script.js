@@ -118,6 +118,7 @@ const agregarOperacion = () => {
     mostrarOperaciones(operaciones);
     //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
+    actualizarInfo("categorias", categorias);
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
     calcularBalance(operaciones);
@@ -188,6 +189,7 @@ const editarOperacion = (id) => {
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
+            const fechaDate = new Date(fecha);
             $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
@@ -201,9 +203,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fecha.getDate() + 1}/${
-                fecha.getMonth() + 1
-            }/${fecha.getFullYear()}
+                ${fechaDate.getDate() + 1}/${
+                fechaDate.getMonth() + 1
+            }/${fechaDate.getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
