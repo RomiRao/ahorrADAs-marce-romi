@@ -443,6 +443,20 @@ const filtroOrdenar = (operaciones) => {
     }
 };
 
+//Segun CATEGORIA
+const filtroCategoria = () => {
+    if ($("filtro-categoria").value !== "Todos") {
+        let operacionesAMostrar = operaciones.filter(
+            (operacion) => operacion.categoria === $("filtro-categoria").value
+        );
+        mostrarOperaciones(operacionesAMostrar);
+    } else {
+        mostrarOperaciones(operaciones);
+    }
+};
+
+$("filtro-categoria").addEventListener("change", () => filtroCategoria());
+
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
 $("filtro-ordenar").addEventListener("change", () =>
