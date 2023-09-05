@@ -83,17 +83,6 @@ $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
 // ---------------------Nueva Operacion---------------------
 
-//definiendo el valor del input fecha
-const fechaElegida = () => {
-    let operacionFecha = new Date($("fecha").value);
-    let mes = operacionFecha.getMonth() + 1;
-    let dia = operacionFecha.getDate();
-    let anio = operacionFecha.getFullYear();
-    if (dia < 10) dia = "0" + dia;
-    if (mes < 10) mes = "0" + mes;
-    return dia + "/" + mes + "/" + anio;
-};
-
 //Objeto operacion armado para luego pushearlo al array
 const agregarOperacion = () => {
     const operacion = {
@@ -102,12 +91,13 @@ const agregarOperacion = () => {
         categoria: $("categoria-nueva-op").value,
         monto: $("monto-nueva-op").value,
         tipo: $("tipo-nueva-op").value,
-        fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
+        fecha: new Date($("fecha-nueva-op").value),
     };
     operaciones = [...operaciones, operacion];
     mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
     mostrarVista("seccion-balance");
+    limpiarVistaNuevaOP();
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -115,6 +105,15 @@ $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
 $("cancelar-btn-nueva-op").addEventListener("click", () => {
     mostrarVista("seccion-balance");
 });
+
+//limpiar vista nueva-op
+const limpiarVistaNuevaOP = () => {
+    $("descripcion-nueva-op").value = "";
+    $("monto-nueva-op").value = 0;
+    $("tipo-nueva-op").value = "Gasto";
+    $("categoria-nueva-op").value = categorias[0].id;
+    $("fecha-nueva-op").valueAsDate = new Date();
+};
 
 //Iterar y mostrar
 const mostrarOperaciones = (operaciones) => {
@@ -179,7 +178,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fecha}
+                ${fecha.getDate() + 1}/${
+                fecha.getMonth() + 1
+            }/${fecha.getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
@@ -345,5 +346,18 @@ const operacionesCategoriaEliminada = (id) => {
     mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
 };
+
+const filtroGastoGanancia = () => {
+    if ($("filtro-tipo").value !== "Todos") {
+        let operacionesAMostrar = operaciones.filter(
+            (operacion) => operacion.tipo === $("filtro-tipo").value
+        );
+        mostrarOperaciones(operacionesAMostrar);
+    } else {
+        mostrarOperaciones(operaciones);
+    }
+};
+
+$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
 inicializar();
