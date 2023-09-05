@@ -361,4 +361,26 @@ const filtroGastoGanancia = () => {
 
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
+const filtroOrdenar = () => {
+    switch (operaciones) {
+        case "A/Z":
+            operaciones = operaciones.sort((a, b) => {
+                return a.descripcion.localeCompare(b.descripcion, {
+                    ignorePunctuation: true,
+                });
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case "Z/A":
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return a.descripcion.localeCompare(b.descripcion, {
+                        ignorePunctuation: true,
+                    });
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+    }
+};
+
 inicializar();
