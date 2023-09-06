@@ -447,7 +447,7 @@ const filtroOrdenar = (operaciones) => {
 
 //Segun CATEGORIA
 const filtroCategoria = () => {
-    if ($("filtro-categoria").value !== "Todos") {
+    if ($("filtro-categoria").value !== "Todas") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.categoria === $("filtro-categoria").value
         );
