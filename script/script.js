@@ -454,6 +454,18 @@ const filtroCategoria = () => {
     }
 };
 
+//Segun desde-Fecha
+const filtroDesdeFecha = () => {
+    let operacionesAMostrar = operaciones.filter(
+        (operacion) =>
+            new Date(operacion.fecha) > new Date($("fecha-filtro").value)
+    );
+    console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
+    mostrarOperaciones(operacionesAMostrar);
+};
+
+$("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
+
 $("filtro-categoria").addEventListener("change", () => filtroCategoria());
 
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
