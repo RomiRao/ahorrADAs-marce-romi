@@ -298,6 +298,9 @@ const crearLista = (listaDeCategorias) => {
 const mostrarOpciones = (categorias) => {
     $$(".select-categorias").forEach((select) => {
         select.innerHTML = "";
+        if (select.id === "filtro-categoria") {
+            select.innerHTML += `<option value="Todas">Todas</option>`;
+        }
         for (let { id, nombre } of categorias) {
             select.innerHTML += `<option value="${id}">${nombre}</option>`;
         }
