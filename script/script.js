@@ -382,9 +382,9 @@ const filtroGastoGanancia = (operaciones) => {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.tipo === $("filtro-tipo").value
         );
-        mostrarOperaciones(operacionesAMostrar);
+        return operacionesAMostrar;
     } else {
-        mostrarOperaciones(operaciones);
+        return operaciones;
     }
 };
 
@@ -397,7 +397,7 @@ const filtroOrdenar = (operaciones) => {
                     ignorePunctuation: true,
                 });
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Z/A"):
             operaciones = operaciones
@@ -407,7 +407,7 @@ const filtroOrdenar = (operaciones) => {
                     });
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Mayor monto"):
             operaciones = operaciones
@@ -415,13 +415,13 @@ const filtroOrdenar = (operaciones) => {
                     return a.monto - b.monto;
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Menor monto"):
             operaciones = operaciones.sort((a, b) => {
                 return a.monto - b.monto;
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Menos reciente"):
             operaciones = operaciones.sort((a, b) => {
@@ -429,7 +429,7 @@ const filtroOrdenar = (operaciones) => {
                     new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
                 );
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Mas reciente"):
             operaciones = operaciones
@@ -440,7 +440,7 @@ const filtroOrdenar = (operaciones) => {
                     );
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
     }
 };
@@ -451,9 +451,9 @@ const filtroCategoria = (operaciones) => {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.categoria === $("filtro-categoria").value
         );
-        mostrarOperaciones(operacionesAMostrar);
+        return operacionesAMostrar;
     } else {
-        mostrarOperaciones(operaciones);
+        return operaciones;
     }
 };
 
@@ -463,8 +463,7 @@ const filtroDesdeFecha = (operaciones) => {
         (operacion) =>
             new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
     );
-    console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
-    mostrarOperaciones(operacionesAMostrar);
+    return operacionesAMostrar;
 };
 
 const ordenarOperaciones = () => {
@@ -474,14 +473,17 @@ const ordenarOperaciones = () => {
     return filtroOrdenar(operacionesSegunFecha);
 };
 
-$("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
+const ordenarYBalance = () => {
+    let operacionesOrdenadas = ordenarOperaciones();
+    mostrarOperaciones(operacionesOrdenadas);
+};
 
-$("filtro-categoria").addEventListener("change", () => filtroCategoria());
+$("fecha-filtro").addEventListener("change", () => ordenarYBalance());
 
-$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
+$("filtro-categoria").addEventListener("change", () => ordenarYBalance());
 
-$("filtro-ordenar").addEventListener("change", () =>
-    filtroOrdenar(operaciones)
-);
+$("filtro-tipo").addEventListener("change", () => ordenarYBalance());
+
+$("filtro-ordenar").addEventListener("change", () => ordenarYBalance());
 
 inicializar();
