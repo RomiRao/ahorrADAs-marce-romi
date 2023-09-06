@@ -5,7 +5,6 @@ const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
     mostrarOperaciones(operaciones);
-    calcularBalance(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
 };
@@ -93,8 +92,8 @@ const calcularBalance = (operaciones) => {
 
     const balance = ganancias - gastos;
 
-    $("balance-ganancias").innerHTML = `+ ${ganancias}`;
-    $("balance-gastos").innerHTML = `- ${gastos}`;
+    $("balance-ganancias").innerHTML = `+${ganancias}`;
+    $("balance-gastos").innerHTML = `-${gastos}`;
     $("balance-total").innerHTML = `${balance}`;
 };
 
@@ -475,6 +474,7 @@ const ordenarOperaciones = () => {
 
 const ordenarYBalance = () => {
     let operacionesOrdenadas = ordenarOperaciones();
+    calcularBalance(operacionesOrdenadas);
     mostrarOperaciones(operacionesOrdenadas);
 };
 
