@@ -203,7 +203,7 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fechaDate.getDate() + 1}/${
+                ${fechaDate.getDate()}/${
                 fechaDate.getMonth() + 1
             }/${fechaDate.getFullYear()}
             </span>
@@ -458,7 +458,7 @@ const filtroCategoria = () => {
 const filtroDesdeFecha = () => {
     let operacionesAMostrar = operaciones.filter(
         (operacion) =>
-            new Date(operacion.fecha) > new Date($("fecha-filtro").value)
+            new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
     );
     console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
     mostrarOperaciones(operacionesAMostrar);
