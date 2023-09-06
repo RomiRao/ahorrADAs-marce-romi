@@ -377,7 +377,7 @@ const operacionesCategoriaEliminada = (id) => {
 
 //------------------------FILTROS ----------------------
 //Segun TIPO
-const filtroGastoGanancia = () => {
+const filtroGastoGanancia = (operaciones) => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.tipo === $("filtro-tipo").value
@@ -446,7 +446,7 @@ const filtroOrdenar = (operaciones) => {
 };
 
 //Segun CATEGORIA
-const filtroCategoria = () => {
+const filtroCategoria = (operaciones) => {
     if ($("filtro-categoria").value !== "Todas") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.categoria === $("filtro-categoria").value
@@ -458,13 +458,20 @@ const filtroCategoria = () => {
 };
 
 //Segun desde-Fecha
-const filtroDesdeFecha = () => {
+const filtroDesdeFecha = (operaciones) => {
     let operacionesAMostrar = operaciones.filter(
         (operacion) =>
             new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
     );
     console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
     mostrarOperaciones(operacionesAMostrar);
+};
+
+const ordenarOperaciones = () => {
+    let operacionesSegunGasto = filtroGastoGanancia(operaciones);
+    let operacionesSegunCategoria = filtroCategoria(operacionesSegunGasto);
+    let operacionesSegunFecha = filtroDesdeFecha(operacionesSegunCategoria);
+    return filtroOrdenar(operacionesSegunFecha);
 };
 
 $("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
