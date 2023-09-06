@@ -203,7 +203,7 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fechaDate.getDate() + 1}/${
+                ${fechaDate.getDate()}/${
                 fechaDate.getMonth() + 1
             }/${fechaDate.getFullYear()}
             </span>
@@ -421,7 +421,6 @@ const filtroOrdenar = (operaciones) => {
             mostrarOperaciones(operaciones);
             break;
         case ($("filtro-ordenar").value = "Menos reciente"):
-            console.log("menos reciente");
             operaciones = operaciones.sort((a, b) => {
                 return (
                     new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
@@ -454,6 +453,18 @@ const filtroCategoria = () => {
         mostrarOperaciones(operaciones);
     }
 };
+
+//Segun desde-Fecha
+const filtroDesdeFecha = () => {
+    let operacionesAMostrar = operaciones.filter(
+        (operacion) =>
+            new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
+    );
+    console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
+    mostrarOperaciones(operacionesAMostrar);
+};
+
+$("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
 
 $("filtro-categoria").addEventListener("change", () => filtroCategoria());
 
