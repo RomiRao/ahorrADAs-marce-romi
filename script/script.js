@@ -10,6 +10,7 @@ const inicializar = () => {
         localStorage.setItem("categorias",JSON.stringify(categorias));
     }
     mostrarOperaciones(operaciones);
+    calcularBalance(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
 };
@@ -86,7 +87,7 @@ const abrirNuevaOperacion = () => {
 
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
-//-----Funcionabilidad 
+//-----Funcionabilidad
 const calcularBalance = (operaciones) => {
     let ganancias = 0;
     let gastos = 0;
@@ -97,15 +98,14 @@ const calcularBalance = (operaciones) => {
         } else if (operacion.tipo === "Gasto") {
             gastos += Number(operacion.monto);
         }
-    })
+    });
 
-    const balance = ganancias - gastos
-    
-    $("balance-ganancias").innerHTML = `+ ${ganancias}`
-    $("balance-gastos").innerHTML = `- ${gastos}`
-    $("balance-total").innerHTML = `${balance}`
-}
+    const balance = ganancias - gastos;
 
+    $("balance-ganancias").innerHTML = `+ ${ganancias}`;
+    $("balance-gastos").innerHTML = `- ${gastos}`;
+    $("balance-total").innerHTML = `${balance}`;
+};
 
 // -------------------
 // DATOS OPERACIONES
@@ -125,7 +125,9 @@ const agregarOperacion = () => {
     };
     operaciones = [...operaciones, operacion];
     mostrarOperaciones(operaciones);
+    //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
+    actualizarInfo("categorias", categorias);
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
     calcularBalance(operaciones);
@@ -196,7 +198,7 @@ const editarOperacion = (id) => {
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
-            let date = new Date(fecha)
+            const fechaDate = new Date(fecha);
             $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
@@ -210,9 +212,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${date.getDate() + 1}/${
-                date.getMonth() + 1
-            }/${date.getFullYear()}
+                ${fechaDate.getDate()}/${
+                fechaDate.getMonth() + 1
+            }/${fechaDate.getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
@@ -305,6 +307,9 @@ const crearLista = (listaDeCategorias) => {
 const mostrarOpciones = (categorias) => {
     $$(".select-categorias").forEach((select) => {
         select.innerHTML = "";
+        if (select.id === "filtro-categoria") {
+            select.innerHTML += `<option value="Todas">Todas</option>`;
+        }
         for (let { id, nombre } of categorias) {
             select.innerHTML += `<option value="${id}">${nombre}</option>`;
         }
@@ -379,6 +384,8 @@ const operacionesCategoriaEliminada = (id) => {
     actualizarInfo("operaciones", operaciones);
 };
 
+//------------------------FILTROS ----------------------
+//Segun TIPO
 const filtroGastoGanancia = () => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
@@ -390,7 +397,94 @@ const filtroGastoGanancia = () => {
     }
 };
 
+//Ordenar por...
+const filtroOrdenar = (operaciones) => {
+    switch ($("filtro-ordenar").value) {
+        case ($("filtro-ordenar").value = "A/Z"):
+            operaciones = operaciones.sort((a, b) => {
+                return a.descripcion.localeCompare(b.descripcion, {
+                    ignorePunctuation: true,
+                });
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Z/A"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return a.descripcion.localeCompare(b.descripcion, {
+                        ignorePunctuation: true,
+                    });
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Mayor monto"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return a.monto - b.monto;
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Menor monto"):
+            operaciones = operaciones.sort((a, b) => {
+                return a.monto - b.monto;
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Menos reciente"):
+            operaciones = operaciones.sort((a, b) => {
+                return (
+                    new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
+                );
+            });
+            mostrarOperaciones(operaciones);
+            break;
+        case ($("filtro-ordenar").value = "Mas reciente"):
+            operaciones = operaciones
+                .sort((a, b) => {
+                    return (
+                        new Date(a.fecha).getTime() -
+                        new Date(b.fecha).getTime()
+                    );
+                })
+                .reverse();
+            mostrarOperaciones(operaciones);
+            break;
+    }
+};
+
+//Segun CATEGORIA
+const filtroCategoria = () => {
+    if ($("filtro-categoria").value !== "Todas") {
+        let operacionesAMostrar = operaciones.filter(
+            (operacion) => operacion.categoria === $("filtro-categoria").value
+        );
+        mostrarOperaciones(operacionesAMostrar);
+    } else {
+        mostrarOperaciones(operaciones);
+    }
+};
+
+//Segun desde-Fecha
+const filtroDesdeFecha = () => {
+    let operacionesAMostrar = operaciones.filter(
+        (operacion) =>
+            new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
+    );
+    console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
+    mostrarOperaciones(operacionesAMostrar);
+};
+
+$("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
+
+$("filtro-categoria").addEventListener("change", () => filtroCategoria());
+
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
+
+$("filtro-ordenar").addEventListener("change", () =>
+    filtroOrdenar(operaciones)
+);
 
 inicializar();
 
