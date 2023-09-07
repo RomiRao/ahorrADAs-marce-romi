@@ -116,7 +116,7 @@ const agregarOperacion = () => {
         categoria: $("categoria-nueva-op").value,
         monto: $("monto-nueva-op").value,
         tipo: $("tipo-nueva-op").value,
-        fecha: new Date($("fecha-nueva-op").value),
+        fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
     operaciones = [...operaciones, operacion];
     actualizarInfo("operaciones", operaciones);
@@ -183,15 +183,14 @@ const editarOperacion = (id) => {
     let nuevaListaOperaciones = operaciones.map((operacion) =>
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
-    mostrarVista("seccion-balance");
-    mostrarOperaciones(nuevaListaOperaciones);
     actualizarInfo("operaciones", nuevaListaOperaciones);
+    ordenarYBalance();
+    mostrarVista("seccion-balance");
 };
 
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
-            const fechaDate = new Date(fecha);
             $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
@@ -205,9 +204,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fechaDate.getDate()}/${
-                fechaDate.getMonth() + 1
-            }/${fechaDate.getFullYear()}
+                ${new Date(fecha).getDate()}/${
+                new Date(fecha).getMonth() + 1
+            }/${new Date(fecha).getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
