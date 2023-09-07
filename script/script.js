@@ -3,22 +3,8 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-const inicializar = () => {
-    mostrarOperaciones(operaciones);
-    calcularBalance(operaciones);
-    crearLista(categorias);
-    mostrarOpciones(categorias);
-};
-
-//Para definir datos a nivel local
-const actualizarInfo = (clave, datos) => {
-    localStorage.setItem(clave, JSON.stringify(datos));
-};
-
-let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
-
 //Definiendo fecha actual
-window.onload = () => {
+const cargarFechas = () => {
     let fechaHoy = new Date();
     let mes = fechaHoy.getMonth() + 1;
     let dia = fechaHoy.getDate();
@@ -28,6 +14,25 @@ window.onload = () => {
     $("fecha-nueva-op").value = anio + "-" + mes + "-" + dia;
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
+
+const inicializar = () => {
+    cargarFechas();
+    mostrarOperaciones(operaciones);
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    ordenarYBalance();
+};
+
+const traerOperaciones = () => {
+    return JSON.parse(localStorage.getItem("operaciones"));
+};
+
+//Para definir datos a nivel local
+const actualizarInfo = (clave, datos) => {
+    localStorage.setItem(clave, JSON.stringify(datos));
+};
+
+let operaciones = traerOperaciones() || [];
 
 // *****************
 // NAVBAR
@@ -93,8 +98,8 @@ const calcularBalance = (operaciones) => {
 
     const balance = ganancias - gastos;
 
-    $("balance-ganancias").innerHTML = `+ ${ganancias}`;
-    $("balance-gastos").innerHTML = `- ${gastos}`;
+    $("balance-ganancias").innerHTML = `+${ganancias}`;
+    $("balance-gastos").innerHTML = `-${gastos}`;
     $("balance-total").innerHTML = `${balance}`;
 };
 
@@ -115,13 +120,11 @@ const agregarOperacion = () => {
         fecha: new Date($("fecha-nueva-op").value),
     };
     operaciones = [...operaciones, operacion];
-    mostrarOperaciones(operaciones);
-    //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
     actualizarInfo("categorias", categorias);
+    ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
-    calcularBalance(operaciones);
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -147,8 +150,8 @@ const mostrarOperaciones = (operaciones) => {
 
 const eliminarOperacion = (id) => {
     operaciones = operaciones.filter((operacion) => operacion.id !== id);
-    mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
+    ordenarYBalance();
 };
 
 const obtenerOperacion = (idOperacion) => {
@@ -371,20 +374,20 @@ const eliminarCategoria = (id) => {
 
 const operacionesCategoriaEliminada = (id) => {
     operaciones = operaciones.filter((operacion) => operacion.categoria !== id);
-    mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
+    ordenarYBalance();
 };
 
 //------------------------FILTROS ----------------------
 //Segun TIPO
-const filtroGastoGanancia = () => {
+const filtroGastoGanancia = (operaciones) => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.tipo === $("filtro-tipo").value
         );
-        mostrarOperaciones(operacionesAMostrar);
+        return operacionesAMostrar;
     } else {
-        mostrarOperaciones(operaciones);
+        return operaciones;
     }
 };
 
@@ -397,7 +400,7 @@ const filtroOrdenar = (operaciones) => {
                     ignorePunctuation: true,
                 });
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Z/A"):
             operaciones = operaciones
@@ -407,7 +410,7 @@ const filtroOrdenar = (operaciones) => {
                     });
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Mayor monto"):
             operaciones = operaciones
@@ -415,13 +418,13 @@ const filtroOrdenar = (operaciones) => {
                     return a.monto - b.monto;
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Menor monto"):
             operaciones = operaciones.sort((a, b) => {
                 return a.monto - b.monto;
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Menos reciente"):
             operaciones = operaciones.sort((a, b) => {
@@ -429,7 +432,7 @@ const filtroOrdenar = (operaciones) => {
                     new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
                 );
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Mas reciente"):
             operaciones = operaciones
@@ -440,41 +443,50 @@ const filtroOrdenar = (operaciones) => {
                     );
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
     }
 };
 
 //Segun CATEGORIA
-const filtroCategoria = () => {
+const filtroCategoria = (operaciones) => {
     if ($("filtro-categoria").value !== "Todas") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.categoria === $("filtro-categoria").value
         );
-        mostrarOperaciones(operacionesAMostrar);
+        return operacionesAMostrar;
     } else {
-        mostrarOperaciones(operaciones);
+        return operaciones;
     }
 };
 
 //Segun desde-Fecha
-const filtroDesdeFecha = () => {
-    let operacionesAMostrar = operaciones.filter(
+const filtroDesdeFecha = (operaciones) => {
+    return operaciones.filter(
         (operacion) =>
             new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
     );
-    console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
-    mostrarOperaciones(operacionesAMostrar);
 };
 
-$("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
+const ordenarOperaciones = () => {
+    let operacionesSegunGasto = filtroGastoGanancia(traerOperaciones());
+    let operacionesSegunCategoria = filtroCategoria(operacionesSegunGasto);
+    let operacionesSegunFecha = filtroDesdeFecha(operacionesSegunCategoria);
+    return filtroOrdenar(operacionesSegunFecha);
+};
 
-$("filtro-categoria").addEventListener("change", () => filtroCategoria());
+const ordenarYBalance = () => {
+    let operacionesOrdenadas = ordenarOperaciones();
+    calcularBalance(operacionesOrdenadas);
+    mostrarOperaciones(operacionesOrdenadas);
+};
 
-$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
+$("fecha-filtro").addEventListener("change", () => ordenarYBalance());
 
-$("filtro-ordenar").addEventListener("change", () =>
-    filtroOrdenar(operaciones)
-);
+$("filtro-categoria").addEventListener("change", () => ordenarYBalance());
+
+$("filtro-tipo").addEventListener("change", () => ordenarYBalance());
+
+$("filtro-ordenar").addEventListener("change", () => ordenarYBalance());
 
 inicializar();
