@@ -150,8 +150,8 @@ const mostrarOperaciones = (operaciones) => {
 
 const eliminarOperacion = (id) => {
     operaciones = operaciones.filter((operacion) => operacion.id !== id);
-    mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
+    ordenarYBalance();
 };
 
 const obtenerOperacion = (idOperacion) => {
@@ -374,8 +374,8 @@ const eliminarCategoria = (id) => {
 
 const operacionesCategoriaEliminada = (id) => {
     operaciones = operaciones.filter((operacion) => operacion.categoria !== id);
-    mostrarOperaciones(operaciones);
     actualizarInfo("operaciones", operaciones);
+    ordenarYBalance();
 };
 
 //------------------------FILTROS ----------------------
