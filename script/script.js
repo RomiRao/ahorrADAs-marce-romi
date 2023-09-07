@@ -3,21 +3,8 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
-const inicializar = () => {
-    mostrarOperaciones(operaciones);
-    crearLista(categorias);
-    mostrarOpciones(categorias);
-};
-
-//Para definir datos a nivel local
-const actualizarInfo = (clave, datos) => {
-    localStorage.setItem(clave, JSON.stringify(datos));
-};
-
-let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
-
 //Definiendo fecha actual
-window.onload = () => {
+const cargarFechas = () => {
     let fechaHoy = new Date();
     let mes = fechaHoy.getMonth() + 1;
     let dia = fechaHoy.getDate();
@@ -27,6 +14,25 @@ window.onload = () => {
     $("fecha-nueva-op").value = anio + "-" + mes + "-" + dia;
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
+
+const inicializar = () => {
+    cargarFechas();
+    mostrarOperaciones(operaciones);
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    ordenarYBalance();
+};
+
+const traerOperaciones = () => {
+    return JSON.parse(localStorage.getItem("operaciones"));
+};
+
+//Para definir datos a nivel local
+const actualizarInfo = (clave, datos) => {
+    localStorage.setItem(clave, JSON.stringify(datos));
+};
+
+let operaciones = traerOperaciones() || [];
 
 // *****************
 // NAVBAR
@@ -114,13 +120,11 @@ const agregarOperacion = () => {
         fecha: new Date($("fecha-nueva-op").value),
     };
     operaciones = [...operaciones, operacion];
-    mostrarOperaciones(operaciones);
-    //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
     actualizarInfo("categorias", categorias);
+    ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
-    calcularBalance(operaciones);
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -458,15 +462,14 @@ const filtroCategoria = (operaciones) => {
 
 //Segun desde-Fecha
 const filtroDesdeFecha = (operaciones) => {
-    let operacionesAMostrar = operaciones.filter(
+    return operaciones.filter(
         (operacion) =>
             new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
     );
-    return operacionesAMostrar;
 };
 
 const ordenarOperaciones = () => {
-    let operacionesSegunGasto = filtroGastoGanancia(operaciones);
+    let operacionesSegunGasto = filtroGastoGanancia(traerOperaciones());
     let operacionesSegunCategoria = filtroCategoria(operacionesSegunGasto);
     let operacionesSegunFecha = filtroDesdeFecha(operacionesSegunCategoria);
     return filtroOrdenar(operacionesSegunFecha);
