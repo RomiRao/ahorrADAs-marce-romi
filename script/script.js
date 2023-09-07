@@ -506,9 +506,8 @@ const totalesPorCategorias = (operaciones) => {
             montoMayorGanancia = totalGanancias
         }
     }
-    console.log(categoriaConMayorGanancia, montoMayorGanancia)
     $("categoria-mayor-ganancia").innerHTML = `${categoriaConMayorGanancia}`
-    $("monto-mayor-ganancia").innerHTML = `${montoMayorGanancia}`
+    $("monto-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`
 }
 totalesPorCategorias(operaciones)
 
@@ -531,7 +530,7 @@ const totalesGastosPorCategorias = (operaciones) => {
         }
     }
     $("categoria-mayor-gasto").innerHTML = `${categoriaConMayorGasto}`
-    $("monto-mayor-gasto").innerHTML = `${montoMayorGasto}`
+    $("monto-mayor-gasto").innerHTML = `-$${montoMayorGasto}`
 }
 
 totalesGastosPorCategorias(operaciones)
