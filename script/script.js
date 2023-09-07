@@ -17,7 +17,6 @@ const cargarFechas = () => {
 
 const inicializar = () => {
     cargarFechas();
-    mostrarOperaciones(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
     ordenarYBalance();
