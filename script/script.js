@@ -4,9 +4,7 @@ const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
-    console.log("holi")
     if (!traerCategorias()){
-        console.log("hola")
         localStorage.setItem("categorias",JSON.stringify(categorias));
     }
     mostrarOperaciones(operaciones);
@@ -490,7 +488,7 @@ inicializar();
 
 //----Reportes
 
-// Totales por categorias
+// Mayor ganancia por categoria
 const totalesPorCategorias = (operaciones) => {
     let categoriaConMayorGanancia = "";
     let montoMayorGanancia = 0;
@@ -509,5 +507,31 @@ const totalesPorCategorias = (operaciones) => {
         }
     }
     console.log(categoriaConMayorGanancia, montoMayorGanancia)
+    $("categoria-mayor-ganancia").innerHTML = `${categoriaConMayorGanancia}`
+    $("monto-mayor-ganancia").innerHTML = `${montoMayorGanancia}`
 }
 totalesPorCategorias(operaciones)
+
+// Mayor gasto por categoria
+const totalesGastosPorCategorias = (operaciones) => {
+    let categoriaConMayorGasto = "";
+    let montoMayorGasto = 0;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gastosPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo === "Gasto");
+        let totalGastos = gastosPorCategoria.reduce((acum, ganancia) => 
+            acum + ganancia.monto
+        , 0)
+        if (categoriaConMayorGasto === "" && montoMayorGasto === 0) {
+            categoriaConMayorGasto = nombre
+            montoMayorGasto = totalGastos
+        } else if (totalGastos > montoMayorGasto) {
+            categoriaConMayorGasto = nombre
+            montoMayorGasto = totalGastos
+        }
+    }
+    $("categoria-mayor-gasto").innerHTML = `${categoriaConMayorGasto}`
+    $("monto-mayor-gasto").innerHTML = `${montoMayorGasto}`
+}
+
+totalesGastosPorCategorias(operaciones)
