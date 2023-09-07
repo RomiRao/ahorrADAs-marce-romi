@@ -4,6 +4,11 @@ const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
+    console.log("holi")
+    if (!traerCategorias()){
+        console.log("hola")
+        localStorage.setItem("categorias",JSON.stringify(categorias));
+    }
     mostrarOperaciones(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
@@ -13,6 +18,10 @@ const inicializar = () => {
 const actualizarInfo = (clave, datos) => {
     localStorage.setItem(clave, JSON.stringify(datos));
 };
+
+const traerCategorias = () => {
+    return JSON.parse(localStorage.getItem(categorias));
+}
 
 let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
 
@@ -110,7 +119,7 @@ const agregarOperacion = () => {
         id: randomId(),
         descripcion: $("descripcion-nueva-op").value,
         categoria: $("categoria-nueva-op").value,
-        monto: $("monto-nueva-op").value,
+        monto: Number($("monto-nueva-op").value),
         tipo: $("tipo-nueva-op").value,
         fecha: new Date($("fecha-nueva-op").value),
     };
@@ -187,6 +196,7 @@ const editarOperacion = (id) => {
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
+            let date = new Date(fecha)
             $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
@@ -200,9 +210,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fecha.getDate() + 1}/${
-                fecha.getMonth() + 1
-            }/${fecha.getFullYear()}
+                ${date.getDate() + 1}/${
+                date.getMonth() + 1
+            }/${date.getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
@@ -383,3 +393,27 @@ const filtroGastoGanancia = () => {
 $("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
 
 inicializar();
+
+//----Reportes
+
+// Totales por categorias
+const totalesPorCategorias = (operaciones) => {
+    let categoriaConMayorGanancia = "";
+    let montoMayorGanancia = 0;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) => 
+            acum + ganancia.monto
+        , 0)
+        if (categoriaConMayorGanancia === "" && montoMayorGanancia === 0) {
+            categoriaConMayorGanancia = nombre
+            montoMayorGanancia = totalGanancias
+        } else if (totalGanancias > montoMayorGanancia) {
+            categoriaConMayorGanancia = nombre
+            montoMayorGanancia = totalGanancias
+        }
+    }
+    console.log(categoriaConMayorGanancia, montoMayorGanancia)
+}
+totalesPorCategorias(operaciones)
