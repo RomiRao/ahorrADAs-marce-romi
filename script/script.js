@@ -17,7 +17,6 @@ const cargarFechas = () => {
 
 const inicializar = () => {
     cargarFechas();
-    mostrarOperaciones(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
     ordenarYBalance();
@@ -29,7 +28,7 @@ const traerOperaciones = () => {
 
 //Para definir datos a nivel local
 const actualizarInfo = (clave, datos) => {
-    localStorage.setItem(clave, JSON.stringify(datos));
+    localStorage.setItem(`${clave}`, JSON.stringify(datos));
 };
 
 let operaciones = traerOperaciones() || [];
@@ -117,11 +116,12 @@ const agregarOperacion = () => {
         categoria: $("categoria-nueva-op").value,
         monto: $("monto-nueva-op").value,
         tipo: $("tipo-nueva-op").value,
-        fecha: new Date($("fecha-nueva-op").value),
+        fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
     operaciones = [...operaciones, operacion];
     actualizarInfo("operaciones", operaciones);
     actualizarInfo("categorias", categorias);
+
     ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
@@ -173,6 +173,7 @@ const vistaEditarOperacion = (id) => {
 };
 
 const editarOperacion = (id) => {
+    console.log(id, operaciones);
     let nuevaOperacion = {
         id: id,
         descripcion: $("descripcion-op-editada").value,
@@ -181,18 +182,17 @@ const editarOperacion = (id) => {
         tipo: $("tipo-op-editada").value,
         fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
     };
-    let nuevaListaOperaciones = operaciones.map((operacion) =>
+    let nuevasOperaciones = operaciones.map((operacion) =>
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
-    mostrarVista("seccion-balance");
-    mostrarOperaciones(nuevaListaOperaciones);
-    actualizarInfo("operaciones", nuevaListaOperaciones);
+    actualizarInfo("operaciones", nuevasOperaciones);
+    //ordenarYBalance();
+    // mostrarVista("seccion-balance");
 };
 
 const iterarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
-            const fechaDate = new Date(fecha);
             $("operaciones").innerHTML += `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
@@ -206,9 +206,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fechaDate.getDate()}/${
-                fechaDate.getMonth() + 1
-            }/${fechaDate.getFullYear()}
+                ${new Date(fecha).getDate()}/${
+                new Date(fecha).getMonth() + 1
+            }/${new Date(fecha).getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
