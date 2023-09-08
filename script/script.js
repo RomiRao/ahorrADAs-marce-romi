@@ -28,7 +28,7 @@ const traerOperaciones = () => {
 
 //Para definir datos a nivel local
 const actualizarInfo = (clave, datos) => {
-    localStorage.setItem(clave, JSON.stringify(datos));
+    localStorage.setItem(`${clave}`, JSON.stringify(datos));
 };
 
 let operaciones = traerOperaciones() || [];
@@ -121,6 +121,7 @@ const agregarOperacion = () => {
     operaciones = [...operaciones, operacion];
     actualizarInfo("operaciones", operaciones);
     actualizarInfo("categorias", categorias);
+
     ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
@@ -172,6 +173,7 @@ const vistaEditarOperacion = (id) => {
 };
 
 const editarOperacion = (id) => {
+    console.log(id, operaciones);
     let nuevaOperacion = {
         id: id,
         descripcion: $("descripcion-op-editada").value,
@@ -180,12 +182,12 @@ const editarOperacion = (id) => {
         tipo: $("tipo-op-editada").value,
         fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
     };
-    let nuevaListaOperaciones = operaciones.map((operacion) =>
+    let nuevasOperaciones = operaciones.map((operacion) =>
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
-    actualizarInfo("operaciones", nuevaListaOperaciones);
-    ordenarYBalance();
-    mostrarVista("seccion-balance");
+    actualizarInfo("operaciones", nuevasOperaciones);
+    //ordenarYBalance();
+    // mostrarVista("seccion-balance");
 };
 
 const iterarOperaciones = (listaOperaciones) => {
