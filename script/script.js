@@ -186,8 +186,8 @@ const editarOperacion = (id) => {
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
     actualizarInfo("operaciones", nuevasOperaciones);
-    //ordenarYBalance();
-    // mostrarVista("seccion-balance");
+    ordenarYBalance();
+    mostrarVista("seccion-balance");
 };
 
 const iterarOperaciones = (listaOperaciones) => {
