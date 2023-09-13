@@ -22,8 +22,8 @@ const inicializar = () => {
     ordenarYBalance();
 };
 
-const traerOperaciones = () => {
-    return JSON.parse(localStorage.getItem("operaciones"));
+const traer = (clave) => {
+    return JSON.parse(localStorage.getItem(`${clave}`));
 };
 
 //Para definir datos a nivel local
@@ -31,7 +31,7 @@ const actualizarInfo = (clave, datos) => {
     localStorage.setItem(`${clave}`, JSON.stringify(datos));
 };
 
-let operaciones = traerOperaciones() || [];
+let operaciones = traer("operaciones") || [];
 
 // *****************
 // NAVBAR
@@ -142,13 +142,17 @@ const limpiarVistaNuevaOP = () => {
 };
 
 const eliminarOperacion = (id) => {
-    operaciones = operaciones.filter((operacion) => operacion.id !== id);
+    operaciones = traer("operaciones").filter(
+        (operacion) => operacion.id !== id
+    );
     actualizarInfo("operaciones", operaciones);
     ordenarYBalance();
 };
 
 const obtenerOperacion = (idOperacion) => {
-    return traerOperaciones().find((operacion) => operacion.id === idOperacion);
+    return traer("operaciones").find(
+        (operacion) => operacion.id === idOperacion
+    );
 };
 
 const vistaEditarOperacion = (id) => {
@@ -164,7 +168,6 @@ const vistaEditarOperacion = (id) => {
 };
 
 const editarOperacion = (id) => {
-    console.log("id pasado", id);
     let nuevaOperacion = {
         id: id,
         descripcion: $("descripcion-op-editada").value,
@@ -173,11 +176,10 @@ const editarOperacion = (id) => {
         tipo: $("tipo-op-editada").value,
         fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
     };
-    let nuevasOperaciones = traerOperaciones().map((operacion) =>
+    let nuevasOperaciones = traer("operaciones").map((operacion) =>
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
     actualizarInfo("operaciones", nuevasOperaciones);
-    console.log(nuevasOperaciones);
     ordenarYBalance();
     mostrarVista("seccion-balance");
 };
@@ -377,7 +379,9 @@ const eliminarCategoria = (id) => {
 };
 
 const operacionesCategoriaEliminada = (id) => {
-    operaciones = operaciones.filter((operacion) => operacion.categoria !== id);
+    operaciones = traer("operaciones").filter(
+        (operacion) => operacion.categoria !== id
+    );
     actualizarInfo("operaciones", operaciones);
     ordenarYBalance();
 };
@@ -473,7 +477,7 @@ const filtroDesdeFecha = (operaciones) => {
 };
 
 const ordenarOperaciones = () => {
-    let operacionesSegunGasto = filtroGastoGanancia(traerOperaciones());
+    let operacionesSegunGasto = filtroGastoGanancia(traer("operaciones"));
     let operacionesSegunCategoria = filtroCategoria(operacionesSegunGasto);
     let operacionesSegunFecha = filtroDesdeFecha(operacionesSegunCategoria);
     return filtroOrdenar(operacionesSegunFecha);
