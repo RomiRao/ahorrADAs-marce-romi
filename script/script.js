@@ -142,12 +142,6 @@ const limpiarVistaNuevaOP = () => {
     $("fecha-nueva-op").valueAsDate = new Date();
 };
 
-//Iterar y mostrar
-const mostrarOperaciones = (operaciones) => {
-    $("operaciones").innerHTML = "";
-    iterarOperaciones(operaciones);
-};
-
 const eliminarOperacion = (id) => {
     operaciones = operaciones.filter((operacion) => operacion.id !== id);
     actualizarInfo("operaciones", operaciones);
@@ -173,7 +167,7 @@ const vistaEditarOperacion = (id) => {
 };
 
 const editarOperacion = (id) => {
-    console.log(id, operaciones);
+    console.log("hoa", id);
     let nuevaOperacion = {
         id: id,
         descripcion: $("descripcion-op-editada").value,
@@ -186,14 +180,17 @@ const editarOperacion = (id) => {
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
     actualizarInfo("operaciones", nuevasOperaciones);
-    //ordenarYBalance();
-    // mostrarVista("seccion-balance");
+    console.log(operaciones);
+    ordenarYBalance();
+    mostrarVista("seccion-balance");
 };
 
-const iterarOperaciones = (listaOperaciones) => {
+const mostrarOperaciones = (listaOperaciones) => {
+    $("operaciones").innerHTML = "";
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
-            $("operaciones").innerHTML += `<div class="columns">
+            let contenedorOperacion = document.createElement("div");
+            contenedorOperacion.innerHTML = `<div class="columns">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
                 ${descripcion}
@@ -219,10 +216,20 @@ const iterarOperaciones = (listaOperaciones) => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id="${id}" onclick="vistaEditarOperacion('${id}')" href="#">Editar</a>
-            <a id="${id}" onclick="eliminarOperacion('${id}')" href="#" class="ml-3">Eliminar</a>
+            <a id='link-editar' href="#">Editar</a>
+            <a id='link-eliminar' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
+            let irAEditar = contenedorOperacion.querySelector("#link-editar");
+            let irAEliminar =
+                contenedorOperacion.querySelector("#link-eliminar");
+            irAEditar.onclick = () => {
+                vistaEditarOperacion(id);
+            };
+            irAEliminar.onclick = () => {
+                eliminarOperacion(id);
+            };
+            $("operaciones").appendChild(contenedorOperacion);
         }
     );
     noHayOperaciones();
