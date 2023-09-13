@@ -121,7 +121,6 @@ const agregarOperacion = () => {
     operaciones = [...operaciones, operacion];
     actualizarInfo("operaciones", operaciones);
     actualizarInfo("categorias", categorias);
-
     ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
@@ -149,7 +148,7 @@ const eliminarOperacion = (id) => {
 };
 
 const obtenerOperacion = (idOperacion) => {
-    return operaciones.find((operacion) => operacion.id === idOperacion);
+    return traerOperaciones().find((operacion) => operacion.id === idOperacion);
 };
 
 const vistaEditarOperacion = (id) => {
@@ -160,14 +159,12 @@ const vistaEditarOperacion = (id) => {
     $("tipo-op-editada").value = tipo;
     $("categoria-op-editada").value = categoria;
     $("fecha-op-editada").valueAsDate = new Date(fecha);
-    $("editar-op-btn").addEventListener("click", () => editarOperacion(id));
-    $("cancelar-op-btn").addEventListener("click", () =>
-        mostrarVista("seccion-balance")
-    );
+    $("editar-op-btn").onclick = () => editarOperacion(id);
+    $("cancelar-op-btn").onclick = () => mostrarVista("seccion-balance");
 };
 
 const editarOperacion = (id) => {
-    console.log("hoa", id);
+    console.log("id pasado", id);
     let nuevaOperacion = {
         id: id,
         descripcion: $("descripcion-op-editada").value,
@@ -176,11 +173,11 @@ const editarOperacion = (id) => {
         tipo: $("tipo-op-editada").value,
         fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
     };
-    let nuevasOperaciones = operaciones.map((operacion) =>
+    let nuevasOperaciones = traerOperaciones().map((operacion) =>
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
     actualizarInfo("operaciones", nuevasOperaciones);
-    console.log(operaciones);
+    console.log(nuevasOperaciones);
     ordenarYBalance();
     mostrarVista("seccion-balance");
 };
@@ -190,7 +187,7 @@ const mostrarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
             let contenedorOperacion = document.createElement("div");
-            contenedorOperacion.innerHTML = `<div class="columns">
+            contenedorOperacion.innerHTML = `<div class="columns py-2">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
                 ${descripcion}
