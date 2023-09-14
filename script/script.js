@@ -4,8 +4,8 @@ const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
-    if (!traerCategorias()){
-        localStorage.setItem("categorias",JSON.stringify(categorias));
+    if (!traerCategorias()) {
+        localStorage.setItem("categorias", JSON.stringify(categorias));
     }
     mostrarOperaciones(operaciones);
     calcularBalance(operaciones);
@@ -19,7 +19,7 @@ const actualizarInfo = (clave, datos) => {
 };
 
 const traerCategorias = () => {
-    return JSON.parse(localStorage.getItem(categorias));
+    return JSON.parse(localStorage.getItem("categorias"));
 }
 
 let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
@@ -210,14 +210,13 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fechaDate.getDate()}/${
-                fechaDate.getMonth() + 1
-            }/${fechaDate.getFullYear()}
+                ${fechaDate.getDate()}/${fechaDate.getMonth() + 1
+                }/${fechaDate.getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
-            tipo
-        )}">
+                    tipo
+                )}">
             <span>
                 ${tipoMonto(monto, tipo)}
             </span>
@@ -484,20 +483,20 @@ $("filtro-ordenar").addEventListener("change", () =>
     filtroOrdenar(operaciones)
 );
 
-inicializar();
+
 
 //----Reportes
 
 // Mayor ganancia por categoria
-const totalesPorCategorias = (operaciones) => {
+const mayorGananciaPorCategorias = (operaciones) => {
     let categoriaConMayorGanancia = "";
     let montoMayorGanancia = 0;
     for (let { nombre, id } of categorias) {
         let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
         let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
-        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) => 
-            acum + ganancia.monto
-        , 0)
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) =>
+            acum + Number(ganancia.monto)
+            , 0)
         if (categoriaConMayorGanancia === "" && montoMayorGanancia === 0) {
             categoriaConMayorGanancia = nombre
             montoMayorGanancia = totalGanancias
@@ -509,18 +508,18 @@ const totalesPorCategorias = (operaciones) => {
     $("categoria-mayor-ganancia").innerHTML = `${categoriaConMayorGanancia}`
     $("monto-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`
 }
-totalesPorCategorias(operaciones)
+mayorGananciaPorCategorias(operaciones)
 
 // Mayor gasto por categoria
-const totalesGastosPorCategorias = (operaciones) => {
+const mayorGastosPorCategorias = (operaciones) => {
     let categoriaConMayorGasto = "";
     let montoMayorGasto = 0;
     for (let { nombre, id } of categorias) {
         let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
         let gastosPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo === "Gasto");
-        let totalGastos = gastosPorCategoria.reduce((acum, ganancia) => 
-            acum + ganancia.monto
-        , 0)
+        let totalGastos = gastosPorCategoria.reduce((acum, gasto) =>
+            acum + Number(gasto.monto)
+            , 0)
         if (categoriaConMayorGasto === "" && montoMayorGasto === 0) {
             categoriaConMayorGasto = nombre
             montoMayorGasto = totalGastos
@@ -533,4 +532,8 @@ const totalesGastosPorCategorias = (operaciones) => {
     $("monto-mayor-gasto").innerHTML = `-$${montoMayorGasto}`
 }
 
-totalesGastosPorCategorias(operaciones)
+mayorGastosPorCategorias(operaciones)
+
+
+
+inicializar();
