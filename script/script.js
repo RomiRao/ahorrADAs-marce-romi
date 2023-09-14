@@ -11,18 +11,14 @@ const inicializar = () => {
     calcularBalance(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
-};
-
-//Para definir datos a nivel local
-const actualizarInfo = (clave, datos) => {
-    localStorage.setItem(clave, JSON.stringify(datos));
+    cargarFechas();
+    ordenarYBalance();
 };
 
 const traerCategorias = () => {
     return JSON.parse(localStorage.getItem("categorias"));
 }
 
-let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
 
 //Definiendo fecha actual
 const cargarFechas = () => {
@@ -36,12 +32,6 @@ const cargarFechas = () => {
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
 
-const inicializar = () => {
-    cargarFechas();
-    crearLista(categorias);
-    mostrarOpciones(categorias);
-    ordenarYBalance();
-};
 
 const traer = (clave) => {
     return JSON.parse(localStorage.getItem(`${clave}`));
