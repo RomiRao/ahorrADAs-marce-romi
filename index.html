@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -335,51 +335,38 @@
                         <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Resumen</h4>
                         <div class="columns">
                             <p class="column is-6 has-text-weight-semibold">Categoría con mayor ganancia</p>
-                            <p class="column is-3 has-text-right has-text-primary">x</p>
-                            <p class="column is-3 has-text-right has-text-success">$</p>
+                            <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-ganancia"></p>
+                            <p class="column is-3 has-text-right has-text-success" id="monto-mayor-ganancia"></p>
                         </div>
                         <div class="columns">
                             <p class="column is-6 has-text-weight-semibold">Categoría con mayor gasto</p>
-                            <p class="column is-3 has-text-right has-text-primary">x</p>
-                            <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold">$</p>
+                            <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-gasto"></p>
+                            <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mayor-gasto"></p>
                         </div>
                         <div class="columns">
                             <p class="column is-6 has-text-weight-semibold">Categoría con mayor balance</p>
-                            <p class="column is-3 has-text-right has-text-primary">x</p>
-                            <p class="column is-3 has-text-right has-text-weight-semibold">$</p>
+                            <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-balance"></p>
+                            <p class="column is-3 has-text-right has-text-weight-semibold" id="monto-mayor-balance"></p>
                         </div>
                         <div class="columns">
                             <p class="column is-6 has-text-weight-semibold">Mes con mayor ganancia</p>
-                            <p class="column is-3 has-text-right">dd/mm/aaaa</p>
-                            <p class="column is-3 has-text-right has-text-success has-text-weight-semibold">$</p>
+                            <p class="column is-3 has-text-right" id="mes-mayor-ganancia"></p>
+                            <p class="column is-3 has-text-right has-text-success has-text-weight-semibold" id="monto-mes-mayor-ganancia"></p>
                         </div>
                         <div class="columns">
-                            <p class="column is-6 has-text-weight-semibold">Mes con mayor gasto</p>
-                            <p class="column is-3 has-text-right">dd/mm/aaaa</p>
-                            <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold">$</p>
+                            <p class="column is-6 has-text-weight-semibold" >Mes con mayor gasto</p>
+                            <p class="column is-3 has-text-right" id="mes-mayor-gasto"></p>
+                            <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mes-mayor-gasto"></p>
                         </div>
                     </section>
                     <section class="section">
                         <h4 class="is-size-4 has-text-weight-semibold mb-5 pb-4">Totales por categorías</h4>
-                        <div>
-                            <div class="columns">
-                                <div class="column has-text-weight-semibold">Categoría</div>
-                                <div class="column has-text-weight-semibold has-text-right">Ganancias</div>
-                                <div class="column has-text-weight-semibold has-text-right">Gastos</div>
-                                <div class="column has-text-weight-semibold has-text-right">Balance</div>
-                            </div>
+                        <div id="totales-categorias">
                         </div>
                     </section>
                     <section class="section">
                         <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Totales por mes</h4>
-                        <div>
-                            <div class="columns">
-                                <div class="column has-text-weight-semibold">Mes</div>
-                                <div class="column has-text-weight-semibold has-text-right">Ganancias</div>
-                                <div class="column has-text-weight-semibold has-text-right">Gastos</div>
-                                <div class="column has-text-weight-semibold has-text-right">Balance</div>
-                            </div>
-                        </div>
+                        <div id="totales-por-mes"></div>
                     </section>
 
                     <!-- SECCION SIN REPORTES -->

@@ -3,6 +3,18 @@ const randomId = () => self.crypto.randomUUID();
 const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
+const inicializar = () => {
+    if (!traer("categorias")) {
+        localStorage.setItem("categorias", JSON.stringify(categorias));
+    }
+    mostrarOperaciones(operaciones);
+    calcularBalance(operaciones);
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    cargarFechas();
+    ordenarYBalance();
+};
+
 //Definiendo fecha actual
 const cargarFechas = () => {
     let fechaHoy = new Date();
@@ -15,12 +27,6 @@ const cargarFechas = () => {
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
 
-const inicializar = () => {
-    cargarFechas();
-    crearLista(categorias);
-    mostrarOpciones(categorias);
-    ordenarYBalance();
-};
 
 const traer = (clave) => {
     return JSON.parse(localStorage.getItem(`${clave}`));
@@ -114,7 +120,7 @@ const agregarOperacion = () => {
         id: randomId(),
         descripcion: $("descripcion-nueva-op").value,
         categoria: $("categoria-nueva-op").value,
-        monto: $("monto-nueva-op").value,
+        monto: Number($("monto-nueva-op").value),
         tipo: $("tipo-nueva-op").value,
         fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
@@ -208,8 +214,8 @@ const mostrarOperaciones = (listaOperaciones) => {
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
-            tipo
-        )}">
+                    tipo
+                )}">
             <span>
                 ${tipoMonto(monto, tipo)}
             </span>
@@ -258,7 +264,7 @@ const noHayOperaciones = () => {
 
 // ------------Funcionabilidad Categorias------------------
 
-let categorias = JSON.parse(localStorage.getItem("categorias")) || [
+let categorias = traer("categorias") || [
     {
         id: randomId(),
         nombre: "Comida",
@@ -286,8 +292,6 @@ let categorias = JSON.parse(localStorage.getItem("categorias")) || [
 ];
 
 //------Crear lista Categorias
-
-//Mostrar options de los select (categorias)
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
@@ -333,7 +337,7 @@ $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
 //----Obtener categoria
 const obtenerCategoria = (idCategoria, categorias) => {
-    return categorias.find((categoria) => categoria.id === idCategoria);
+    return traer("categorias").find((categoria) => categoria.id === idCategoria);
 };
 
 //----Mostrar vista editar categoria
@@ -342,9 +346,7 @@ const mostrarEditarCategoria = (id) => {
     $("editar-categoria").classList.remove("is-hidden");
     let categoriaAEditar = obtenerCategoria(id, categorias);
     $("input-editar").value = categoriaAEditar.nombre;
-    $("boton-editar").addEventListener("click", () =>
-        editarCategoria(categoriaAEditar.id)
-    );
+    $("boton-editar").onclick = () => editarCategoria(categoriaAEditar.id)
     ocultarEditarCategoria();
 };
 
@@ -360,7 +362,7 @@ const editarCategoria = (id) => {
         id: id,
         nombre: $("input-editar").value,
     };
-    let categoriasActualizadas = categorias.map((categoria) =>
+    let categoriasActualizadas = traer("categorias").map((categoria) =>
         categoria.id === id ? { ...nuevaCategoria } : categoria
     );
     crearLista(categoriasActualizadas);
@@ -371,7 +373,7 @@ const editarCategoria = (id) => {
 };
 
 const eliminarCategoria = (id) => {
-    categorias = categorias.filter((categoria) => categoria.id !== id);
+    categorias = traer("categorias").filter((categoria) => categoria.id !== id);
     crearLista(categorias);
     mostrarOpciones(categorias);
     operacionesCategoriaEliminada(id);
@@ -496,5 +498,58 @@ $("filtro-categoria").addEventListener("change", () => ordenarYBalance());
 $("filtro-tipo").addEventListener("change", () => ordenarYBalance());
 
 $("filtro-ordenar").addEventListener("change", () => ordenarYBalance());
+
+
+
+//----Reportes
+
+// Mayor ganancia por categoria
+const mayorGananciaPorCategorias = (operaciones) => {
+    let categoriaConMayorGanancia = "";
+    let montoMayorGanancia = 0;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) =>
+            acum + Number(ganancia.monto)
+            , 0)
+        if (categoriaConMayorGanancia === "" && montoMayorGanancia === 0) {
+            categoriaConMayorGanancia = nombre
+            montoMayorGanancia = totalGanancias
+        } else if (totalGanancias > montoMayorGanancia) {
+            categoriaConMayorGanancia = nombre
+            montoMayorGanancia = totalGanancias
+        }
+    }
+    $("categoria-mayor-ganancia").innerHTML = `${categoriaConMayorGanancia}`
+    $("monto-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`
+}
+mayorGananciaPorCategorias(operaciones)
+
+// Mayor gasto por categoria
+const mayorGastosPorCategorias = (operaciones) => {
+    let categoriaConMayorGasto = "";
+    let montoMayorGasto = 0;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gastosPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo === "Gasto");
+        let totalGastos = gastosPorCategoria.reduce((acum, gasto) =>
+            acum + Number(gasto.monto)
+            , 0)
+        if (categoriaConMayorGasto === "" && montoMayorGasto === 0) {
+            categoriaConMayorGasto = nombre
+            montoMayorGasto = totalGastos
+        } else if (totalGastos > montoMayorGasto) {
+            categoriaConMayorGasto = nombre
+            montoMayorGasto = totalGastos
+        }
+    }
+    $("categoria-mayor-gasto").innerHTML = `${categoriaConMayorGasto}`
+    $("monto-mayor-gasto").innerHTML = `-$${montoMayorGasto}`
+}
+
+mayorGastosPorCategorias(operaciones)
+
+
 
 inicializar();
