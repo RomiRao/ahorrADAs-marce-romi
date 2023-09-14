@@ -696,10 +696,67 @@ const totalesPorCategoria = (operaciones) => {
         </div>
     `
         }
-
     }
 
 }
 totalesPorCategoria(operaciones)
+
+//Totales por mes
+const totalesPorMes = (operaciones) => {
+    let gananciasPorMes = 0;
+    let gastosPorMes = 0;
+    let balance = 0;
+    let mes;
+    let anio;
+
+    operaciones.forEach(({ tipo, fecha, monto }) => {
+        if (tipo !== "Gasto") {
+            gananciasPorMes += Number(monto);
+            mes = new Date(fecha).getMonth() + 1;
+            anio = new Date(fecha).getFullYear();
+        } else if (tipo === "Gasto") {
+            gastosPorMes += Number(monto);
+            mes = new Date(fecha).getMonth() + 1;
+            anio = new Date(fecha).getFullYear();
+        }
+
+        balance = gananciasPorMes - gastosPorMes
+        $("totales-por-mes").innerHTML = `
+        <div class="columns">
+            <div class="column has-text-weight-semibold">
+                <p>Mes</p>
+            </div>
+            <div class="column has-text-weight-semibold">
+                <p>Ganancias</p>
+            </div>
+                                
+            <div class="column has-text-weight-semibold">
+                <p>Gastos</p>
+            </div>
+            <div class="column has-text-weight-semibold">
+                <p>Balance</p>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <p class="has-text-weight-semibold">${mes}/${anio}</p>
+            </div>
+            <div class="column">
+                <p class="has-text-success">+$${gananciasPorMes}</p>
+            </div>
+            <div class="column">
+                <p class="has-text-danger">-$${gastosPorMes}</p>
+            </div>
+            <div class="column">
+                <p>$${balance}</p>
+            </div>
+        </div>`
+
+    });
+}
+
+
+
+totalesPorMes(operaciones)
 
 inicializar();
