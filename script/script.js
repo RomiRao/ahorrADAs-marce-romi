@@ -576,4 +576,36 @@ const categoriaMayorBalance = (operaciones) => {
 }
 categoriaMayorBalance(operaciones)
 
+//Mes con mayor ganancia
+const mesMayorGanancia = (operaciones) => {
+    let categoriaConMayorGanancia = "";
+    let montoMayorGanancia = 0;
+    let fechaMayorGanancia;
+    let dia;
+    let mes;
+    let anio;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) =>
+            acum + ganancia.monto
+            , 0)
+        if (categoriaConMayorGanancia === "" && montoMayorGanancia === 0) {
+            categoriaConMayorGanancia = nombre
+            montoMayorGanancia = totalGanancias
+        } else if (totalGanancias > montoMayorGanancia) {
+            categoriaConMayorGanancia = nombre
+            montoMayorGanancia = totalGanancias
+            fechaMayorGanancia = new Date(gananciasPorCategoria[0].fecha)
+            dia = fechaMayorGanancia.getDate()
+            mes = fechaMayorGanancia.getMonth() + 1
+            anio = fechaMayorGanancia.getFullYear()
+        }
+    }
+    $("mes-mayor-ganancia").innerHTML = `${dia}/${mes}/${anio}`
+    $("monto-mes-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`
+}
+
+mesMayorGanancia(operaciones)
+
 inicializar();
