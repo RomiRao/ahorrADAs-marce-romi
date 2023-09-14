@@ -25,7 +25,7 @@ const traerCategorias = () => {
 let operaciones = JSON.parse(localStorage.getItem("operaciones")) || [];
 
 //Definiendo fecha actual
-window.onload = () => {
+const cargarFechas = () => {
     let fechaHoy = new Date();
     let mes = fechaHoy.getMonth() + 1;
     let dia = fechaHoy.getDate();
@@ -35,6 +35,24 @@ window.onload = () => {
     $("fecha-nueva-op").value = anio + "-" + mes + "-" + dia;
     $("fecha-filtro").value = anio + "-" + mes + "-" + dia;
 };
+
+const inicializar = () => {
+    cargarFechas();
+    crearLista(categorias);
+    mostrarOpciones(categorias);
+    ordenarYBalance();
+};
+
+const traer = (clave) => {
+    return JSON.parse(localStorage.getItem(`${clave}`));
+};
+
+//Para definir datos a nivel local
+const actualizarInfo = (clave, datos) => {
+    localStorage.setItem(`${clave}`, JSON.stringify(datos));
+};
+
+let operaciones = traer("operaciones") || [];
 
 // *****************
 // NAVBAR
@@ -100,8 +118,8 @@ const calcularBalance = (operaciones) => {
 
     const balance = ganancias - gastos;
 
-    $("balance-ganancias").innerHTML = `+ ${ganancias}`;
-    $("balance-gastos").innerHTML = `- ${gastos}`;
+    $("balance-ganancias").innerHTML = `+${ganancias}`;
+    $("balance-gastos").innerHTML = `-${gastos}`;
     $("balance-total").innerHTML = `${balance}`;
 };
 
@@ -119,16 +137,14 @@ const agregarOperacion = () => {
         categoria: $("categoria-nueva-op").value,
         monto: Number($("monto-nueva-op").value),
         tipo: $("tipo-nueva-op").value,
-        fecha: new Date($("fecha-nueva-op").value),
+        fecha: $("fecha-nueva-op").value.replace(/-/g, "/"),
     };
     operaciones = [...operaciones, operacion];
-    mostrarOperaciones(operaciones);
-    //filtroOrdenar(operaciones);
     actualizarInfo("operaciones", operaciones);
     actualizarInfo("categorias", categorias);
+    ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
-    calcularBalance(operaciones);
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -146,20 +162,18 @@ const limpiarVistaNuevaOP = () => {
     $("fecha-nueva-op").valueAsDate = new Date();
 };
 
-//Iterar y mostrar
-const mostrarOperaciones = (operaciones) => {
-    $("operaciones").innerHTML = "";
-    iterarOperaciones(operaciones);
-};
-
 const eliminarOperacion = (id) => {
-    operaciones = operaciones.filter((operacion) => operacion.id !== id);
-    mostrarOperaciones(operaciones);
+    operaciones = traer("operaciones").filter(
+        (operacion) => operacion.id !== id
+    );
     actualizarInfo("operaciones", operaciones);
+    ordenarYBalance();
 };
 
 const obtenerOperacion = (idOperacion) => {
-    return operaciones.find((operacion) => operacion.id === idOperacion);
+    return traer("operaciones").find(
+        (operacion) => operacion.id === idOperacion
+    );
 };
 
 const vistaEditarOperacion = (id) => {
@@ -170,10 +184,8 @@ const vistaEditarOperacion = (id) => {
     $("tipo-op-editada").value = tipo;
     $("categoria-op-editada").value = categoria;
     $("fecha-op-editada").valueAsDate = new Date(fecha);
-    $("editar-op-btn").addEventListener("click", () => editarOperacion(id));
-    $("cancelar-op-btn").addEventListener("click", () =>
-        mostrarVista("seccion-balance")
-    );
+    $("editar-op-btn").onclick = () => editarOperacion(id);
+    $("cancelar-op-btn").onclick = () => mostrarVista("seccion-balance");
 };
 
 const editarOperacion = (id) => {
@@ -185,19 +197,20 @@ const editarOperacion = (id) => {
         tipo: $("tipo-op-editada").value,
         fecha: $("fecha-op-editada").value.replace(/-/g, "/"),
     };
-    let nuevaListaOperaciones = operaciones.map((operacion) =>
+    let nuevasOperaciones = traer("operaciones").map((operacion) =>
         operacion.id === id ? { ...nuevaOperacion } : operacion
     );
+    actualizarInfo("operaciones", nuevasOperaciones);
+    ordenarYBalance();
     mostrarVista("seccion-balance");
-    mostrarOperaciones(nuevaListaOperaciones);
-    actualizarInfo("operaciones", nuevaListaOperaciones);
 };
 
-const iterarOperaciones = (listaOperaciones) => {
+const mostrarOperaciones = (listaOperaciones) => {
+    $("operaciones").innerHTML = "";
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
-            const fechaDate = new Date(fecha);
-            $("operaciones").innerHTML += `<div class="columns">
+            let contenedorOperacion = document.createElement("div");
+            contenedorOperacion.innerHTML = `<div class="columns py-2">
         <div class="column is-3">
             <h3 class="has-text-weight-semibold">
                 ${descripcion}
@@ -210,8 +223,9 @@ const iterarOperaciones = (listaOperaciones) => {
         </div>
         <div class="column is-2 has-text-right has-text-grey">
             <span>
-                ${fechaDate.getDate()}/${fechaDate.getMonth() + 1
-                }/${fechaDate.getFullYear()}
+                ${new Date(fecha).getDate()}/${
+                new Date(fecha).getMonth() + 1
+            }/${new Date(fecha).getFullYear()}
             </span>
         </div>
         <div class="column is-2 has-text-right has-text-weight-bold ${colorMonto(
@@ -222,10 +236,20 @@ const iterarOperaciones = (listaOperaciones) => {
             </span>
         </div>
         <div class="column is-2 is-size-7 has-text-right pt-4">
-            <a id="${id}" onclick="vistaEditarOperacion('${id}')" href="#">Editar</a>
-            <a id="${id}" onclick="eliminarOperacion('${id}')" href="#" class="ml-3">Eliminar</a>
+            <a id='link-editar' href="#">Editar</a>
+            <a id='link-eliminar' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
+            let irAEditar = contenedorOperacion.querySelector("#link-editar");
+            let irAEliminar =
+                contenedorOperacion.querySelector("#link-eliminar");
+            irAEditar.onclick = () => {
+                vistaEditarOperacion(id);
+            };
+            irAEliminar.onclick = () => {
+                eliminarOperacion(id);
+            };
+            $("operaciones").appendChild(contenedorOperacion);
         }
     );
     noHayOperaciones();
@@ -376,21 +400,23 @@ const eliminarCategoria = (id) => {
 };
 
 const operacionesCategoriaEliminada = (id) => {
-    operaciones = operaciones.filter((operacion) => operacion.categoria !== id);
-    mostrarOperaciones(operaciones);
+    operaciones = traer("operaciones").filter(
+        (operacion) => operacion.categoria !== id
+    );
     actualizarInfo("operaciones", operaciones);
+    ordenarYBalance();
 };
 
 //------------------------FILTROS ----------------------
 //Segun TIPO
-const filtroGastoGanancia = () => {
+const filtroGastoGanancia = (operaciones) => {
     if ($("filtro-tipo").value !== "Todos") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.tipo === $("filtro-tipo").value
         );
-        mostrarOperaciones(operacionesAMostrar);
+        return operacionesAMostrar;
     } else {
-        mostrarOperaciones(operaciones);
+        return operaciones;
     }
 };
 
@@ -403,7 +429,7 @@ const filtroOrdenar = (operaciones) => {
                     ignorePunctuation: true,
                 });
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Z/A"):
             operaciones = operaciones
@@ -413,7 +439,7 @@ const filtroOrdenar = (operaciones) => {
                     });
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Mayor monto"):
             operaciones = operaciones
@@ -421,13 +447,13 @@ const filtroOrdenar = (operaciones) => {
                     return a.monto - b.monto;
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Menor monto"):
             operaciones = operaciones.sort((a, b) => {
                 return a.monto - b.monto;
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Menos reciente"):
             operaciones = operaciones.sort((a, b) => {
@@ -435,7 +461,7 @@ const filtroOrdenar = (operaciones) => {
                     new Date(a.fecha).getTime() - new Date(b.fecha).getTime()
                 );
             });
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
         case ($("filtro-ordenar").value = "Mas reciente"):
             operaciones = operaciones
@@ -446,42 +472,51 @@ const filtroOrdenar = (operaciones) => {
                     );
                 })
                 .reverse();
-            mostrarOperaciones(operaciones);
+            return operaciones;
             break;
     }
 };
 
 //Segun CATEGORIA
-const filtroCategoria = () => {
+const filtroCategoria = (operaciones) => {
     if ($("filtro-categoria").value !== "Todas") {
         let operacionesAMostrar = operaciones.filter(
             (operacion) => operacion.categoria === $("filtro-categoria").value
         );
-        mostrarOperaciones(operacionesAMostrar);
+        return operacionesAMostrar;
     } else {
-        mostrarOperaciones(operaciones);
+        return operaciones;
     }
 };
 
 //Segun desde-Fecha
-const filtroDesdeFecha = () => {
-    let operacionesAMostrar = operaciones.filter(
+const filtroDesdeFecha = (operaciones) => {
+    return operaciones.filter(
         (operacion) =>
             new Date(operacion.fecha) >= new Date($("fecha-filtro").value)
     );
-    console.log(new Date($("fecha-filtro").value), operacionesAMostrar);
-    mostrarOperaciones(operacionesAMostrar);
 };
 
-$("fecha-filtro").addEventListener("change", () => filtroDesdeFecha());
+const ordenarOperaciones = () => {
+    let operacionesSegunGasto = filtroGastoGanancia(traer("operaciones"));
+    let operacionesSegunCategoria = filtroCategoria(operacionesSegunGasto);
+    let operacionesSegunFecha = filtroDesdeFecha(operacionesSegunCategoria);
+    return filtroOrdenar(operacionesSegunFecha);
+};
 
-$("filtro-categoria").addEventListener("change", () => filtroCategoria());
+const ordenarYBalance = () => {
+    let operacionesOrdenadas = ordenarOperaciones();
+    calcularBalance(operacionesOrdenadas);
+    mostrarOperaciones(operacionesOrdenadas);
+};
 
-$("filtro-tipo").addEventListener("change", () => filtroGastoGanancia());
+$("fecha-filtro").addEventListener("change", () => ordenarYBalance());
 
-$("filtro-ordenar").addEventListener("change", () =>
-    filtroOrdenar(operaciones)
-);
+$("filtro-categoria").addEventListener("change", () => ordenarYBalance());
+
+$("filtro-tipo").addEventListener("change", () => ordenarYBalance());
+
+$("filtro-ordenar").addEventListener("change", () => ordenarYBalance());
 
 
 
