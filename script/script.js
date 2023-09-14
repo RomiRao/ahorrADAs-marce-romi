@@ -4,7 +4,7 @@ const $ = (selector) => document.getElementById(selector);
 const $$ = (selector) => document.querySelectorAll(selector);
 
 const inicializar = () => {
-    if (!traerCategorias()) {
+    if (!traer("categorias")) {
         localStorage.setItem("categorias", JSON.stringify(categorias));
     }
     mostrarOperaciones(operaciones);
@@ -14,11 +14,6 @@ const inicializar = () => {
     cargarFechas();
     ordenarYBalance();
 };
-
-const traerCategorias = () => {
-    return JSON.parse(localStorage.getItem("categorias"));
-}
-
 
 //Definiendo fecha actual
 const cargarFechas = () => {
@@ -269,7 +264,7 @@ const noHayOperaciones = () => {
 
 // ------------Funcionabilidad Categorias------------------
 
-let categorias = JSON.parse(localStorage.getItem("categorias")) || [
+let categorias = traer("categorias") || [
     {
         id: randomId(),
         nombre: "Comida",
@@ -297,8 +292,6 @@ let categorias = JSON.parse(localStorage.getItem("categorias")) || [
 ];
 
 //------Crear lista Categorias
-
-//Mostrar options de los select (categorias)
 
 const crearLista = (listaDeCategorias) => {
     $("lista-categorias").innerHTML = "";
@@ -344,7 +337,7 @@ $("boton-agregar-categoria").addEventListener("click", agregarCategoria);
 
 //----Obtener categoria
 const obtenerCategoria = (idCategoria, categorias) => {
-    return categorias.find((categoria) => categoria.id === idCategoria);
+    return traer("categorias").find((categoria) => categoria.id === idCategoria);
 };
 
 //----Mostrar vista editar categoria
@@ -353,9 +346,7 @@ const mostrarEditarCategoria = (id) => {
     $("editar-categoria").classList.remove("is-hidden");
     let categoriaAEditar = obtenerCategoria(id, categorias);
     $("input-editar").value = categoriaAEditar.nombre;
-    $("boton-editar").addEventListener("click", () =>
-        editarCategoria(categoriaAEditar.id)
-    );
+    $("boton-editar").onclick = () => editarCategoria(categoriaAEditar.id)
     ocultarEditarCategoria();
 };
 
@@ -371,7 +362,7 @@ const editarCategoria = (id) => {
         id: id,
         nombre: $("input-editar").value,
     };
-    let categoriasActualizadas = categorias.map((categoria) =>
+    let categoriasActualizadas = traer("categorias").map((categoria) =>
         categoria.id === id ? { ...nuevaCategoria } : categoria
     );
     crearLista(categoriasActualizadas);
@@ -382,7 +373,7 @@ const editarCategoria = (id) => {
 };
 
 const eliminarCategoria = (id) => {
-    categorias = categorias.filter((categoria) => categoria.id !== id);
+    categorias = traer("categorias").filter((categoria) => categoria.id !== id);
     crearLista(categorias);
     mostrarOpciones(categorias);
     operacionesCategoriaEliminada(id);
