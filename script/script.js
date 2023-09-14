@@ -550,6 +550,30 @@ const mayorGastosPorCategorias = (operaciones) => {
 
 mayorGastosPorCategorias(operaciones)
 
+//Mayor balance
 
+const categoriaMayorBalance = (operaciones) => {
+    let categoriaConMayorBalance = "";
+    let mayorBalance = 0;
+    let mayorGanancia = 0;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) =>
+            acum + Number(ganancia.monto)
+            , 0)
+        let gastosPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo === "Gasto");
+        let totalGastos = gastosPorCategoria.reduce((acum, gasto) =>
+            acum + Number(gasto.monto)
+            , 0)
+        if (totalGanancias > mayorGanancia) {
+            categoriaConMayorBalance = nombre
+            mayorBalance = totalGanancias - totalGastos
+        }
+    }
+    $("categoria-mayor-balance").innerHTML = `${categoriaConMayorBalance}`
+    $("monto-mayor-balance").innerHTML = `$${mayorBalance}`
+}
+categoriaMayorBalance(operaciones)
 
 inicializar();
