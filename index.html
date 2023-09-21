@@ -330,64 +330,64 @@
                     <h2 class="title is-2 has-text-weight-bold mb-5">Reportes</h2>
 
                     <!-- SECCION HAY REPORTES -->
-
-                    <section class="section">
-                        <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Resumen</h4>
-                        <div class="columns">
-                            <p class="column is-6 has-text-weight-semibold">Categoría con mayor ganancia</p>
-                            <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-ganancia"></p>
-                            <p class="column is-3 has-text-right has-text-success" id="monto-mayor-ganancia"></p>
-                        </div>
-                        <div class="columns">
-                            <p class="column is-6 has-text-weight-semibold">Categoría con mayor gasto</p>
-                            <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-gasto"></p>
-                            <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mayor-gasto"></p>
-                        </div>
-                        <div class="columns">
-                            <p class="column is-6 has-text-weight-semibold">Categoría con mayor balance</p>
-                            <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-balance"></p>
-                            <p class="column is-3 has-text-right has-text-weight-semibold" id="monto-mayor-balance"></p>
-                        </div>
-                        <div class="columns">
-                            <p class="column is-6 has-text-weight-semibold">Mes con mayor ganancia</p>
-                            <p class="column is-3 has-text-right" id="mes-mayor-ganancia"></p>
-                            <p class="column is-3 has-text-right has-text-success has-text-weight-semibold" id="monto-mes-mayor-ganancia"></p>
-                        </div>
-                        <div class="columns">
-                            <p class="column is-6 has-text-weight-semibold" >Mes con mayor gasto</p>
-                            <p class="column is-3 has-text-right" id="mes-mayor-gasto"></p>
-                            <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mes-mayor-gasto"></p>
-                        </div>
-                    </section>
-                    <section class="section">
-                        <h4 class="is-size-4 has-text-weight-semibold mb-5 pb-4">Totales por categorías</h4>
-                        <div id="totales-categorias">
-                        </div>
-                    </section>
-                    <section class="section">
-                        <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Totales por mes</h4>
-                        <div id="totales-por-mes">
+                    <div class="is-hidden" id="hay-reportes">
+                        <section class="section">
+                            <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Resumen</h4>
                             <div class="columns">
-                                <div class="column has-text-weight-semibold">
-                                    <p>Mes</p>
-                                </div>
-                                <div class="column has-text-weight-semibold">
-                                    <p>Ganancias</p>
-                                </div>
-                                                    
-                                <div class="column has-text-weight-semibold">
-                                    <p>Gastos</p>
-                                </div>
-                                <div class="column has-text-weight-semibold">
-                                    <p>Balance</p>
+                                <p class="column is-6 has-text-weight-semibold">Categoría con mayor ganancia</p>
+                                <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-ganancia"></p>
+                                <p class="column is-3 has-text-right has-text-success" id="monto-mayor-ganancia"></p>
+                            </div>
+                            <div class="columns">
+                                <p class="column is-6 has-text-weight-semibold">Categoría con mayor gasto</p>
+                                <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-gasto"></p>
+                                <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mayor-gasto"></p>
+                            </div>
+                            <div class="columns">
+                                <p class="column is-6 has-text-weight-semibold">Categoría con mayor balance</p>
+                                <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-balance"></p>
+                                <p class="column is-3 has-text-right has-text-weight-semibold" id="monto-mayor-balance"></p>
+                            </div>
+                            <div class="columns">
+                                <p class="column is-6 has-text-weight-semibold">Mes con mayor ganancia</p>
+                                <p class="column is-3 has-text-right" id="mes-mayor-ganancia"></p>
+                                <p class="column is-3 has-text-right has-text-success has-text-weight-semibold" id="monto-mes-mayor-ganancia"></p>
+                            </div>
+                            <div class="columns">
+                                <p class="column is-6 has-text-weight-semibold" >Mes con mayor gasto</p>
+                                <p class="column is-3 has-text-right" id="mes-mayor-gasto"></p>
+                                <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mes-mayor-gasto"></p>
+                            </div>
+                        </section>
+                        <section class="section">
+                            <h4 class="is-size-4 has-text-weight-semibold mb-5 pb-4">Totales por categorías</h4>
+                            <div id="totales-categorias">
+                            </div>
+                        </section>
+                        <section class="section">
+                            <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Totales por mes</h4>
+                            <div id="totales-por-mes">
+                                <div class="columns">
+                                    <div class="column has-text-weight-semibold">
+                                        <p>Mes</p>
+                                    </div>
+                                    <div class="column has-text-weight-semibold">
+                                        <p>Ganancias</p>
+                                    </div>
+                                                        
+                                    <div class="column has-text-weight-semibold">
+                                        <p>Gastos</p>
+                                    </div>
+                                    <div class="column has-text-weight-semibold">
+                                        <p>Balance</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
 
                     <!-- SECCION SIN REPORTES -->
-
-                    <div class="is-hidden is-flex is-flex-direction-column is-align-items-center my-6 py-6">
+                    <div class="is-flex is-flex-direction-column is-align-items-center my-6 py-6" id="sin-reportes">
                         <figure class="image">
                             <img src="style/assets/imagen-sec-reportes.svg" alt="">
                         </figure>
