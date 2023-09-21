@@ -13,6 +13,14 @@ const inicializar = () => {
     mostrarOpciones(categorias);
     cargarFechas();
     ordenarYBalance();
+    mayorGananciaPorCategorias(operaciones)
+    mayorGastosPorCategorias(operaciones)
+    categoriaMayorBalance(operaciones)
+    mesMayorGanancia(operaciones)
+    mesMayorGasto(operaciones)
+    totalesPorCategoria(operaciones)
+    totalesPorMes(operaciones)
+    vistaReportes(operaciones)
 };
 
 //Definiendo fecha actual
@@ -130,6 +138,7 @@ const agregarOperacion = () => {
     ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
+    vistaReportes(operaciones)
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -153,6 +162,7 @@ const eliminarOperacion = (id) => {
     );
     actualizarInfo("operaciones", operaciones);
     ordenarYBalance();
+    vistaReportes(operaciones)
 };
 
 const obtenerOperacion = (idOperacion) => {
@@ -188,6 +198,7 @@ const editarOperacion = (id) => {
     actualizarInfo("operaciones", nuevasOperaciones);
     ordenarYBalance();
     mostrarVista("seccion-balance");
+    vistaReportes(nuevasOperaciones)
 };
 
 const mostrarOperaciones = (listaOperaciones) => {
@@ -505,6 +516,10 @@ $("filtro-ordenar").addEventListener("change", () => ordenarYBalance());
 
 // Mayor ganancia por categoria
 const mayorGananciaPorCategorias = (operaciones) => {
+    if (operaciones.length === 0) {
+        return;
+    }
+
     let categoriaConMayorGanancia = "";
     let montoMayorGanancia = 0;
     for (let { nombre, id } of categorias) {
@@ -524,10 +539,13 @@ const mayorGananciaPorCategorias = (operaciones) => {
     $("categoria-mayor-ganancia").innerHTML = `${categoriaConMayorGanancia}`
     $("monto-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`
 }
-mayorGananciaPorCategorias(operaciones)
 
 // Mayor gasto por categoria
 const mayorGastosPorCategorias = (operaciones) => {
+    if (operaciones.length === 0) {
+        return;
+    }
+
     let categoriaConMayorGasto = "";
     let montoMayorGasto = 0;
     for (let { nombre, id } of categorias) {
@@ -548,8 +566,235 @@ const mayorGastosPorCategorias = (operaciones) => {
     $("monto-mayor-gasto").innerHTML = `-$${montoMayorGasto}`
 }
 
-mayorGastosPorCategorias(operaciones)
+//Mayor balance
+
+const categoriaMayorBalance = (operaciones) => {
+    if (operaciones.length === 0) {
+        return;
+    }
+
+    let categoriaConMayorBalance = "";
+    let mayorBalance = 0;
+    let mayorGanancia = 0;
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) =>
+            acum + Number(ganancia.monto)
+            , 0)
+        let gastosPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo === "Gasto");
+        let totalGastos = gastosPorCategoria.reduce((acum, gasto) =>
+            acum + Number(gasto.monto)
+            , 0)
+        if (totalGanancias > mayorGanancia) {
+            categoriaConMayorBalance = nombre
+            mayorBalance = totalGanancias - totalGastos
+        }
+    }
+    $("categoria-mayor-balance").innerHTML = `${categoriaConMayorBalance}`
+    $("monto-mayor-balance").innerHTML = `$${mayorBalance}`
+}
+
+//Mes con mayor ganancia
+const mesMayorGanancia = (operaciones) => {
+    if (operaciones.length === 0) {
+        return;
+    }
+
+    let mesMayorGanancia = '';
+    let montoMayorGanancia = 0;
+
+    const gananciasPorMes = {};
+
+    operaciones.forEach((operacion) => {
+        if (operacion.tipo !== 'Gasto') {
+            const fecha = new Date(operacion.fecha);
+            const mesAnio = `${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+            const monto = Number(operacion.monto);
+
+            if (!gananciasPorMes[mesAnio]) {
+                gananciasPorMes[mesAnio] = monto;
+            } else {
+                gananciasPorMes[mesAnio] += monto;
+            }
+
+            if (gananciasPorMes[mesAnio] > montoMayorGanancia) {
+                montoMayorGanancia = gananciasPorMes[mesAnio];
+                mesMayorGanancia = mesAnio;
+            }
+        }
+    });
+
+    if (mesMayorGanancia !== '') {
+        const [mes, anio] = mesMayorGanancia.split('/');
+        
+        $("mes-mayor-ganancia").innerHTML = `${mes}/${anio}`;
+        $("monto-mes-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`;
+    } else {
+        $("mes-mayor-ganancia").innerHTML = "N/A";
+        $("monto-mes-mayor-ganancia").innerHTML = "N/A";
+    }
+}
+
+const mesMayorGasto = (operaciones) => {
+    if (operaciones.length === 0) {
+        return;
+    }
+
+    let mesMayorGasto = '';
+    let montoMayorGasto = 0;
+
+    const gastosPorMes = {};
+
+    operaciones.forEach((operacion) => {
+        if (operacion.tipo === 'Gasto') {
+            const fecha = new Date(operacion.fecha);
+            const mesAnio = `${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+            const monto = Number(operacion.monto);
+
+            if (!gastosPorMes[mesAnio]) {
+                gastosPorMes[mesAnio] = monto;
+            } else {
+                gastosPorMes[mesAnio] += monto;
+            }
+
+            if (gastosPorMes[mesAnio] > montoMayorGasto) {
+                montoMayorGasto = gastosPorMes[mesAnio];
+                mesMayorGasto = mesAnio;
+            }
+        }
+    });
+
+    if (mesMayorGasto !== '') {
+        const [mes, anio] = mesMayorGasto.split('/');
+        
+        $("mes-mayor-gasto").innerHTML = `${mes}/${anio}`;
+        $("monto-mes-mayor-gasto").innerHTML = `-$${montoMayorGasto}`;
+    } else {
+        $("mes-mayor-gasto").innerHTML = "N/A";
+        $("monto-mes-mayor-gasto").innerHTML = "N/A";
+    }
+}
+
+//Totales por categoria
+
+const totalesPorCategoria = (operaciones) => {
+    for (let { nombre, id } of categorias) {
+        let operacionesPorCategoria = operaciones.filter((operacion) => operacion.categoria === id);
+        let gananciasPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo !== "Gasto");
+        let totalGanancias = gananciasPorCategoria.reduce((acum, ganancia) =>
+            acum + Number(ganancia.monto)
+            , 0)
+        let gastosPorCategoria = operacionesPorCategoria.filter((operacion) => operacion.tipo === "Gasto");
+        let totalGastos = gastosPorCategoria.reduce((acum, gasto) =>
+            acum + Number(gasto.monto)
+            , 0)
+        let balance = totalGanancias - totalGastos
+        if (balance === 0) {
+            $("totales-categorias").innerHTML += ""
+
+        } else if (totalGastos === 0) {
+            $("totales-categorias").innerHTML += `
+        <div class="columns">
+            <div class="column has-text-weight-semibold">
+                <p>${nombre}</p>
+            </div>
+            <div class="column">
+                <p class="has-text-success">+$${totalGanancias}</p>
+            </div>
+            <div class="column">
+            <p class="has-text-danger">-$0</p>
+            </div>
+            <div class="column">
+                <p>$${balance}</p>
+            </div>
+        </div>
+    `
+        } else if (totalGanancias === 0) {
+            $("totales-categorias").innerHTML += `
+        <div class="columns">
+            <div class="column has-text-weight-semibold">
+                <p>${nombre}</p>
+            </div>
+            <div class="column">
+            <p class="has-text-success">+$0</p>
+            </div>
+            <div class="column">
+                <p class="has-text-danger">-$${totalGastos}</p>
+            </div>
+            <div class="column">
+                <p>$${balance}</p>
+            </div>
+        </div>
+    `
+        }
+    }
+
+}
+
+//Totales por mes
+const totalesPorMes = (operaciones) => {
+    const totalesPorMes = {};
+
+    operaciones.forEach(({ tipo, fecha, monto }) => {
+        const mes = new Date(fecha).getMonth() + 1;
+        const anio = new Date(fecha).getFullYear();
+        const key = `${mes}/${anio}`;
+
+        if (!totalesPorMes[key]) {
+            totalesPorMes[key] = { ganancias: 0, gastos: 0 };
+        }
+
+        if (tipo === "Gasto") {
+            totalesPorMes[key].gastos += Number(monto);
+        } else if (tipo !== "Gasto") {
+            totalesPorMes[key].ganancias += Number(monto);
+        }
+    });
+    for (const key in totalesPorMes) {
+        const { ganancias, gastos } = totalesPorMes[key];
+        const [mes, anio] = key.split('/');
+        const balance = ganancias - gastos;
+        $("totales-por-mes").innerHTML += `
+        
+        <div class="columns">
+            <div class="column">
+                <p class="has-text-weight-semibold">${mes}/${anio}</p>
+            </div>
+            <div class="column">
+                <p class="has-text-success">+$${ganancias}</p>
+            </div>
+            <div class="column">
+                <p class="has-text-danger">-$${gastos}</p>
+            </div>
+            <div class="column">
+                <p>$${balance}</p>
+            </div>
+        </div>`
+    }
+}
+
+const vistaReportes = (operaciones) => {
+    let tieneGasto = false;
+    let tieneGanancia = false;
+
+    operaciones.forEach((operacion) => {
+        if (operacion.tipo === "Gasto") {
+        tieneGasto = true;
+        } else if (operacion.tipo === "Ganancia") {
+        tieneGanancia = true;
+        }
+    });
+
+    if (tieneGasto && tieneGanancia) {
+        $("hay-reportes").classList.remove("is-hidden");
+        $("sin-reportes").classList.add("is-hidden");
+    } else {
+        $("hay-reportes").classList.add("is-hidden");
+        $("sin-reportes").classList.remove("is-hidden");
+    }
+};
 
 
 
-inicializar();
+window.onload = inicializar()
