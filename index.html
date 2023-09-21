@@ -11,36 +11,35 @@
 </head>
 
 <body class="has-background-light">
-    <nav class="navbar is-primary mb-5" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-primary is-spaced" role="navigation" aria-label="main navigation">
         <!-- Logo -->
-        <div class="navbar-brand p-4 ml-4">
-            <a class="navbar-item is-border-radius">
+        <div class="navbar-brand">
+            <a class="navbar-item">
                 <h1 class="title has-text-white">
                     <i class="fa-solid mr-2 fa-wallet"></i>
                     AhorrADAs
                 </h1>
             </a>
-            <a id="burger" role="button" class="navbar-burger" data-target="navMenu" aria-label="menu"
-                aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
+            <a id="burger" role="button" class="navbar-burger" aria-label="menu">
+                <span></span>
+                <span></span>
+                <span></span>
             </a>
         </div>
 
         <!-- Pestañas  -->
 
-        <div id="navbarLinks" class="navbar-menu p-5">
+        <div id="navbarLinks" class="navbar-menu">
             <div class="navbar-end">
-                <a class="navbar-item is-border-radius" id="navbar-balance">
+                <a class="navbar-item" id="navbar-balance">
                     <i class="fa-solid mr-2 fa-chart-line"></i>
                     Balance
                 </a>
-                <a class="navbar-item is-border-radius" id="navbar-categorias">
+                <a class="navbar-item" id="navbar-categorias">
                     <i class="fa-solid mr-2 fa-tag"></i>
                     Categorías
                 </a>
-                <a class="navbar-item is-border-radius" id="navbar-reportes">
+                <a class="navbar-item" id="navbar-reportes">
                     <i class="fa-solid mr-2 fa-chart-pie"></i>
                     Reportes
                 </a>
@@ -59,8 +58,8 @@
 
     <section class="section columns vista" id="seccion-balance">
 
-            <div class="container is-max-widescreen">
-                <div class="container columns">
+            <div class="container is-max-widescreen ">
+                <div class="container columns is-flex-desktop">
                     <div class="column is-4">
 
                         <!-- Balance de cuenta -->
@@ -144,7 +143,7 @@
                                 <h3 class="title is-4 has-text-weight-bold">Operaciones</h3>
                                 <button class="button is-primary" id="nueva-operacion-btn">+ Nueva operación</button>
                             </div>
-                            <div class="columns container mt-4 is-hidden" id="ver-operaciones">
+                            <div class="columns container mt-4 is-hidden is-hidden-mobile" id="ver-operaciones">
                                 <div class="column has-text-weight-semibold is-3">Descripción</div>
                                 <div class="column has-text-weight-semibold is-3">Categoría</div>
                                 <div class="column has-text-weight-semibold has-text-right is-2">Fecha</div>
