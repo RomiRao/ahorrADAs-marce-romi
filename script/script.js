@@ -776,4 +776,28 @@ const totalesPorMes = (operaciones) => {
 
 totalesPorMes(operaciones)
 
+
+
+const vistaReportes = (operaciones) => {
+    let tieneGasto = false;
+    let tieneGanancia = false;
+
+    operaciones.forEach((operacion) => {
+        if (operacion.tipo === "Gasto") {
+        tieneGasto = true;
+        } else if (operacion.tipo === "Ganancia") {
+        tieneGanancia = true;
+        }
+    });
+
+    if (tieneGasto && tieneGanancia) {
+        $("hay-reportes").classList.remove("is-hidden");
+        $("sin-reportes").classList.add("is-hidden");
+    } else {
+        $("hay-reportes").classList.add("is-hidden");
+    }
+};
+
+vistaReportes(operaciones)
+
 inicializar();
