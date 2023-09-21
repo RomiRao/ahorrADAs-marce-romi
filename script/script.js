@@ -137,7 +137,7 @@ const agregarOperacion = () => {
     ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
-    vistaReportes(operaciones);
+    vistaReportes(traer("operaciones"));
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
