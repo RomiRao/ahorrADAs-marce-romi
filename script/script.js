@@ -13,6 +13,14 @@ const inicializar = () => {
     mostrarOpciones(categorias);
     cargarFechas();
     ordenarYBalance();
+    mayorGananciaPorCategorias(operaciones)
+    mayorGastosPorCategorias(operaciones)
+    categoriaMayorBalance(operaciones)
+    mesMayorGanancia(operaciones)
+    mesMayorGasto(operaciones)
+    totalesPorCategoria(operaciones)
+    totalesPorMes(operaciones)
+    vistaReportes(operaciones)
 };
 
 //Definiendo fecha actual
@@ -130,6 +138,7 @@ const agregarOperacion = () => {
     ordenarYBalance();
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
+    vistaReportes(operaciones)
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -153,6 +162,7 @@ const eliminarOperacion = (id) => {
     );
     actualizarInfo("operaciones", operaciones);
     ordenarYBalance();
+    vistaReportes(operaciones)
 };
 
 const obtenerOperacion = (idOperacion) => {
@@ -188,6 +198,7 @@ const editarOperacion = (id) => {
     actualizarInfo("operaciones", nuevasOperaciones);
     ordenarYBalance();
     mostrarVista("seccion-balance");
+    vistaReportes(nuevasOperaciones)
 };
 
 const mostrarOperaciones = (listaOperaciones) => {
@@ -528,7 +539,6 @@ const mayorGananciaPorCategorias = (operaciones) => {
     $("categoria-mayor-ganancia").innerHTML = `${categoriaConMayorGanancia}`
     $("monto-mayor-ganancia").innerHTML = `+$${montoMayorGanancia}`
 }
-mayorGananciaPorCategorias(operaciones)
 
 // Mayor gasto por categoria
 const mayorGastosPorCategorias = (operaciones) => {
@@ -555,8 +565,6 @@ const mayorGastosPorCategorias = (operaciones) => {
     $("categoria-mayor-gasto").innerHTML = `${categoriaConMayorGasto}`
     $("monto-mayor-gasto").innerHTML = `-$${montoMayorGasto}`
 }
-
-mayorGastosPorCategorias(operaciones)
 
 //Mayor balance
 
@@ -586,7 +594,6 @@ const categoriaMayorBalance = (operaciones) => {
     $("categoria-mayor-balance").innerHTML = `${categoriaConMayorBalance}`
     $("monto-mayor-balance").innerHTML = `$${mayorBalance}`
 }
-categoriaMayorBalance(operaciones)
 
 //Mes con mayor ganancia
 const mesMayorGanancia = (operaciones) => {
@@ -629,8 +636,6 @@ const mesMayorGanancia = (operaciones) => {
     }
 }
 
-mesMayorGanancia(operaciones)
-
 const mesMayorGasto = (operaciones) => {
     if (operaciones.length === 0) {
         return;
@@ -670,8 +675,6 @@ const mesMayorGasto = (operaciones) => {
         $("monto-mes-mayor-gasto").innerHTML = "N/A";
     }
 }
-
-mesMayorGasto(operaciones)
 
 //Totales por categoria
 
@@ -728,7 +731,6 @@ const totalesPorCategoria = (operaciones) => {
     }
 
 }
-totalesPorCategoria(operaciones)
 
 //Totales por mes
 const totalesPorMes = (operaciones) => {
@@ -772,12 +774,6 @@ const totalesPorMes = (operaciones) => {
     }
 }
 
-
-
-totalesPorMes(operaciones)
-
-
-
 const vistaReportes = (operaciones) => {
     let tieneGasto = false;
     let tieneGanancia = false;
@@ -795,9 +791,10 @@ const vistaReportes = (operaciones) => {
         $("sin-reportes").classList.add("is-hidden");
     } else {
         $("hay-reportes").classList.add("is-hidden");
+        $("sin-reportes").classList.remove("is-hidden");
     }
 };
 
-vistaReportes(operaciones)
 
-inicializar();
+
+window.onload = inicializar()
