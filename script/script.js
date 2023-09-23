@@ -13,6 +13,11 @@ const inicializar = () => {
     mostrarOpciones(categorias);
     cargarFechas();
     ordenarYBalance();
+    vistaReportes(operaciones);
+    actualizarReportes(operaciones);
+};
+
+const actualizarReportes = (operaciones) => {
     mayorGananciaPorCategorias(operaciones);
     mayorGastosPorCategorias(operaciones);
     categoriaMayorBalance(operaciones);
@@ -20,7 +25,6 @@ const inicializar = () => {
     mesMayorGasto(operaciones);
     totalesPorCategoria(operaciones);
     totalesPorMes(operaciones);
-    vistaReportes(operaciones);
 };
 
 //Definiendo fecha actual
@@ -138,6 +142,8 @@ const agregarOperacion = () => {
     mostrarVista("seccion-balance");
     limpiarVistaNuevaOP();
     vistaReportes(traer("operaciones"));
+    actualizarReportes(operaciones)
+
 };
 
 $("agregar-btn-nueva-op").addEventListener("click", () => agregarOperacion());
@@ -162,6 +168,7 @@ const eliminarOperacion = (id) => {
     actualizarInfo("operaciones", operaciones);
     ordenarYBalance();
     vistaReportes(operaciones);
+    actualizarReportes(operaciones)
 };
 
 const obtenerOperacion = (idOperacion) => {
@@ -198,6 +205,7 @@ const editarOperacion = (id) => {
     ordenarYBalance();
     mostrarVista("seccion-balance");
     vistaReportes(nuevasOperaciones);
+    actualizarReportes(nuevasOperaciones);
 };
 
 const mostrarOperaciones = (listaOperaciones) => {
@@ -696,6 +704,7 @@ const mesMayorGasto = (operaciones) => {
 //Totales por categoria
 
 const totalesPorCategoria = (operaciones) => {
+    $("totales-categorias").innerHTML = ""
     for (let { nombre, id } of categorias) {
         let operacionesPorCategoria = operaciones.filter(
             (operacion) => operacion.categoria === id
@@ -758,7 +767,7 @@ const totalesPorCategoria = (operaciones) => {
 //Totales por mes
 const totalesPorMes = (operaciones) => {
     const totalesPorMes = {};
-
+    $("totales-por-mes").innerHTML = ""
     operaciones.forEach(({ tipo, fecha, monto }) => {
         const mes = new Date(fecha).getMonth() + 1;
         const anio = new Date(fecha).getFullYear();
