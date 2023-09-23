@@ -728,7 +728,7 @@ const totalesPorCategoria = (operaciones) => {
             $("totales-categorias").innerHTML += "";
         } else if (totalGastos === 0) {
             $("totales-categorias").innerHTML += `
-        <div class="columns">
+        <div class="columns is-mobile">
             <div class="column has-text-weight-semibold">
                 <p>${nombre}</p>
             </div>
@@ -745,7 +745,7 @@ const totalesPorCategoria = (operaciones) => {
     `;
         } else if (totalGanancias === 0) {
             $("totales-categorias").innerHTML += `
-        <div class="columns">
+        <div class="columns is-mobile">
             <div class="column has-text-weight-semibold">
                 <p>${nombre}</p>
             </div>
@@ -789,7 +789,7 @@ const totalesPorMes = (operaciones) => {
         const balance = ganancias - gastos;
         $("totales-por-mes").innerHTML += `
         
-        <div class="columns">
+        <div class="columns is-mobile">
             <div class="column">
                 <p class="has-text-weight-semibold">${mes}/${anio}</p>
             </div>
