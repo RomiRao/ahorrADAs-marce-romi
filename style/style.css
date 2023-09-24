@@ -1,7 +1,80 @@
+* {
+    font-family: 'Mooli', sans-serif;
+}
+
+:root {
+    --clr-btn : #E5BEEC;
+    --clr-hover : #6f4ce29e;
+}
+
 .title {
     font-size: 2.5rem;
 }
 
 .image {
     max-width: 350px;
+}
+
+.navbar {
+    background: rgb(143,72,218);
+    background: linear-gradient(0deg, rgba(143,72,218,1) 0%, rgba(58,133,230,0.865983893557423) 100%);
+}
+
+@media screen and (max-width:1024px) {
+    .navbar-menu {
+        background: rgb(140,74,219);
+        background: linear-gradient(0deg, rgba(140,74,219,1) 10%, rgba(77,121,219,1) 75%);
+    }
+
+    .body {
+        min-height: 100vh;
+        overflow: hidden;
+    }
+}
+
+.body {
+    background: rgb(220,202,240);
+    background: linear-gradient(0deg, rgba(220,202,240,1) 0%, rgba(149,76,226,1) 75%);
+    min-height: 100vh;
+}
+
+.navbar-burger {
+    color: #FFFBF5;
+}
+
+.navbar-burger:hover {
+    color: #d4d4d4;
+}
+
+.button {
+    background-color: var(--clr-btn);
+}
+
+#navbar-balance {
+    transition: background-color, 0.1s;
+}
+
+#navbar-balance:hover {
+    background-color: var(--clr-hover);
+}
+
+#navbar-categorias {
+    transition: background-color, 0.1s;
+}
+
+#navbar-categorias:hover {
+    background-color: var(--clr-hover);
+
+}
+
+#navbar-reportes {
+    transition: background-color,  0.1s;
+}
+
+#navbar-reportes:hover {
+    background-color: var(--clr-hover);
+}
+
+#logo:hover {
+    background-color: var(--clr-hover);
 }

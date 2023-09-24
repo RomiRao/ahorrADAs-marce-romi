@@ -9,13 +9,16 @@
     <script src="https://kit.fontawesome.com/c89c9de4f7.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./style/style.css">
     <link rel="icon" typoe="image/png" href="/style/assets/moneda.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mooli&display=swap" rel="stylesheet">
 </head>
 
-<body class="has-background-light">
+<body class="body">
     <nav class="navbar is-primary is-spaced" role="navigation" aria-label="main navigation">
         <!-- Logo -->
         <div class="navbar-brand">
-            <a class="navbar-item">
+            <a class="navbar-item" id="logo">
                 <h1 class="title has-text-white">
                     <i class="fa-solid mr-2 fa-wallet"></i>
                     AhorrADAs
@@ -31,16 +34,16 @@
         <!-- Pestañas  -->
 
         <div id="navbarLinks" class="navbar-menu">
-            <div class="navbar-end">
-                <a class="navbar-item" id="navbar-balance">
+            <div class="navbar-end has-text-white">
+                <a class="navbar-item has-text-white" id="navbar-balance">
                     <i class="fa-solid mr-2 fa-chart-line"></i>
                     Balance
                 </a>
-                <a class="navbar-item" id="navbar-categorias">
+                <a class="navbar-item has-text-white" id="navbar-categorias">
                     <i class="fa-solid mr-2 fa-tag"></i>
                     Categorías
                 </a>
-                <a class="navbar-item" id="navbar-reportes">
+                <a class="navbar-item has-text-white" id="navbar-reportes">
                     <i class="fa-solid mr-2 fa-chart-pie"></i>
                     Reportes
                 </a>
@@ -66,15 +69,15 @@
                         <!-- Balance de cuenta -->
                         <div class="box">
                             <h2 class="title is-3 has-text-weight-bold mb-6">Balance</h2>
-                            <div class="columns is-align-items-center">
+                            <div class="columns is-mobile is-align-items-center">
                                 <div class="column is-size-5" >Ganancias</div>
                                 <div class="column has-text-success has-text-right" id="balance-ganancias"></div>
                             </div>
-                            <div class="columns is-align-items-center">
+                            <div class="columns is-mobile is-align-items-center">
                                 <div class="column is-size-5">Gastos</div>
                                 <div class="column has-text-danger has-text-right" id="balance-gastos"></div>
                             </div>
-                            <div class="columns is-align-items-center">
+                            <div class="columns is-mobile is-align-items-center">
                                 <div class="column is-size-4">Total</div>
                                 <div class="column has-text-weight-bold has-text-right" id="balance-total"></div>
                             </div>
@@ -142,7 +145,7 @@
                         <section class="box">
                             <div class="is-flex is-justify-content-space-between">
                                 <h3 class="title is-4 has-text-weight-bold">Operaciones</h3>
-                                <button class="button is-primary" id="nueva-operacion-btn">+ Nueva operación</button>
+                                <button class="button" id="nueva-operacion-btn">+ Nueva operación</button>
                             </div>
                             <div class="columns container mt-4 is-hidden is-hidden-mobile" id="ver-operaciones">
                                 <div class="column has-text-weight-semibold is-3">Descripción</div>
@@ -219,7 +222,7 @@
                         </div>
                         <div class="is-flex is-justify-content-flex-end mt-6">
                             <button type="button" id="cancelar-btn-nueva-op" class="button is-light">Cancelar</button>
-                            <button type="button" id="agregar-btn-nueva-op" class="button is-success">Agregar</button>
+                            <button type="button" id="agregar-btn-nueva-op" class="button">Agregar</button>
                         </div>
                     </form>
                 </div>
@@ -270,7 +273,7 @@
                         </div>
                         <div class="is-flex is-justify-content-flex-end mt-6">
                             <button type="button" id="cancelar-op-btn" class="button is-light">Cancelar</button>
-                            <button type="button" id="editar-op-btn" class="button is-success">Editar</button>
+                            <button type="button" id="editar-op-btn" class="button">Editar</button>
                         </div>
                     </form>
                 </div>
@@ -291,7 +294,7 @@
                 <label class="label">Nombre</label>
                 <div class="control is-flex">
                     <input class="input mr-3" type="text" id="input-nueva-categoria">
-                    <button type="button" class="button is-success" id="boton-agregar-categoria">Agregar</button>
+                    <button type="button" class="button" id="boton-agregar-categoria">Agregar</button>
                 </div>
             </div>
             <ul id="lista-categorias"></ul>
@@ -308,7 +311,7 @@
                             <input class="input mb-6" type="text" id="input-editar">
                             <div class="is-flex is-justify-content-flex-end">
                                 <button class="button mr-2 is-light" id="boton-cancelar">Cancelar</button>
-                                <button type="button" class="button is-success" id="boton-editar">Editar</button>
+                                <button type="button" class="button" id="boton-editar">Editar</button>
                             </div>
                         </div>
                     </form>
@@ -333,27 +336,27 @@
                     <div class="is-hidden" id="hay-reportes">
                         <section class="section">
                             <h4 class="is-size-4 has-text-weight-medium mb-5 pb-4">Resumen</h4>
-                            <div class="columns">
+                            <div class="columns is-mobile">
                                 <p class="column is-6 has-text-weight-semibold">Categoría con mayor ganancia</p>
                                 <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-ganancia"></p>
                                 <p class="column is-3 has-text-right has-text-success" id="monto-mayor-ganancia"></p>
                             </div>
-                            <div class="columns">
+                            <div class="columns is-mobile">
                                 <p class="column is-6 has-text-weight-semibold">Categoría con mayor gasto</p>
                                 <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-gasto"></p>
                                 <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mayor-gasto"></p>
                             </div>
-                            <div class="columns">
+                            <div class="columns is-mobile">
                                 <p class="column is-6 has-text-weight-semibold">Categoría con mayor balance</p>
                                 <p class="column is-3 has-text-right has-text-primary" id="categoria-mayor-balance"></p>
                                 <p class="column is-3 has-text-right has-text-weight-semibold" id="monto-mayor-balance"></p>
                             </div>
-                            <div class="columns">
+                            <div class="columns is-mobile">
                                 <p class="column is-6 has-text-weight-semibold">Mes con mayor ganancia</p>
                                 <p class="column is-3 has-text-right" id="mes-mayor-ganancia"></p>
                                 <p class="column is-3 has-text-right has-text-success has-text-weight-semibold" id="monto-mes-mayor-ganancia"></p>
                             </div>
-                            <div class="columns">
+                            <div class="columns is-mobile">
                                 <p class="column is-6 has-text-weight-semibold" >Mes con mayor gasto</p>
                                 <p class="column is-3 has-text-right" id="mes-mayor-gasto"></p>
                                 <p class="column is-3 has-text-right has-text-danger has-text-weight-semibold" id="monto-mes-mayor-gasto"></p>
