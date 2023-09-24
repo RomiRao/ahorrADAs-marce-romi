@@ -55,8 +55,8 @@ En este proyecto colaboramos dos personas y estras son nuestras redes:
 
 Marcela Duran:
 
--   [LinkedIn]()
--   []()
+-   [LinkedIn](https://www.linkedin.com/in/marcela-duran-842385241/)
+-   [marcelaromina.d@gmail.com](mailto:marcelaromina.d@gmail.com)
 -   [Perfil de GitHub](https://github.com/Makorii)
 
 Romina Rao
