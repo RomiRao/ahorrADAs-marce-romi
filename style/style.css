@@ -46,3 +46,35 @@
     color: #d4d4d4;
 }
 
+.button {
+    background-color: var(--clr-btn);
+}
+
+#navbar-balance {
+    transition: background-color, 0.1s;
+}
+
+#navbar-balance:hover {
+    background-color: var(--clr-hover);
+}
+
+#navbar-categorias {
+    transition: background-color, 0.1s;
+}
+
+#navbar-categorias:hover {
+    background-color: var(--clr-hover);
+
+}
+
+#navbar-reportes {
+    transition: background-color,  0.1s;
+}
+
+#navbar-reportes:hover {
+    background-color: var(--clr-hover);
+}
+
+#logo:hover {
+    background-color: var(--clr-hover);
+}
