@@ -3,8 +3,13 @@
 }
 
 :root {
-    --clr-btn : #E5BEEC;
-    --clr-hover : #6f4ce29e;
+    --clr-btn : #F6A9CE;
+    --clr-hover : #9E3668;
+}
+
+.body {
+    background-color: #FDE3F0;
+    min-height: 100vh;
 }
 
 .title {
@@ -16,14 +21,12 @@
 }
 
 .navbar {
-    background: rgb(143,72,218);
-    background: linear-gradient(0deg, rgba(143,72,218,1) 0%, rgba(58,133,230,0.865983893557423) 100%);
+    background-color: #691A40 !important;
 }
 
 @media screen and (max-width:1024px) {
     .navbar-menu {
-        background: rgb(140,74,219);
-        background: linear-gradient(0deg, rgba(140,74,219,1) 10%, rgba(77,121,219,1) 75%);
+        background-color: #691A40 !important;
     }
 
     .body {
@@ -32,11 +35,7 @@
     }
 }
 
-.body {
-    background: rgb(220,202,240);
-    background: linear-gradient(0deg, rgba(220,202,240,1) 0%, rgba(149,76,226,1) 75%);
-    min-height: 100vh;
-}
+
 
 .navbar-burger {
     color: #FFFBF5;
