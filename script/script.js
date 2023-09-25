@@ -221,6 +221,8 @@ const mostrarOperaciones = (listaOperaciones) => {
     listaOperaciones.forEach(
         ({ monto, id, descripcion, tipo, fecha, categoria }) => {
             let contenedorOperacion = document.createElement("div");
+            const editarId = `link-editar-${id}`;
+            const eliminarId = `link-eliminar-${id}`;
             contenedorOperacion.innerHTML = `<div class="columns py-2 is-multiline is-mobile is-vcentere">
         <div class="column is-6-mobile is-3-tablet">
             <h3 class="has-text-weight-semibold">
@@ -247,19 +249,18 @@ const mostrarOperaciones = (listaOperaciones) => {
             </span>
         </div>
         <div class="column is-2-tablet is-6-mobile is-size-7 has-text-right pt-4">
-            <a id='link-editar' href="#">Editar</a>
-            <a id='link-eliminar' href="#" class="ml-3">Eliminar</a>
+            <a id='${editarId}' href="#">Editar</a>
+            <a id='${eliminarId}' href="#" class="ml-3">Eliminar</a>
         </div>
     </div>`;
-            let irAEditar = contenedorOperacion.querySelector("#link-editar");
-            let irAEliminar =
-                contenedorOperacion.querySelector("#link-eliminar");
-            irAEditar.onclick = () => {
-                vistaEditarOperacion(id);
-            };
-            irAEliminar.onclick = () => {
-                eliminarOperacion(id);
-            };
+    let irAEditar = contenedorOperacion.querySelector(`#${editarId}`);
+    let irAEliminar = contenedorOperacion.querySelector(`#${eliminarId}`);
+    irAEditar.onclick = () => {
+        vistaEditarOperacion(id);
+    };
+    irAEliminar.onclick = () => {
+        eliminarOperacion(id);
+    };
             $("operaciones").appendChild(contenedorOperacion);
         }
     );
