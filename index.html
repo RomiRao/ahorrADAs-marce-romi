@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Aplicación para el control y seguimiento de tus ingresos y gastos personales">
     <title>AhorrADAs</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="./style/style.css">
@@ -18,7 +19,7 @@
     <nav class="navbar is-primary is-spaced" role="navigation" aria-label="main navigation">
         <!-- Logo -->
         <div class="navbar-brand">
-            <a class="navbar-item logo">
+            <a class="navbar-item logo" href="#">
                 <h1 class="title has-text-white">
                     <i class="fa-solid mr-2 fa-wallet"></i>
                     AhorrADAs
@@ -95,7 +96,7 @@
                             </div>
                             <div id="filtros">
                                 <div class="field">
-                                    <label class="label">Tipo</label>
+                                    <label for="filtro-tipo" class="label">Tipo</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select id="filtro-tipo">
@@ -107,7 +108,7 @@
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <label class="label">Categoría</label>
+                                    <label for="filtro-categoria" class="label">Categoría</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select class="select-categorias" id="filtro-categoria">
@@ -116,13 +117,13 @@
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <label class="label">Desde</label>
+                                    <label for="fecha-filtro" class="label">Desde</label>
                                     <div class="control">
                                         <input id="fecha-filtro" class="input" type="date">
                                     </div>
                                 </div>
                                 <div class="field">
-                                    <label class="label">Ordenar por</label>
+                                    <label for="filtro-ordenar" class="label">Ordenar por</label>
                                     <div class="control">
                                         <div class="select is-fullwidth">
                                             <select id="filtro-ordenar">

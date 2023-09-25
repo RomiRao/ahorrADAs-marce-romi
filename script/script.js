@@ -113,7 +113,6 @@ const calcularBalance = (operaciones) => {
     });
 
     const balance = ganancias - gastos;
-    console.log(balance)
     if (balance > 0) {
         $("balance-total").classList.add("has-text-success")
         $("balance-total").classList.remove("has-text-danger")
