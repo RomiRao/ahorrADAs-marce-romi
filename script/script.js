@@ -8,7 +8,7 @@ const inicializar = () => {
         localStorage.setItem("categorias", JSON.stringify(categorias));
     }
     mostrarOperaciones(operaciones);
-    calcularBalance(operaciones);
+    actualizarBalance(operaciones);
     crearLista(categorias);
     mostrarOpciones(categorias);
     cargarFechas();
@@ -100,7 +100,7 @@ const abrirNuevaOperacion = () => {
 $("nueva-operacion-btn").addEventListener("click", () => abrirNuevaOperacion());
 
 //-----Funcionabilidad
-const calcularBalance = (operaciones) => {
+const actualizarBalance = (operaciones) => {
     let ganancias = 0;
     let gastos = 0;
 
@@ -113,19 +113,24 @@ const calcularBalance = (operaciones) => {
     });
 
     const balance = ganancias - gastos;
+
     if (balance > 0) {
-        $("balance-total").classList.add("has-text-success")
-        $("balance-total").classList.remove("has-text-danger")
-        $("balance-total").innerHTML =`+${balance}`
+        $("balance-total").classList.add("has-text-success");
+        $("balance-total").classList.remove("has-text-danger");
+        $("balance-total").innerHTML = `+$${balance}`;
+    } else if (balance < 0) {
+        $("balance-total").classList.add("has-text-danger");
+        $("balance-total").classList.remove("has-text-success");
+        $("balance-total").innerHTML = `$${balance}`;
     } else {
-        $("balance-total").classList.add("has-text-danger")
-        $("balance-total").classList.remove("has-text-success")
-        $("balance-total").innerHTML =`${balance}`
+        $("balance-total").classList.remove("has-text-success", "has-text-danger");
+        $("balance-total").innerHTML = `$${balance}`;
     }
 
-    $("balance-ganancias").innerHTML = `+${ganancias}`;
-    $("balance-gastos").innerHTML = `-${gastos}`;
+    $("balance-ganancias").innerHTML = `+$${ganancias}`;
+    $("balance-gastos").innerHTML = `-$${gastos}`;
 };
+
 
 // -------------------
 // DATOS OPERACIONES
@@ -173,6 +178,7 @@ const eliminarOperacion = (id) => {
     operaciones = traer("operaciones").filter(
         (operacion) => operacion.id !== id
     );
+    actualizarBalance(operaciones);
     actualizarInfo("operaciones", operaciones);
     ordenarYBalance();
     vistaReportes(operaciones);
@@ -214,6 +220,7 @@ const editarOperacion = (id) => {
     mostrarVista("seccion-balance");
     vistaReportes(nuevasOperaciones);
     actualizarReportes(nuevasOperaciones);
+    actualizarBalance(operaciones);
 };
 
 const mostrarOperaciones = (listaOperaciones) => {
@@ -516,7 +523,7 @@ const ordenarOperaciones = () => {
 
 const ordenarYBalance = () => {
     let operacionesOrdenadas = ordenarOperaciones();
-    calcularBalance(operacionesOrdenadas);
+    actualizarBalance(operacionesOrdenadas);
     mostrarOperaciones(operacionesOrdenadas);
 };
 
