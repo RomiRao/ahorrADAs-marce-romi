@@ -4,7 +4,7 @@
 
 Este es nuetro tercer proyecto a entregar de la carrera de desarrollo FrontEnd para ADAITW. En este caso creamos un controlador de gastos personales. Lo que buscamos aplicar del programa en este trabajo es el conocimiento previamente adquirido de HTML, CSS y JavaScript junto al manejo de base de datos con el local storage y el manejo de objetos JSON. Además de implementar la lógica en la construcción, reutilización de funciones, utilización de frameworks de CSS y el trabajo en equipo utilizando ramas en GIT.
 
-<img src="https://github.com/RomiRao/meme-generator/blob/main/style/image-examples/website.png" style="width: 60%;" alt="ejemplo visual de la pagina"/>
+<img src="https://i.imgur.com/YwEFaOk.png" style="width: 60%;" alt="ejemplo visual de la pagina"/>
 
 ## Herramientas utilizadas
 
