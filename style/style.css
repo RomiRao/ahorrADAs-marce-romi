@@ -33,9 +33,23 @@
         min-height: 100vh;
         overflow: hidden;
     }
+    html {
+        font-size: 15px;
+    }
+
 }
 
+@media screen and (max-width:480px){
+    html {
+        font-size: 14px;
+    }
+}
 
+@media screen and (max-width:430px){
+    html {
+        font-size: 12px;
+    }
+}
 
 .navbar-burger {
     color: #FFFBF5;
